@@ -1,12 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import * as React from 'react';
+import { Button, Text, TouchableOpacity } from 'react-native'
+
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import Tweet from '../screens/Tweet'
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -17,16 +20,17 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      >
       <BottomTab.Screen
-        name="Home"
+        name="TabOne"
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="Search"
+        name="TabTwo"
         component={TabTwoNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
@@ -48,11 +52,31 @@ const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
   return (
-    <TabOneStack.Navigator>
+    <TabOneStack.Navigator screenOptions={{ cardStyle: { backgroundColor: '#fff' }, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}>
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{ headerTitle: 'Feed', headerLeft: () => null }}
+      />
+      <TabOneStack.Screen
+        name="Tweet"
+        component={Tweet}
+        options={({ navigation }) => ({
+          headerTitle: '',
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.push('TabOneScreen') }>
+              <Text style={{ color: '#1FA1F1', fontSize: 16, marginLeft: 10 }}>Cancel</Text>
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <Button
+              accessibilityLabel="Learn more about this purple button"
+              color='#1fa1f1'
+              onPress={() => navigation.push('TabOneScreen')}
+              title="Tweet"
+            />
+          ),
+        })}
       />
     </TabOneStack.Navigator>
   );

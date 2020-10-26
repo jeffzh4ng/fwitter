@@ -1,7 +1,18 @@
 import * as React from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Image } from 'react-native';
-
+import { Icon } from 'react-native-elements';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { Text, View } from '../components/Themed';
+import { RootStackParamList } from '../types';
+
+type FeedScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Root'
+>;
+
+interface Props {
+  navigation: FeedScreenNavigationProp;
+}
 
 interface Tweet {
   id: string,
@@ -15,7 +26,7 @@ interface Tweet {
   time: string
 }
 
-export default function TabOneScreen() {
+export default function Feed({ navigation }: Props) {
   const tweets: Array<Tweet> = [
     {
       id: '0',
@@ -49,7 +60,29 @@ export default function TabOneScreen() {
       retweets: ['leo123', 'juliarocks', 'alexaxD'],
       likes: ['danielsan', 'tannerthewhiteguy'],
       time: '4m'
-    }
+    },
+       {
+      id: '3',
+      name: 'Jay Patel',
+      userName: '__somekid',
+      avatarUrl: 'https://pbs.twimg.com/profile_images/1314685714404122624/TrscLpQX_400x400.jpg',
+      text: 'Yeah it’s like how do you stay motivated about future outcomes without having expectations for them. Eudaemonia (sustained & balanced happiness/resilience) is tough, but imo you can develop habits and thinking patterns to help...',
+      replies: [],
+      retweets: ['leo123', 'juliarocks', 'alexaxD'],
+      likes: ['danielsan', 'tannerthewhiteguy'],
+      time: '4m'
+    },
+    {
+      id: '4',
+      name: 'Sean',
+      userName: 'swyx',
+      avatarUrl: 'https://pbs.twimg.com/profile_images/1201029434054041606/efWs7Lr9_400x400.jpg',
+      text: 'This is my stage of learning of AWS right now god i need everything to pause for a year so i can just learn this stuff without anything new happening ever',
+      replies: [],
+      retweets: ['leo123', 'juliarocks', 'alexaxD'],
+      likes: ['danielsan', 'tannerthewhiteguy'],
+      time: '4m'
+    },
   ]
 
   const renderTweet = ({ item }: { item: Tweet}) => {
@@ -63,6 +96,16 @@ export default function TabOneScreen() {
         renderItem={renderTweet}
         keyExtractor={item => item.id}
       />
+      <View style={{ backgroundColor: 'transparent', bottom: 10, position: 'absolute', right: 10 }}>
+      <Icon
+        raised
+        name='feather'
+        type='font-awesome-5'
+        color='#1da1f2' 
+        onPress={() => navigation.navigate('Tweet')}
+        reverse
+      />
+      </View>
     </SafeAreaView>
   );
 }
