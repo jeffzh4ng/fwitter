@@ -1,43 +1,36 @@
-import {
-  Controller,
-  Get,
-  UseGuards,
-  Req,
-  Res,
-  Post,
-  Session,
-  NotFoundException,
-  Logger,
-} from '@nestjs/common'
+import { Controller, Get, UseGuards, Res, Post, Session, Logger, Req, Body } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { COOKIE_NAME } from 'src/constants'
 import { User } from 'src/users/user.entity'
 import { UsersService } from 'src/users/users.service'
 import { RestAuthGuard } from '../guards/auth.guard'
-import { ConfigService } from '@nestjs/config'
 
-// logins in with google -> GET /auth/google -> google auth -> GET /auth/google/callback (if user exists, redirect to dashboard, o/w redirect to /signup)
+interface SignupDto {
+  username: string
+  password: string
+}
 
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger(AuthController.name)
 
-  constructor(private userService: UsersService, private configService: ConfigService) {}
+  constructor(private userService: UsersService) {}
 
-  @Get('google')
-  @UseGuards(AuthGuard('google')) // uses passport google strategy and redirects client to authorization server
-  googleLogin() {
-    // no body in this route, bc passport AuthGuard will redirect client to google's authorization server
+  @UseGuards(AuthGuard('local'))
+  @Post('/login')
+  async login(@Req() req) {
+    return req.user
   }
 
-  @Get('google/callback') // google auth will call this callaback route
-  @UseGuards(AuthGuard('google')) // using AuthGuard('google') calls GoogleStrategy.validate()
-  googleLoginCallback(@Req() req, @Res() res, @Session() session: { thirdPartyId?: string }) {
-    // if user exists, redirect to dashboard
-    // if user dne, redirect to signup page (confirm email, and username)
-    session.thirdPartyId = req.user.thirdPartyId
-    const clientURL = this.configService.get('CLIENT_URL')
-    res.redirect(`${clientURL}/dashboard`)
+  @Post('/signup')
+  async signup(@Body() signupDto: SignupDto, @Session() session: { userId: string }) {
+    const user = await this.userService.createOne(signupDto.username, signupDto.password)
+    if (!user) return false
+
+    session.userId = user.id
+
+    const { password, ...strippedUser } = user
+    return strippedUser
   }
 
   @Get('me')

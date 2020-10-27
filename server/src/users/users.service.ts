@@ -1,9 +1,7 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
-import { Provider } from 'src/auth/auth.service'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { User } from './user.entity'
-import { generateUsername } from 'src/utils/username-generator'
 
 @Injectable()
 export class UsersService {
@@ -20,6 +18,22 @@ export class UsersService {
       })
     } catch (e) {
       this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
+  async createOne(username: string, password: string): Promise<User | false> {
+    try {
+      const usersWithSameUsername = await this.usersRepository.find({ where: { username } })
+      if (usersWithSameUsername.length > 0) return false
+
+      const user = new User()
+      user.username = username
+      user.password = password // TODO: hash passwords instead of storing raw
+      return await this.usersRepository.save(user)
+    } catch (e) {
+      this.logger.error(e)
+      throw new InternalServerErrorException()
     }
   }
 
@@ -35,39 +49,7 @@ export class UsersService {
       return follows.map(follow => follow.follower)
     } catch (e) {
       this.logger.error(e)
+      throw new InternalServerErrorException()
     }
-  }
-
-  async createOne(thirdPartyId: string, provider: Provider): Promise<User | undefined> {
-    try {
-      const username = await this.getUsername()
-
-      const user = await this.usersRepository.create({
-        username,
-      })
-
-      await this.usersRepository.save(user)
-
-      return user
-    } catch (e) {
-      throw new InternalServerErrorException('usersService.createOne()', e)
-    }
-  }
-
-  private async getUsername(): Promise<string> {
-    let username = generateUsername()
-
-    while (true) {
-      try {
-        const user = await this.usersRepository.findOne({ where: { username } })
-        if (!user) break
-
-        username = generateUsername()
-      } catch (e) {
-        throw new InternalServerErrorException('usersService.getUsername()', e)
-      }
-    }
-
-    return username
   }
 }

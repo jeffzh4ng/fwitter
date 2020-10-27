@@ -9,14 +9,14 @@ export enum Provider {
 export class AuthService {
   constructor(private readonly usersService: UsersService) {}
 
-  async validateOAuthLogin(thirdPartyId: string, provider: Provider): Promise<string> {
-    try {
-      let user = await this.usersService.findOne(thirdPartyId)
-      if (!user) user = await this.usersService.createOne(thirdPartyId, provider)
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOne(username)
 
-      return thirdPartyId
-    } catch (e) {
-      throw new InternalServerErrorException('AuthService.validateOAuthLogin()', e)
+    // TODO: add bcrypt
+    if (user && user.password === pass) {
+      const { password, ...result } = user // strip out password
+      return result
     }
+    return null
   }
 }

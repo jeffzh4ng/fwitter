@@ -26,7 +26,7 @@ services:
       - webnet
   postgres:
     container_name: postgres
-    image: postgres:latest
+    image: postgres:12.4
     networks:
       - webnet
     environment:
