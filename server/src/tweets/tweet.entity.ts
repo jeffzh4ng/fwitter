@@ -1,6 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import { User } from 'src/users/user.entity'
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+} from 'typeorm'
 
 @ObjectType()
 @Entity('tweets')
@@ -8,9 +15,6 @@ export class Tweet {
   @Field()
   @PrimaryGeneratedColumn()
   id: number
-
-  @Field()
-  createdAt: Date
 
   @Field({ nullable: true })
   @ManyToOne(type => User, { cascade: false, eager: true })
@@ -20,4 +24,7 @@ export class Tweet {
   @Field()
   @Column()
   text: string
+
+  @CreateDateColumn()
+  date: Date
 }

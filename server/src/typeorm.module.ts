@@ -19,9 +19,9 @@ export const TypeOrm: DynamicModule = TypeOrmModule.forRootAsync({
         type: 'postgres',
         host: 'postgres',
         port: 5432,
-        username: 'collaborate',
-        password: 'collaborate',
-        database: 'collaborate',
+        username: 'fwitter',
+        password: 'fwitter',
+        database: 'fwitter',
         entities: ['dist/**/*.entity{.ts,.js}'],
         synchronize: true,
       }

@@ -11,13 +11,28 @@ export class UsersService {
 
   constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
-  async findOne(thirdPartyId: string): Promise<User | undefined> {
+  async findOne(userId: string): Promise<User | undefined> {
     try {
       return await this.usersRepository.findOne({
         where: {
-          thirdPartyId,
+          userId,
         },
       })
+    } catch (e) {
+      this.logger.error(e)
+    }
+  }
+
+  async getFollowingList(userId: string): Promise<Array<User>> {
+    try {
+      const user = await this.usersRepository.findOne({
+        where: {
+          userId,
+        },
+      })
+
+      const follows = user.following
+      return follows.map(follow => follow.follower)
     } catch (e) {
       this.logger.error(e)
     }
@@ -28,8 +43,6 @@ export class UsersService {
       const username = await this.getUsername()
 
       const user = await this.usersRepository.create({
-        thirdPartyId,
-        provider,
         username,
       })
 

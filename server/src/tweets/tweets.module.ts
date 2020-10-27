@@ -9,6 +9,6 @@ import { TweetsService } from './tweets.service'
 @Module({
   imports: [TypeOrmModule.forFeature([Tweet]), UsersModule],
   providers: [TweetsResolver, TweetsService],
-  exports: [TweetsService],
+  exports: [],
 })
 export class TweetsModule {}
