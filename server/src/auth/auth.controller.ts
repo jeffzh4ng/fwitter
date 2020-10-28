@@ -1,4 +1,15 @@
-import { Controller, Get, UseGuards, Res, Post, Session, Logger, Req, Body } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Res,
+  Post,
+  Session,
+  Logger,
+  Req,
+  Body,
+  BadRequestException,
+} from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { COOKIE_NAME } from 'src/constants'
 import { User } from 'src/users/user.entity'
@@ -16,27 +27,32 @@ export class AuthController {
 
   constructor(private userService: UsersService) {}
 
-  @UseGuards(AuthGuard('local'))
-  @Post('/login')
-  async login(@Req() req) {
-    return req.user
-  }
-
   @Post('/signup')
-  async signup(@Body() signupDto: SignupDto, @Session() session: { userId: string }) {
+  async signup(@Body() signupDto: SignupDto, @Session() session: { username: string }, @Req() req) {
     const user = await this.userService.createOne(signupDto.username, signupDto.password)
-    if (!user) return false
+    if (!user) throw new BadRequestException('Username already in use.')
 
-    session.userId = user.id
+    session.username = user.username
 
     const { password, ...strippedUser } = user
     return strippedUser
   }
 
+  @UseGuards(AuthGuard('local'))
+  @Post('/login')
+  async login(@Req() req, @Session() session: { username?: string }) {
+    session.username = req.user.username
+
+    console.log(session)
+    return req.user
+  }
+
   @Get('me')
   @UseGuards(RestAuthGuard)
-  async me(@Session() session: { thirdPartyId?: string }): Promise<User | null> {
-    const user = await this.userService.findOne(session.thirdPartyId)
+  async me(@Session() session: { username?: string }): Promise<User | null> {
+    console.log(session)
+    const user = await this.userService.findOneByUsername(session.username)
+    console.log(user)
 
     return user
   }

@@ -9,11 +9,11 @@ export class UsersService {
 
   constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
-  async findOne(userId: string): Promise<User | undefined> {
+  async findOneByUsername(username: string): Promise<User | undefined> {
     try {
       return await this.usersRepository.findOne({
         where: {
-          userId,
+          username,
         },
       })
     } catch (e) {

@@ -47,7 +47,7 @@ export class TweetsService {
     try {
       const { userId, text } = data
 
-      const user = await this.usersService.findOne(userId)
+      const user = await this.usersService.findOneByUsername(userId)
 
       const tweet = new Tweet()
       tweet.text = text

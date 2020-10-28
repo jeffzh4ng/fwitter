@@ -10,7 +10,7 @@ export class AuthService {
   constructor(private readonly usersService: UsersService) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username)
+    const user = await this.usersService.findOneByUsername(username)
 
     // TODO: add bcrypt
     if (user && user.password === pass) {
