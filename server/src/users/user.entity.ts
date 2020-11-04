@@ -5,6 +5,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } f
 @ObjectType()
 @Entity('users')
 export class User {
+  @Field()
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -30,3 +31,5 @@ export class User {
   )
   followers: Follow[]
 }
+
+export type StrippedUser = Omit<User, 'password'>

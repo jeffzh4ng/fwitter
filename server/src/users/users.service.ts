@@ -22,6 +22,19 @@ export class UsersService {
     }
   }
 
+  async findOneByUserId(userId: string): Promise<User | undefined> {
+    try {
+      return await this.usersRepository.findOne({
+        where: {
+          id: userId,
+        },
+      })
+    } catch (e) {
+      this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
   async createOne(username: string, password: string): Promise<User | false> {
     try {
       const usersWithSameUsername = await this.usersRepository.find({ where: { username } })

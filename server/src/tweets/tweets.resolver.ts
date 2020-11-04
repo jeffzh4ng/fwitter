@@ -15,7 +15,6 @@ export class TweetsResolver {
     return tweets
   }
 
-  @UseGuards(GraphqlAuthGuard)
   @Mutation(returns => Tweet, { name: 'tweet' })
   async createTweet(@Context() ctx: any, @Args('text', { type: () => String }) text: string) {
     const { userId } = ctx.req.session

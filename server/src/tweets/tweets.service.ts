@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { User } from 'src/users/user.entity'
 import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
 import { Tweet } from './tweet.entity'
@@ -35,7 +36,8 @@ export class TweetsService {
 
   async createOne(data: { userId: string; text: string }): Promise<Tweet> {
     try {
-      const createdTweet = await this.tweet(data)
+      const user = await this.usersService.findOneByUserId(data.userId)
+      const createdTweet = await this.tweet({ ...data, user })
       return createdTweet
     } catch (e) {
       this.logger.error(e)
@@ -43,11 +45,9 @@ export class TweetsService {
     }
   }
 
-  private async tweet(data: { userId: string; text: string }): Promise<Tweet> {
+  private async tweet(data: { user: User; text: string }): Promise<Tweet> {
     try {
-      const { userId, text } = data
-
-      const user = await this.usersService.findOneByUsername(userId)
+      const { user, text } = data
 
       const tweet = new Tweet()
       tweet.text = text

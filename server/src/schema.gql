@@ -3,6 +3,9 @@
 # ------------------------------------------------------
 
 type Mutation {
+  login(password: String!, username: String!): User!
+  me: User!
+  signup(password: String!, username: String!): User!
   tweet(text: String!): Tweet!
 }
 
@@ -17,5 +20,6 @@ type Tweet {
 }
 
 type User {
+  id: String!
   username: String!
 }
