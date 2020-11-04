@@ -10,6 +10,8 @@ import SignUpScreen from '../screens/SignUpScreen'
 import { RootStackParamList } from '../types'
 import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
+import VerifyScreen from '../screens/VerifyScreen'
+import LoginScreen from '../screens/LoginScreen'
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -53,6 +55,8 @@ function RootNavigator() {
             }}
           />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Verify" component={VerifyScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         </>
       ) : (

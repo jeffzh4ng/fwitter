@@ -5,7 +5,7 @@ import { Pressable, SafeAreaView, Text, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { RootStackParamList } from '../types'
 
-type LandingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>
+type LandingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Landing'>
 
 interface Props {
   navigation: LandingScreenNavigationProp
@@ -40,9 +40,16 @@ const LandingScreen = ({ navigation }: Props) => {
           </Pressable>
         </View>
 
-        <Text>
-          Have an account already? <Link to="/login">Log in</Link>
-        </Text>
+        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+          <Text>Have an account already? </Text>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('Login')
+            }}
+          >
+            <Text style={{ color: '#1fa1f1' }}>Log in</Text>
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   )

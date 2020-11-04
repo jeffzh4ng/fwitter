@@ -1,7 +1,10 @@
 export type RootStackParamList = {
   Root: undefined
   Landing: undefined
+  Login: undefined
   SignUp: undefined
+  Verify: undefined
+  EnterPassword: undefined
   ForgotPassword: undefined
   NotFound: undefined
 }

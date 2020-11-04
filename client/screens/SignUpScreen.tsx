@@ -13,7 +13,7 @@ import {
 import { Icon } from 'react-native-elements'
 import { RootStackParamList } from '../types'
 
-type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>
+type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>
 
 interface Props {
   navigation: SignUpScreenNavigationProp
@@ -34,7 +34,7 @@ const SignUpScreen = ({ navigation }: Props) => {
           <View style={{ paddingHorizontal: 40 }}>
             <Icon name="twitter" type="font-awesome-5" color="#1fa1f1" />
 
-            <Text style={{ fontSize: 24, fontWeight: '700', marginTop: 50, textAlign: 'center' }}>
+            <Text style={{ fontSize: 23, fontWeight: '700', marginTop: 50, textAlign: 'center' }}>
               Create your account
             </Text>
 
@@ -104,7 +104,7 @@ const SignUpScreen = ({ navigation }: Props) => {
               },
             ]}
             onPress={() => {
-              navigation.navigate('SignUp')
+              navigation.navigate('Verify')
             }}
           >
             <Text style={{ color: 'white', fontSize: 15, fontWeight: '700' }}>Next</Text>
