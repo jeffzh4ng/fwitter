@@ -1,97 +1,79 @@
-import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import * as React from 'react';
+import { Ionicons } from '@expo/vector-icons'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack'
+import * as React from 'react'
 import { Button, Text, TouchableOpacity } from 'react-native'
 
-
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import Colors from '../constants/Colors'
+import useColorScheme from '../hooks/useColorScheme'
+import Home from '../screens/HomeScreen'
 import Tweet from '../screens/Tweet'
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import { BottomTabParamList, HomeParamList } from '../types'
 
-const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+const BottomTab = createBottomTabNavigator<BottomTabParamList>()
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme()
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
-      >
+    >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
+        name="Home"
+        component={HomeNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
     </BottomTab.Navigator>
-  );
+  )
 }
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 function TabBarIcon(props: { name: string; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const HomeStack = createStackNavigator<HomeParamList>()
 
-function TabOneNavigator() {
+function HomeNavigator() {
   return (
-    <TabOneStack.Navigator screenOptions={{ cardStyle: { backgroundColor: '#fff' }, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
+    <HomeStack.Navigator
+      screenOptions={{
+        cardStyle: { backgroundColor: '#fff' },
+        cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+      }}
+    >
+      <HomeStack.Screen
+        name="Home"
+        component={Home}
         options={{ headerTitle: 'Feed', headerLeft: () => null }}
       />
-      <TabOneStack.Screen
+      <HomeStack.Screen
         name="Tweet"
         component={Tweet}
         options={({ navigation }) => ({
           headerTitle: '',
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.push('TabOneScreen') }>
+            <TouchableOpacity onPress={() => navigation.push('Home')}>
               <Text style={{ color: '#1FA1F1', fontSize: 16, marginLeft: 10 }}>Cancel</Text>
             </TouchableOpacity>
           ),
           headerRight: () => (
             <Button
               accessibilityLabel="Learn more about this purple button"
-              color='#1fa1f1'
-              onPress={() => navigation.push('TabOneScreen')}
+              color="#1fa1f1"
+              onPress={() => navigation.push('Home')}
               title="Tweet"
             />
           ),
         })}
       />
-    </TabOneStack.Navigator>
-  );
-}
-
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
-
-function TabTwoNavigator() {
-  return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
-      />
-    </TabTwoStack.Navigator>
-  );
+    </HomeStack.Navigator>
+  )
 }
