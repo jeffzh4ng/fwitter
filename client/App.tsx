@@ -6,7 +6,7 @@ import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import Navigation from './navigation'
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ApolloClient, ApolloProvider, InMemoryCache, makeVar } from '@apollo/client'
 
 export default function App() {
   const isLoadingComplete = useCachedResources()
@@ -16,7 +16,7 @@ export default function App() {
     return null
   } else {
     const client = new ApolloClient({
-      uri: 'http://localhost:3001/graphql',
+      uri: 'http://localhost:3001/graphql', // TODO: put in env variable
       cache: new InMemoryCache(),
     })
 

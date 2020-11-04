@@ -5,7 +5,7 @@ import { ColorSchemeName } from 'react-native'
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen'
 
 import NotFoundScreen from '../screens/NotFoundScreen'
-import LoginScreen from '../screens/LoginScreen'
+import LandingScreen from '../screens/LandingScreen'
 import SignUpScreen from '../screens/SignUpScreen'
 import { RootStackParamList } from '../types'
 import BottomTabNavigator from './BottomTabNavigator'
@@ -32,7 +32,7 @@ function RootNavigator() {
   const state = {
     isLoading: false,
     isSignout: false,
-    userToken: 'faketoken123',
+    userId: null,
   }
 
   if (state.isLoading) {
@@ -42,13 +42,13 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {state.userToken == null ? (
+      {state.userId == null ? (
         <>
           <Stack.Screen
-            name="Login"
-            component={LoginScreen}
+            name="Landing"
+            component={LandingScreen}
             options={{
-              title: 'Login',
+              title: 'Landing',
               animationTypeForReplace: state.isSignout ? 'pop' : 'push',
             }}
           />
