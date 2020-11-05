@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { FlatList, SafeAreaView, StyleSheet, Image, Text, View } from 'react-native'
-import { Icon } from 'react-native-elements'
+import { FlatList, SafeAreaView, StyleSheet, Image, Text, View, Pressable } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { RootStackParamList } from '../types'
+import { RootStackParamList } from '../../types'
 import { gql, useMutation } from '@apollo/client'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 type FeedScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Root'>
 
@@ -95,7 +95,7 @@ const ME_MUTATION = gql`
   }
 `
 
-export default function Feed({ navigation }: Props) {
+export const FeedScreen = ({ navigation }: Props) => {
   const [me, { data }] = useMutation(ME_MUTATION)
   console.log('data', data)
 
@@ -110,15 +110,13 @@ export default function Feed({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.home}>
       <FlatList data={tweets} renderItem={renderTweet} keyExtractor={(item) => item.id} />
-      <View style={{ backgroundColor: 'transparent', bottom: 10, position: 'absolute', right: 10 }}>
-        <Icon
-          raised
-          name="feather"
-          type="font-awesome-5"
-          color="#1da1f2"
+      <View style={{ backgroundColor: 'transparent', bottom: 15, position: 'absolute', right: 15 }}>
+        <Pressable
+          style={{ backgroundColor: '#1fa1fa', borderRadius: 100, padding: 15 }}
           onPress={() => navigation.navigate('Tweet')}
-          reverse
-        />
+        >
+          <MaterialCommunityIcons name="feather" size={24} color="white" />
+        </Pressable>
       </View>
     </SafeAreaView>
   )

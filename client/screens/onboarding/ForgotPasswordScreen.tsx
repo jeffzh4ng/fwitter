@@ -1,8 +1,7 @@
 import * as React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Pressable, Text, TextInput, View } from 'react-native'
+import { SafeAreaView, Pressable, Text, TextInput, View } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { RootStackParamList } from '../types'
+import { RootStackParamList } from '../../types'
 
 type ForgotPasswordScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ForgotPassword'>
 
@@ -10,7 +9,7 @@ interface Props {
   navigation: ForgotPasswordScreenNavigationProp
 }
 
-const ForgotPasswordScreen = ({ navigation }: Props) => {
+export const ForgotPasswordScreen = ({ navigation }: Props) => {
   const [emailOrUsername, onChangeEmailOrUsername] = React.useState('')
 
   return (
@@ -63,5 +62,3 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
     </SafeAreaView>
   )
 }
-
-export default ForgotPasswordScreen

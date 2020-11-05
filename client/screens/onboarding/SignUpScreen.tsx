@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons'
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import {
@@ -10,8 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { Icon } from 'react-native-elements'
-import { RootStackParamList } from '../types'
+import { RootStackParamList } from '../../types'
 
 type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>
 
@@ -19,7 +19,7 @@ interface Props {
   navigation: SignUpScreenNavigationProp
 }
 
-const SignUpScreen = ({ navigation }: Props) => {
+export const SignUpScreen = ({ navigation }: Props) => {
   const [name, onChangeName] = React.useState('')
   const [email, onChangeEmail] = React.useState('')
   const [birthDate, onChangeBirth] = React.useState('')
@@ -32,7 +32,7 @@ const SignUpScreen = ({ navigation }: Props) => {
           behavior="padding"
         >
           <View style={{ paddingHorizontal: 40 }}>
-            <Icon name="twitter" type="font-awesome-5" color="#1fa1f1" />
+            <AntDesign name="twitter" size={24} color="#1fa1fa" />
 
             <Text style={{ fontSize: 23, fontWeight: '700', marginTop: 50, textAlign: 'center' }}>
               Create your account
@@ -114,5 +114,3 @@ const SignUpScreen = ({ navigation }: Props) => {
     </SafeAreaView>
   )
 }
-
-export default SignUpScreen

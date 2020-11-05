@@ -2,17 +2,13 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createStackNavigator } from '@react-navigation/stack'
 import * as React from 'react'
 import { ColorSchemeName } from 'react-native'
-import ForgotPasswordScreen from '../screens/ForgotPasswordScreen'
 
 import NotFoundScreen from '../screens/NotFoundScreen'
-import LandingScreen from '../screens/LandingScreen'
-import SignUpScreen from '../screens/SignUpScreen'
 import { RootStackParamList } from '../types'
 import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
-import VerifyScreen from '../screens/VerifyScreen'
-import LoginScreen from '../screens/LoginScreen'
 import { currentUserVar } from '../cache'
+import { LandingScreen, LoginScreen, SignUpScreen, VerifyScreen } from '../screens/onboarding'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -31,30 +27,37 @@ const Stack = createStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
   const currentUser = currentUserVar()
-  const isSignout = false
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {!currentUser ? (
-        <>
-          <Stack.Screen
-            name="Landing"
-            component={LandingScreen}
-            options={{
-              title: 'Landing',
-              animationTypeForReplace: isSignout ? 'pop' : 'push',
-            }}
-          />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Verify" component={VerifyScreen} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-        </>
-      ) : (
+      {currentUser ? (
         <Stack.Screen name="Root" component={BottomTabNavigator} />
+      ) : (
+        <UnauthenticatedStack />
       )}
 
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
+  )
+}
+
+const UnauthenticatedStack = () => {
+  const isSignout = false
+
+  return (
+    <>
+      <Stack.Screen
+        name="Landing"
+        component={LandingScreen}
+        options={{
+          title: 'Landing',
+          animationTypeForReplace: isSignout ? 'pop' : 'push',
+        }}
+      />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Verify" component={VerifyScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+    </>
   )
 }

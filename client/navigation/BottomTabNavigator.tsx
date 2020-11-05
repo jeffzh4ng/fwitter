@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons'
+import { AntDesign, Feather } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack'
 import * as React from 'react'
@@ -6,9 +6,14 @@ import { Button, Text, TouchableOpacity } from 'react-native'
 
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
-import Feed from '../screens/FeedScreen'
-import Tweet from '../screens/Tweet'
 import { BottomTabParamList, HomeParamList } from '../types'
+import {
+  SearchScreen,
+  NotificationsScreen,
+  MessagesScreen,
+  TweetScreen,
+  FeedScreen,
+} from '../screens/app'
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>()
 
@@ -17,24 +22,39 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      initialRouteName="Feed"
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, showLabel: false }}
     >
       <BottomTab.Screen
-        name="Home"
+        name="Feed"
         component={HomeNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <AntDesign name="home" size={24} color="black" />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          tabBarIcon: ({ color }) => <AntDesign name="search1" size={24} color="black" />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Notifications"
+        component={NotificationsScreen}
+        options={{
+          tabBarIcon: ({ color }) => <Feather name="bell" size={24} color="black" />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Messages"
+        component={MessagesScreen}
+        options={{
+          tabBarIcon: ({ color }) => <AntDesign name="mail" size={24} color="black" />,
         }}
       />
     </BottomTab.Navigator>
   )
-}
-
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
-function TabBarIcon(props: { name: string; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -51,16 +71,16 @@ function HomeNavigator() {
     >
       <HomeStack.Screen
         name="Feed"
-        component={Feed}
+        component={FeedScreen}
         options={{ headerTitle: 'Feed', headerLeft: () => null }}
       />
       <HomeStack.Screen
         name="Tweet"
-        component={Tweet}
+        component={TweetScreen}
         options={({ navigation }) => ({
           headerTitle: '',
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.push('Home')}>
+            <TouchableOpacity onPress={() => navigation.push('Feed')}>
               <Text style={{ color: '#1FA1F1', fontSize: 16, marginLeft: 10 }}>Cancel</Text>
             </TouchableOpacity>
           ),

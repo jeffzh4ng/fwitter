@@ -1,9 +1,8 @@
-import { Link } from '@react-navigation/native'
+import { AntDesign } from '@expo/vector-icons'
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import { Pressable, SafeAreaView, Text, View } from 'react-native'
-import { Icon } from 'react-native-elements'
-import { RootStackParamList } from '../types'
+import { RootStackParamList } from '../../types'
 
 type LandingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Landing'>
 
@@ -11,11 +10,11 @@ interface Props {
   navigation: LandingScreenNavigationProp
 }
 
-const LandingScreen = ({ navigation }: Props) => {
+export const LandingScreen = ({ navigation }: Props) => {
   return (
     <SafeAreaView>
       <View style={{ height: '100%', justifyContent: 'space-between', paddingHorizontal: 40 }}>
-        <Icon name="twitter" type="font-awesome-5" color="#1fa1f1" />
+        <AntDesign name="twitter" size={24} color="#1fa1fa" />
 
         <View>
           <Text style={{ fontSize: 25, fontWeight: '700', width: 200 }}>
@@ -54,5 +53,3 @@ const LandingScreen = ({ navigation }: Props) => {
     </SafeAreaView>
   )
 }
-
-export default LandingScreen

@@ -15,9 +15,9 @@ export class RestAuthGuard implements CanActivate {
 export class GraphqlAuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context)
-    const { req } = ctx.getContext() // TODO: can access connection from subscription here if that's what you need to fix subscription auth
+    const { req } = ctx.getContext()
 
-    if (!req.session) return false
+    if (!req.session.userId) return false
 
     return true
   }

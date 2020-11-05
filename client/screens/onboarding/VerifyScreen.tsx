@@ -1,8 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
-import { Pressable, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { RootStackParamList } from '../types'
+import { Pressable, Text, View, SafeAreaView } from 'react-native'
+import { RootStackParamList } from '../../types'
 
 type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Verify'>
 
@@ -10,7 +9,7 @@ interface Props {
   navigation: VerifyScreenNavigationProp
 }
 
-const VerifyScreen = ({ navigation }: Props) => {
+export const VerifyScreen = ({ navigation }: Props) => {
   const email = 'john@doe.com'
 
   return (
@@ -61,5 +60,3 @@ const VerifyScreen = ({ navigation }: Props) => {
     </SafeAreaView>
   )
 }
-
-export default VerifyScreen

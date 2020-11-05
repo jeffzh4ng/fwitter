@@ -1,4 +1,5 @@
 import { gql, useMutation } from '@apollo/client'
+import { AntDesign } from '@expo/vector-icons'
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import {
@@ -11,9 +12,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { Icon } from 'react-native-elements'
-import { currentUserVar } from '../cache'
-import { RootStackParamList } from '../types'
+import { currentUserVar } from '../../cache'
+import { RootStackParamList } from '../../types'
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>
 
@@ -30,7 +30,7 @@ const LOGIN_MUTATION = gql`
   }
 `
 
-const LoginScreen = ({ navigation }: Props) => {
+export const LoginScreen = ({ navigation }: Props) => {
   const [emailOrUsername, onChangeEmailOrUsername] = React.useState('')
   const [password, onChangePassword] = React.useState('')
 
@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }: Props) => {
           behavior="padding"
         >
           <View style={{ paddingHorizontal: 20 }}>
-            <Icon name="twitter" type="font-awesome-5" color="#1fa1f1" />
+            <AntDesign name="twitter" size={24} color="#1fa1fa" />
 
             <Text style={{ fontSize: 23, fontWeight: '700', marginTop: 50, textAlign: 'center' }}>
               Log in to Twitter
@@ -125,5 +125,3 @@ const LoginScreen = ({ navigation }: Props) => {
     </SafeAreaView>
   )
 }
-
-export default LoginScreen
