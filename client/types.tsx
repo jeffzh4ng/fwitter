@@ -19,5 +19,6 @@ export type BottomTabParamList = {
 
 export type HomeParamList = {
   Feed: undefined
+  Profile: undefined
   Tweet: undefined
 }

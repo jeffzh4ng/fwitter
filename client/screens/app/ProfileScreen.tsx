@@ -95,7 +95,7 @@ const ME_MUTATION = gql`
   }
 `
 
-export const FeedScreen = ({ navigation }: Props) => {
+export const ProfileScreen = ({ navigation }: Props) => {
   const [me, { data }] = useMutation(ME_MUTATION)
   console.log('data', data)
 

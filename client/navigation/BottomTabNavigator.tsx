@@ -13,6 +13,7 @@ import {
   MessagesScreen,
   TweetScreen,
   FeedScreen,
+  ProfileScreen,
 } from '../screens/app'
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>()
@@ -29,28 +30,28 @@ export default function BottomTabNavigator() {
         name="Feed"
         component={HomeNavigator}
         options={{
-          tabBarIcon: ({ color }) => <AntDesign name="home" size={24} color="black" />,
+          tabBarIcon: ({ color }) => <AntDesign name="home" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Search"
         component={SearchScreen}
         options={{
-          tabBarIcon: ({ color }) => <AntDesign name="search1" size={24} color="black" />,
+          tabBarIcon: ({ color }) => <AntDesign name="search1" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Notifications"
         component={NotificationsScreen}
         options={{
-          tabBarIcon: ({ color }) => <Feather name="bell" size={24} color="black" />,
+          tabBarIcon: ({ color }) => <Feather name="bell" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Messages"
         component={MessagesScreen}
         options={{
-          tabBarIcon: ({ color }) => <AntDesign name="mail" size={24} color="black" />,
+          tabBarIcon: ({ color }) => <AntDesign name="mail" size={24} color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -75,12 +76,17 @@ function HomeNavigator() {
         options={{ headerTitle: 'Feed', headerLeft: () => null }}
       />
       <HomeStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerTitle: 'Profile', headerLeft: () => null }}
+      />
+      <HomeStack.Screen
         name="Tweet"
         component={TweetScreen}
         options={({ navigation }) => ({
           headerTitle: '',
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.push('Feed')}>
+            <TouchableOpacity onPress={() => navigation.replace('Feed')}>
               <Text style={{ color: '#1FA1F1', fontSize: 16, marginLeft: 10 }}>Cancel</Text>
             </TouchableOpacity>
           ),
@@ -88,7 +94,7 @@ function HomeNavigator() {
             <Button
               accessibilityLabel="Learn more about this purple button"
               color="#1fa1f1"
-              onPress={() => navigation.push('Home')}
+              onPress={() => navigation.replace('Home')}
               title="Tweet"
             />
           ),
