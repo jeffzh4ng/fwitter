@@ -3,6 +3,7 @@ import { FlatList, SafeAreaView, StyleSheet, Image, Text, View } from 'react-nat
 import { Icon } from 'react-native-elements'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../types'
+import { gql, useMutation } from '@apollo/client'
 
 type FeedScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Root'>
 
@@ -85,10 +86,27 @@ const tweets: Array<Tweet> = [
   },
 ]
 
+const ME_MUTATION = gql`
+  mutation me {
+    me {
+      ID
+      username
+    }
+  }
+`
+
 export default function Feed({ navigation }: Props) {
+  const [me, { data }] = useMutation(ME_MUTATION)
+  console.log('data', data)
+
+  React.useEffect(() => {
+    me()
+  }, [])
+
   const renderTweet = ({ item }: { item: Tweet }) => {
     return <Tweet tweet={item} />
   }
+
   return (
     <SafeAreaView style={styles.home}>
       <FlatList data={tweets} renderItem={renderTweet} keyExtractor={(item) => item.id} />

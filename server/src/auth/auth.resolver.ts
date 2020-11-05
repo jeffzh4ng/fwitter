@@ -53,6 +53,7 @@ export class AuthResolver {
   async me(@Context() ctx: any): Promise<StrippedUser | null> {
     const session = ctx.req.session
     const user = await this.userService.findOneByUserId(session.userId)
+    console.log(user)
 
     const { password, ...result } = user
 

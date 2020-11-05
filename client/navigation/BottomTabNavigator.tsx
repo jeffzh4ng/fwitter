@@ -6,7 +6,7 @@ import { Button, Text, TouchableOpacity } from 'react-native'
 
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
-import Home from '../screens/HomeScreen'
+import Feed from '../screens/FeedScreen'
 import Tweet from '../screens/Tweet'
 import { BottomTabParamList, HomeParamList } from '../types'
 
@@ -50,8 +50,8 @@ function HomeNavigator() {
       }}
     >
       <HomeStack.Screen
-        name="Home"
-        component={Home}
+        name="Feed"
+        component={Feed}
         options={{ headerTitle: 'Feed', headerLeft: () => null }}
       />
       <HomeStack.Screen

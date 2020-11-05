@@ -12,7 +12,6 @@ import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
 import VerifyScreen from '../screens/VerifyScreen'
 import LoginScreen from '../screens/LoginScreen'
-import { gql, useQuery, useReactiveVar } from '@apollo/client'
 import { currentUserVar } from '../cache'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {

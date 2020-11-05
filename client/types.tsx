@@ -10,10 +10,10 @@ export type RootStackParamList = {
 }
 
 export type BottomTabParamList = {
-  Home: undefined
+  Feed: undefined
 }
 
 export type HomeParamList = {
-  Home: undefined
+  Feed: undefined
   Tweet: undefined
 }
