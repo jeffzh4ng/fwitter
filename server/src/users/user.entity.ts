@@ -1,11 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql'
+import { GraphQLID } from 'graphql'
 import { Follow } from 'src/follows/follow.entity'
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm'
 
 @ObjectType()
 @Entity('users')
 export class User {
-  @Field()
+  @Field(GraphQLID)
   @PrimaryGeneratedColumn('uuid')
   id: string
 

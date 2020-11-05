@@ -1,3 +1,4 @@
+import { gql, useMutation } from '@apollo/client'
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import {
@@ -11,6 +12,7 @@ import {
   View,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { currentUserVar } from '../cache'
 import { RootStackParamList } from '../types'
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>
@@ -19,9 +21,21 @@ interface Props {
   navigation: LoginScreenNavigationProp
 }
 
+const LOGIN_MUTATION = gql`
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      ID
+      username
+    }
+  }
+`
+
 const LoginScreen = ({ navigation }: Props) => {
   const [emailOrUsername, onChangeEmailOrUsername] = React.useState('')
   const [password, onChangePassword] = React.useState('')
+
+  const [login, { data }] = useMutation(LOGIN_MUTATION)
+  if (data) currentUserVar(data)
 
   return (
     <SafeAreaView>
@@ -100,7 +114,7 @@ const LoginScreen = ({ navigation }: Props) => {
                 },
               ]}
               onPress={() => {
-                navigation.navigate('Verify')
+                login({ variables: { username: emailOrUsername, password } })
               }}
             >
               <Text style={{ color: 'white', fontSize: 15, fontWeight: '700' }}>Log in</Text>

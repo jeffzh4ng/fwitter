@@ -12,9 +12,9 @@ import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
 import VerifyScreen from '../screens/VerifyScreen'
 import LoginScreen from '../screens/LoginScreen'
+import { gql, useQuery, useReactiveVar } from '@apollo/client'
+import { currentUserVar } from '../cache'
 
-// If you are not familiar with React Navigation, we recommend going through the
-// "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
@@ -31,27 +31,19 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
-  const state = {
-    isLoading: false,
-    isSignout: false,
-    userId: null,
-  }
-
-  if (state.isLoading) {
-    // We haven't finished checking for the token yet
-    return <SplashScreen />
-  }
+  const currentUser = currentUserVar()
+  const isSignout = false
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {state.userId == null ? (
+      {!currentUser ? (
         <>
           <Stack.Screen
             name="Landing"
             component={LandingScreen}
             options={{
               title: 'Landing',
-              animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+              animationTypeForReplace: isSignout ? 'pop' : 'push',
             }}
           />
           <Stack.Screen name="SignUp" component={SignUpScreen} />

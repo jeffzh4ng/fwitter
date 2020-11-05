@@ -1,6 +1,5 @@
 import { Post, Logger, BadRequestException, UnauthorizedException } from '@nestjs/common'
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql'
-import { session } from 'passport'
 import { COOKIE_NAME } from 'src/constants'
 import { StrippedUser, User } from 'src/users/user.entity'
 import { UsersService } from 'src/users/users.service'
@@ -40,6 +39,7 @@ export class AuthResolver {
     @Args('password', { type: () => String }) password: string
   ) {
     const user = await this.authService.validateUser(username, password)
+    console.log(username, password, user)
 
     if (!user) throw new UnauthorizedException()
 

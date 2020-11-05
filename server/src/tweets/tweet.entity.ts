@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
+import { GraphQLID } from 'graphql'
 import { User } from 'src/users/user.entity'
 import {
   Entity,
@@ -12,7 +13,7 @@ import {
 @ObjectType()
 @Entity('tweets')
 export class Tweet {
-  @Field()
+  @Field(GraphQLID)
   @PrimaryGeneratedColumn()
   id: number
 
