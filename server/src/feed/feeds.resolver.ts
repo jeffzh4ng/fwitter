@@ -12,4 +12,10 @@ export class FeedsResolver {
     const tweets = await this.feedService.getFeed(userId)
     return tweets
   }
+
+  @Query(returns => [Tweet])
+  async getProfileFeed(@Args('userId', { type: () => String }) userId: string) {
+    const tweets = await this.feedService.getProfileFeed(userId)
+    return tweets
+  }
 }

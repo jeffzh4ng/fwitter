@@ -24,7 +24,7 @@ export class TweetsService {
     }
   }
 
-  async findAll(userId: string): Promise<Array<Tweet>> {
+  async findAllTweetsFromUser(userId: string): Promise<Array<Tweet>> {
     try {
       const tweets = await this.tweetsRepository.find({ where: { user: userId } })
       return tweets

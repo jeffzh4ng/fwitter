@@ -20,10 +20,20 @@ export class FeedsService {
     }
   }
 
+  async getProfileFeed(userId: string): Promise<Array<Tweet>> {
+    try {
+      const tweets = await this.tweetsService.findAllTweetsFromUser(userId)
+      return tweets
+    } catch (e) {
+      this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
   private async buildUnsortedFeed(userId: string) {
     const followees = await this.usersService.getFollowingList(userId)
     const followeesTweetsPromises: Array<Promise<Array<Tweet>>> = followees.map(followee =>
-      this.tweetsService.findAll(followee.id)
+      this.tweetsService.findAllTweetsFromUser(followee.id)
     )
 
     const unsortedFeed = (await Promise.all(followeesTweetsPromises)).flat(1)
