@@ -12,7 +12,7 @@ export type DrawerParamList = {
   ForgotPassword: undefined
   NotFound: undefined
   Profile: undefined
-  Tweet: undefined
+  Tweet: TweetProps
 }
 
 export type BottomTabParamList = {

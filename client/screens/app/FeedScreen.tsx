@@ -97,7 +97,7 @@ const ME_MUTATION = gql`
 
 export const FeedScreen = ({ navigation }: Props) => {
   const [me, { data }] = useMutation(ME_MUTATION)
-  console.log('data', data)
+  if (data) console.log('signed in: ', data)
 
   React.useEffect(() => {
     me()

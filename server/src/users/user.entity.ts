@@ -17,13 +17,13 @@ export class User {
   @Column()
   password: string
 
-  @Field()
-  @Column()
-  bio: string
+  // @Field()
+  // @Column()
+  // bio: string
 
-  @Field()
-  @Column()
-  link: string
+  // @Field()
+  // @Column()
+  // link: string
 
   @CreateDateColumn()
   date: Date

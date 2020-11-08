@@ -1,9 +1,10 @@
-import { DrawerNavigationProp } from '@react-navigation/drawer'
+import { gql, useMutation } from '@apollo/client'
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types'
 import * as React from 'react'
 import { Text, Button, Image, TextInput, View, TouchableOpacity } from 'react-native'
 import { DrawerParamList, HomeStackParamList } from '../../types'
+import { DrawerNavigationProp } from '@react-navigation/drawer'
 
 type TweetScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<DrawerParamList>,
@@ -16,7 +17,21 @@ interface Props {
   route: TweetScreenRouteProp
 }
 
+const CREATE_TWEET_MUTATION = gql`
+  mutation CreateTweet($text: String!) {
+    createTweet(text: $text) {
+      ID
+      text
+    }
+  }
+`
+
 export const TweetScreen = ({ navigation, route }: Props) => {
+  const [tweetText, setTweet] = React.useState('')
+  const [createTweet, { data }] = useMutation(CREATE_TWEET_MUTATION)
+
+  console.log('created tweet', data)
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: '',
@@ -31,16 +46,16 @@ export const TweetScreen = ({ navigation, route }: Props) => {
       ),
       headerRight: () => (
         <Button
-          accessibilityLabel="Learn more about this purple button"
           color="#1fa1f1"
-          onPress={() => navigation.replace('Feed')}
+          onPress={() => {
+            console.log('creating tweet...')
+            createTweet({ variables: { text: tweetText } })
+          }}
           title="Tweet"
         />
       ),
     })
-  }, [navigation])
-
-  const [tweet, setTweet] = React.useState('')
+  }, [navigation, createTweet, tweetText])
 
   return (
     <>
@@ -65,7 +80,7 @@ export const TweetScreen = ({ navigation, route }: Props) => {
           placeholder="What's happening?"
           placeholderTextColor="darkgrey"
           style={{ flexShrink: 1, fontSize: 16, paddingLeft: 20 }}
-          value={tweet}
+          value={tweetText}
         />
       </View>
     </>

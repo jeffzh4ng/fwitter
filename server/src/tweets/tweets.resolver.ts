@@ -9,16 +9,17 @@ import { TweetsService } from './tweets.service'
 export class TweetsResolver {
   constructor(private tweetsService: TweetsService) {}
 
-  @Query(returns => [Tweet], { name: 'tweet' })
-  async getTweet(@Args('tweetId', { type: () => String }) tweetId: string) {
+  @Query(returns => [Tweet])
+  async getTweetById(@Args('tweetId', { type: () => String }) tweetId: string) {
     const tweets = await this.tweetsService.findOne(tweetId)
     return tweets
   }
 
-  @Mutation(returns => Tweet, { name: 'tweet' })
+  @Mutation(returns => Tweet)
   async createTweet(@Context() ctx: any, @Args('text', { type: () => String }) text: string) {
     const { userId } = ctx.req.session
     const tweet = await this.tweetsService.createOne({ userId, text })
+    console.log('created tweet on backend', tweet)
 
     return tweet
   }

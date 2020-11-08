@@ -3,14 +3,14 @@
 # ------------------------------------------------------
 
 type Mutation {
+  createTweet(text: String!): Tweet!
   login(password: String!, username: String!): User!
   me: User!
   signup(password: String!, username: String!): User!
-  tweet(text: String!): Tweet!
 }
 
 type Query {
-  tweet(tweetId: String!): [Tweet!]!
+  getTweetById(tweetId: String!): [Tweet!]!
 }
 
 type Tweet {
