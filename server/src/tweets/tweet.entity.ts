@@ -26,6 +26,7 @@ export class Tweet {
   @Column()
   text: string
 
+  @Field()
   @CreateDateColumn()
-  date: Date
+  createdAt: Date
 }

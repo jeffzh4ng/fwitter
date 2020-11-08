@@ -52,7 +52,10 @@ export const TweetScreen = ({ navigation, route }: Props) => {
       headerRight: () => (
         <Button
           color="#1fa1f1"
-          onPress={() => navigation.replace(route.params.previousScreen)}
+          onPress={() => {
+            createTweet({ variables: { text: tweetText } })
+            navigation.replace(route.params.previousScreen)
+          }}
           title="Tweet"
         />
       ),

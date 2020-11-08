@@ -27,7 +27,7 @@ export class TweetsService {
   async findAllTweetsFromUser(userId: string): Promise<Array<Tweet>> {
     try {
       const tweets = await this.tweetsRepository.find({ where: { user: userId } })
-      return tweets
+      return tweets.reverse()
     } catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException()

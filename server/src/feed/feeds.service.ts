@@ -42,7 +42,7 @@ export class FeedsService {
 
   private sortFeed(unsortedFeed: Array<Tweet>): Array<Tweet> {
     const sortedFeed = unsortedFeed.sort(
-      (tweetA: Tweet, tweetB: Tweet) => tweetB.date.getTime() - tweetA.date.getTime()
+      (tweetA: Tweet, tweetB: Tweet) => tweetB.createdAt.getTime() - tweetA.createdAt.getTime()
     )
 
     return sortedFeed
