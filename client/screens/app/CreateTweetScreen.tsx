@@ -5,6 +5,7 @@ import * as React from 'react'
 import { Text, Button, Image, TextInput, View, TouchableOpacity } from 'react-native'
 import { DrawerParamList, HomeStackParamList } from '../../types'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
+import { GET_PROFILE_FEED_QUERY } from './ProfileScreen/Tweets'
 
 type TweetScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<DrawerParamList>,
@@ -31,7 +32,7 @@ const CREATE_TWEET_MUTATION = gql`
   }
 `
 
-export const TweetScreen = ({ navigation, route }: Props) => {
+export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [tweetText, setTweet] = React.useState('')
   const [createTweet, { data }] = useMutation(CREATE_TWEET_MUTATION)
 
@@ -53,7 +54,17 @@ export const TweetScreen = ({ navigation, route }: Props) => {
         <Button
           color="#1fa1f1"
           onPress={() => {
-            createTweet({ variables: { text: tweetText } })
+            createTweet({
+              variables: { text: tweetText },
+              refetchQueries: [
+                {
+                  query: GET_PROFILE_FEED_QUERY,
+                  variables: {
+                    userId: route.params.userId,
+                  },
+                },
+              ],
+            })
             navigation.replace(route.params.previousScreen)
           }}
           title="Tweet"

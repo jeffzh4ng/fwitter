@@ -2,7 +2,6 @@ import { AntDesign, Feather } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack'
 import * as React from 'react'
-import { Button, Text, TouchableOpacity } from 'react-native'
 
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
@@ -11,7 +10,7 @@ import {
   SearchScreen,
   NotificationsScreen,
   MessagesScreen,
-  TweetScreen,
+  CreateTweetScreen,
   FeedScreen,
   ProfileScreen,
 } from '../screens/app'
@@ -80,7 +79,7 @@ function HomeNavigator() {
         component={ProfileScreen}
         options={{ headerTitle: 'Profile', headerLeft: () => null }}
       />
-      <HomeStack.Screen name="Tweet" component={TweetScreen} />
+      <HomeStack.Screen name="Tweet" component={CreateTweetScreen} />
     </HomeStack.Navigator>
   )
 }

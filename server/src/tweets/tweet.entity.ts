@@ -14,8 +14,8 @@ import {
 @Entity('tweets')
 export class Tweet {
   @Field(GraphQLID)
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
   @Field({ nullable: true })
   @ManyToOne(type => User, { cascade: false, eager: true })

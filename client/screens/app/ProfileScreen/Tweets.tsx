@@ -21,7 +21,7 @@ interface Props {
   route: ProfileTweetsRouteProp
 }
 
-const GET_PROFILE_FEED_QUERY = gql`
+export const GET_PROFILE_FEED_QUERY = gql`
   query GetProfileFeed($userId: String!) {
     getProfileFeed(userId: $userId) {
       ID

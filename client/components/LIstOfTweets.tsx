@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import moment from 'moment'
 
 interface Tweet {
-  id: string
+  ID: string
   name: string
   username: string
   avatarUrl: string
@@ -27,7 +27,7 @@ export const ListOfTweets = ({ tweets, onTweet }: Props) => {
 
   return (
     <SafeAreaView style={styles.home}>
-      <FlatList data={tweets} renderItem={renderTweet} keyExtractor={(item) => item.id} />
+      <FlatList data={tweets} renderItem={renderTweet} keyExtractor={(item) => item.ID} />
       <View style={{ backgroundColor: 'transparent', bottom: 15, position: 'absolute', right: 15 }}>
         <Pressable
           style={{ backgroundColor: '#1fa1fa', borderRadius: 100, padding: 15 }}
@@ -51,7 +51,7 @@ const Tweet = (props: { tweet: Tweet }) => {
         borderBottomColor: '#eee',
         borderBottomWidth: 1,
         paddingVertical: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
       }}
     >
       <View style={{}}>
