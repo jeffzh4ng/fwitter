@@ -1,11 +1,14 @@
 import * as React from 'react'
 import { SafeAreaView, Image, Text, View, Pressable } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { DrawerParamList } from '../../types'
+import { DrawerParamList } from '../../../types'
 import { gql, useMutation } from '@apollo/client'
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { Likes, Media, Tweets, TweetsAndReplies } from './profile'
+import { Tweets } from './Tweets'
+import { TweetsAndReplies } from './TweetsAndReplies'
+import { Media } from './Media'
+import { Likes } from './Likes'
 
 type ProfileScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Profile'>
 
@@ -26,7 +29,7 @@ const Tab = createMaterialTopTabNavigator()
 
 export const ProfileScreen = ({ navigation }: Props) => {
   const [me, { data }] = useMutation(ME_MUTATION)
-  console.log('data', data)
+  if (data) console.log('data', data)
 
   React.useEffect(() => {
     me()
@@ -60,7 +63,11 @@ export const ProfileScreen = ({ navigation }: Props) => {
       </>
 
       <Tab.Navigator initialRouteName="Tweets" tabBar={() => <View />}>
-        <Tab.Screen name="Tweets" component={Tweets} />
+        <Tab.Screen
+          name="Tweets"
+          component={Tweets}
+          initialParams={{ userId: 'e2a85941-ef87-442f-be1c-7a0d3c18cfb1' }}
+        />
         <Tab.Screen name="Tweets and replies" component={TweetsAndReplies} />
         <Tab.Screen name="Media" component={Media} />
         <Tab.Screen name="Likes" component={Likes} />

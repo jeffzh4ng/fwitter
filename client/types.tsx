@@ -1,6 +1,5 @@
-interface TweetProps {
-  previousScreen: 'Feed' | 'Profile'
-}
+import { ProfileTweetsTabProps } from './screens/app/ProfileScreen/Tweets'
+import { TweetScreenProps } from './screens/app/TweetScreen'
 
 export type DrawerParamList = {
   Root: undefined
@@ -12,7 +11,7 @@ export type DrawerParamList = {
   ForgotPassword: undefined
   NotFound: undefined
   Profile: undefined
-  Tweet: TweetProps
+  Tweet: TweetScreenProps
 }
 
 export type BottomTabParamList = {
@@ -25,5 +24,9 @@ export type BottomTabParamList = {
 export type HomeStackParamList = {
   Feed: undefined
   Profile: undefined
-  Tweet: TweetProps
+  Tweet: TweetScreenProps
+}
+
+export type ProfileTabParamList = {
+  Tweets: ProfileTweetsTabProps
 }

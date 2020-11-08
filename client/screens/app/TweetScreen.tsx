@@ -12,6 +12,11 @@ type TweetScreenNavigationProp = CompositeNavigationProp<
 >
 type TweetScreenRouteProp = RouteProp<HomeStackParamList, 'Tweet'>
 
+export interface TweetScreenProps {
+  previousScreen: 'Feed' | 'Profile'
+  userId: string
+}
+
 interface Props {
   navigation: TweetScreenNavigationProp
   route: TweetScreenRouteProp
@@ -47,10 +52,7 @@ export const TweetScreen = ({ navigation, route }: Props) => {
       headerRight: () => (
         <Button
           color="#1fa1f1"
-          onPress={() => {
-            console.log('creating tweet...')
-            createTweet({ variables: { text: tweetText } })
-          }}
+          onPress={() => navigation.replace(route.params.previousScreen)}
           title="Tweet"
         />
       ),

@@ -10,7 +10,11 @@ type Mutation {
 }
 
 type Query {
+  feed(userId: String!): [Tweet!]!
+  follow(followeeId: String!, followerId: String!): Boolean!
+  getProfileFeed(userId: String!): [Tweet!]!
   getTweetById(tweetId: String!): [Tweet!]!
+  unfollow(followeeId: String!, followerId: String!): Boolean!
 }
 
 type Tweet {

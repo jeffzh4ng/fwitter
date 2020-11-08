@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
 
 import { join } from 'path'
+import { FollowsModule } from './follows/follow.module'
+import { FeedsModule } from './feed/feeds.module'
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { join } from 'path'
     TweetsModule,
     AuthModule,
     UsersModule,
+    FollowsModule,
+    FeedsModule,
   ],
 })
 export class AppModule {}
