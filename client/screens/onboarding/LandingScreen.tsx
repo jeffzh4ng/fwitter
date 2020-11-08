@@ -2,9 +2,9 @@ import { AntDesign } from '@expo/vector-icons'
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import { Pressable, SafeAreaView, Text, View } from 'react-native'
-import { RootStackParamList } from '../../types'
+import { DrawerParamList } from '../../types'
 
-type LandingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Landing'>
+type LandingScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Landing'>
 
 interface Props {
   navigation: LandingScreenNavigationProp

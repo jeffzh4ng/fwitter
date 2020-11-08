@@ -11,9 +11,9 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { RootStackParamList } from '../../types'
+import { DrawerParamList } from '../../types'
 
-type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>
+type SignUpScreenNavigationProp = StackNavigationProp<DrawerParamList, 'SignUp'>
 
 interface Props {
   navigation: SignUpScreenNavigationProp

@@ -13,9 +13,9 @@ import {
   View,
 } from 'react-native'
 import { currentUserVar } from '../../cache'
-import { RootStackParamList } from '../../types'
+import { DrawerParamList } from '../../types'
 
-type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>
+type LoginScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Login'>
 
 interface Props {
   navigation: LoginScreenNavigationProp

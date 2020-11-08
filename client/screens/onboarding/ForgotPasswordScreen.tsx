@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { SafeAreaView, Pressable, Text, TextInput, View } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { RootStackParamList } from '../../types'
+import { DrawerParamList } from '../../types'
 
-type ForgotPasswordScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ForgotPassword'>
+type ForgotPasswordScreenNavigationProp = StackNavigationProp<DrawerParamList, 'ForgotPassword'>
 
 interface Props {
   navigation: ForgotPasswordScreenNavigationProp

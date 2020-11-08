@@ -1,4 +1,8 @@
-export type RootStackParamList = {
+interface TweetProps {
+  previousScreen: 'Feed' | 'Profile'
+}
+
+export type DrawerParamList = {
   Root: undefined
   Landing: undefined
   Login: undefined
@@ -7,6 +11,7 @@ export type RootStackParamList = {
   EnterPassword: undefined
   ForgotPassword: undefined
   NotFound: undefined
+  Profile: undefined
   Tweet: undefined
 }
 
@@ -17,8 +22,8 @@ export type BottomTabParamList = {
   Messages: undefined
 }
 
-export type HomeParamList = {
+export type HomeStackParamList = {
   Feed: undefined
   Profile: undefined
-  Tweet: undefined
+  Tweet: TweetProps
 }

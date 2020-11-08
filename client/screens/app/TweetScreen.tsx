@@ -1,19 +1,41 @@
-import { StackNavigationProp } from '@react-navigation/stack'
+import { DrawerNavigationProp } from '@react-navigation/drawer'
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types'
 import * as React from 'react'
-import { Button, Image, TextInput, View } from 'react-native'
-import { HomeParamList } from '../../types'
+import { Text, Button, Image, TextInput, View, TouchableOpacity } from 'react-native'
+import { DrawerParamList, HomeStackParamList } from '../../types'
 
-type TweetScreenNavigationProp = StackNavigationProp<HomeParamList, 'Tweet'>
+type TweetScreenNavigationProp = CompositeNavigationProp<
+  DrawerNavigationProp<DrawerParamList>,
+  StackNavigationProp<HomeStackParamList, 'Tweet'>
+>
+type TweetScreenRouteProp = RouteProp<HomeStackParamList, 'Tweet'>
 
 interface Props {
   navigation: TweetScreenNavigationProp
+  route: TweetScreenRouteProp
 }
 
-export const TweetScreen = ({ navigation }: Props) => {
+export const TweetScreen = ({ navigation, route }: Props) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: '',
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.replace(route.params.previousScreen)
+          }}
+        >
+          <Text style={{ color: '#1FA1F1', fontSize: 16, marginLeft: 10 }}>Cancel</Text>
+        </TouchableOpacity>
+      ),
       headerRight: () => (
-        <Button color="#1fa1f1" onPress={() => navigation.push('Feed')} title="Tweet" />
+        <Button
+          accessibilityLabel="Learn more about this purple button"
+          color="#1fa1f1"
+          onPress={() => navigation.replace('Feed')}
+          title="Tweet"
+        />
       ),
     })
   }, [navigation])

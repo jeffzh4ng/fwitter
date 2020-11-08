@@ -1,9 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import { Pressable, Text, View, SafeAreaView } from 'react-native'
-import { RootStackParamList } from '../../types'
+import { DrawerParamList } from '../../types'
 
-type VerifyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Verify'>
+type VerifyScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Verify'>
 
 interface Props {
   navigation: VerifyScreenNavigationProp

@@ -6,7 +6,7 @@ import { Button, Text, TouchableOpacity } from 'react-native'
 
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
-import { BottomTabParamList, HomeParamList } from '../types'
+import { BottomTabParamList, HomeStackParamList } from '../types'
 import {
   SearchScreen,
   NotificationsScreen,
@@ -60,7 +60,7 @@ export default function BottomTabNavigator() {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const HomeStack = createStackNavigator<HomeParamList>()
+const HomeStack = createStackNavigator<HomeStackParamList>()
 
 function HomeNavigator() {
   return (
@@ -80,26 +80,7 @@ function HomeNavigator() {
         component={ProfileScreen}
         options={{ headerTitle: 'Profile', headerLeft: () => null }}
       />
-      <HomeStack.Screen
-        name="Tweet"
-        component={TweetScreen}
-        options={({ navigation }) => ({
-          headerTitle: '',
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.replace('Feed')}>
-              <Text style={{ color: '#1FA1F1', fontSize: 16, marginLeft: 10 }}>Cancel</Text>
-            </TouchableOpacity>
-          ),
-          headerRight: () => (
-            <Button
-              accessibilityLabel="Learn more about this purple button"
-              color="#1fa1f1"
-              onPress={() => navigation.replace('Home')}
-              title="Tweet"
-            />
-          ),
-        })}
-      />
+      <HomeStack.Screen name="Tweet" component={TweetScreen} />
     </HomeStack.Navigator>
   )
 }

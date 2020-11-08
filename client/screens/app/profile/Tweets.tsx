@@ -1,15 +1,8 @@
-import * as React from 'react'
-import { FlatList, SafeAreaView, StyleSheet, Image, Text, View, Pressable } from 'react-native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { DrawerParamList } from '../../types'
-import { gql, useMutation } from '@apollo/client'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-
-type FeedScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Root'>
-
-interface Props {
-  navigation: FeedScreenNavigationProp
-}
+import { StackNavigationProp } from '@react-navigation/stack'
+import * as React from 'react'
+import { SafeAreaView, Text, View, Image, FlatList, Pressable } from 'react-native'
+import { DrawerParamList } from '../../../types'
 
 interface Tweet {
   id: string
@@ -86,38 +79,24 @@ const tweets: Array<Tweet> = [
   },
 ]
 
-const ME_MUTATION = gql`
-  mutation me {
-    me {
-      ID
-      username
-    }
-  }
-`
+type ProfileScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Profile'>
 
-export const FeedScreen = ({ navigation }: Props) => {
-  const [me, { data }] = useMutation(ME_MUTATION)
-  console.log('data', data)
+interface Props {
+  navigation: ProfileScreenNavigationProp
+}
 
-  React.useEffect(() => {
-    me()
-  }, [])
-
+export const Tweets = ({ navigation }: Props) => {
   const renderTweet = ({ item }: { item: Tweet }) => {
     return <Tweet tweet={item} />
   }
 
   return (
-    <SafeAreaView style={styles.home}>
+    <SafeAreaView>
       <FlatList data={tweets} renderItem={renderTweet} keyExtractor={(item) => item.id} />
       <View style={{ backgroundColor: 'transparent', bottom: 15, position: 'absolute', right: 15 }}>
         <Pressable
           style={{ backgroundColor: '#1fa1fa', borderRadius: 100, padding: 15 }}
-          onPress={() =>
-            navigation.replace('Tweet', {
-              previousScreen: 'Feed',
-            })
-          }
+          onPress={() => navigation.replace('Tweet', { previousScreen: 'Profile' })}
         >
           <MaterialCommunityIcons name="feather" size={24} color="white" />
         </Pressable>
@@ -159,10 +138,3 @@ const Tweet = (props: { tweet: Tweet }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  home: {
-    backgroundColor: '#fff',
-    height: '100%',
-  },
-})

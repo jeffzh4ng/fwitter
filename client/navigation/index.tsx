@@ -26,7 +26,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      <DrawerNavigator />
     </NavigationContainer>
   )
 }
@@ -37,7 +37,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
 const Drawer = createDrawerNavigator()
 
-function RootNavigator() {
+function DrawerNavigator() {
   const currentUser = currentUserVar()
 
   if (currentUser) {
