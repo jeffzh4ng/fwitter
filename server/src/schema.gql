@@ -33,6 +33,7 @@ type Tweet {
   """
   ID: String!
   text: String!
+  type: String!
   user: User!
 }
 

@@ -9,8 +9,15 @@ import {
   JoinColumn,
   CreateDateColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm'
 import { Like } from './like.entity'
+
+export enum TweetType {
+  REGULAR = 'regular',
+  REPLY = 'reply',
+  RETWEET = 'retweet',
+}
 
 @ObjectType()
 @Entity('tweets')
@@ -18,6 +25,26 @@ export class Tweet {
   @Field(GraphQLID)
   @PrimaryGeneratedColumn('uuid')
   id: string
+
+  @Field()
+  @Column({
+    type: 'enum',
+    enum: TweetType,
+    default: TweetType.REGULAR,
+  })
+  type: TweetType
+
+  @ManyToOne(
+    type => Tweet,
+    tweet => tweet.children
+  )
+  parent: Tweet
+
+  @OneToMany(
+    type => Tweet,
+    tweet => tweet.parent
+  )
+  children: Tweet[]
 
   @Field()
   @ManyToOne(type => User, { cascade: false, eager: true })
@@ -31,7 +58,7 @@ export class Tweet {
   likes: Like[]
 
   @Field()
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 180 })
   text: string
 
   @Field()
