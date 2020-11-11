@@ -35,7 +35,10 @@ export const LoginScreen = ({ navigation }: Props) => {
   const [password, onChangePassword] = React.useState('')
 
   const [login, { data }] = useMutation(LOGIN_MUTATION)
-  if (data) currentUserVar(data)
+  if (data) {
+    currentUserVar(data)
+    // TODO: somehow reload navigation/index.tsx to reload entire app with authenticated drawer 'stack'
+  }
 
   return (
     <SafeAreaView>

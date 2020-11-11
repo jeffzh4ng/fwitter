@@ -2,28 +2,20 @@ import * as React from 'react'
 import { SafeAreaView, Image, Text, View, Pressable } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { DrawerParamList } from '../../../types'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { Tweets } from './Tweets'
 import { TweetsAndReplies } from './TweetsAndReplies'
 import { Media } from './Media'
 import { Likes } from './Likes'
+import { ME_MUTATION } from '../../../mutations'
 
 type ProfileScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Profile'>
 
 interface Props {
   navigation: ProfileScreenNavigationProp
 }
-
-const ME_MUTATION = gql`
-  mutation me {
-    me {
-      ID
-      username
-    }
-  }
-`
 
 const Tab = createMaterialTopTabNavigator()
 

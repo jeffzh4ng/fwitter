@@ -39,6 +39,7 @@ const Drawer = createDrawerNavigator()
 
 function DrawerNavigator() {
   const currentUser = currentUserVar()
+  console.log('current user', currentUser)
 
   if (currentUser) {
     return (
@@ -70,12 +71,12 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 
 const UnauthenticatedStack = () => {
   return (
-    <>
+    <Drawer.Navigator>
       <Drawer.Screen name="Landing" component={LandingScreen} />
       <Drawer.Screen name="SignUp" component={SignUpScreen} />
       <Drawer.Screen name="Login" component={LoginScreen} />
       <Drawer.Screen name="Verify" component={VerifyScreen} />
       <Drawer.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-    </>
+    </Drawer.Navigator>
   )
 }

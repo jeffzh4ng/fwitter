@@ -90,8 +90,8 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
           }}
         />
         <TextInput
-          autoFocus={true}
-          multiline={true}
+          autoFocus
+          multiline
           onChangeText={(text) => setTweet(text)}
           placeholder="What's happening?"
           placeholderTextColor="darkgrey"

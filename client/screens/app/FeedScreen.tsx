@@ -2,8 +2,9 @@ import * as React from 'react'
 import { FlatList, SafeAreaView, StyleSheet, Image, Text, View, Pressable } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { DrawerParamList } from '../../types'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { ME_MUTATION } from '../../mutations'
 
 type FeedScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Root'>
 
@@ -85,15 +86,6 @@ const tweets: Array<Tweet> = [
     time: '4m',
   },
 ]
-
-const ME_MUTATION = gql`
-  mutation me {
-    me {
-      ID
-      username
-    }
-  }
-`
 
 export const FeedScreen = ({ navigation }: Props) => {
   const [me, { data }] = useMutation(ME_MUTATION)

@@ -14,4 +14,4 @@ export const cache = new InMemoryCache({
   },
 })
 
-export const currentUserVar = makeVar('initial')
+export const currentUserVar = makeVar(null)
