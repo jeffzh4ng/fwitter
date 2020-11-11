@@ -35,6 +35,23 @@ export class UsersService {
     }
   }
 
+  async findManyByUsername(username: string): Promise<Array<User>> {
+    if (username.length === 0) return []
+
+    try {
+      const users = await this.usersRepository
+        .createQueryBuilder('user')
+        .where('user.username ilike :username', { username: `%${username}%` })
+        .getMany()
+
+      console.log('found many users by username', users)
+      return users
+    } catch (e) {
+      this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
   async createOne(username: string, password: string): Promise<User | false> {
     try {
       const usersWithSameUsername = await this.usersRepository.find({ where: { username } })

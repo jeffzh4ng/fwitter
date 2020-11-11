@@ -1,5 +1,5 @@
 import { ProfileTweetsTabProps } from './screens/app/ProfileScreen/Tweets'
-import { TweetScreenProps } from './screens/app/TweetScreen'
+import { TweetScreenProps } from './screens/app/CreateTweetScreen'
 
 export type DrawerParamList = {
   Root: undefined
