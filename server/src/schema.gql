@@ -8,7 +8,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
-  createTweet(text: String!): Tweet!
+  createTweet(text: String!, type: TweetType!): Tweet!
   likeTweet(tweetId: ID!): Tweet!
   login(password: String!, username: String!): User!
   me: User!
@@ -35,6 +35,12 @@ type Tweet {
   text: String!
   type: String!
   user: User!
+}
+
+enum TweetType {
+  REGULAR
+  REPLY
+  RETWEET
 }
 
 type User {

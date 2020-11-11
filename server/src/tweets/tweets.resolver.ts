@@ -3,7 +3,7 @@ import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql'
 import { GraphQLID } from 'graphql'
 import { GraphqlAuthGuard } from 'src/guards/auth.guard'
 import { Like } from './like.entity'
-import { Tweet } from './tweet.entity'
+import { Tweet, TweetType } from './tweet.entity'
 import { TweetsService } from './tweets.service'
 
 @UseGuards(GraphqlAuthGuard)
@@ -18,9 +18,13 @@ export class TweetsResolver {
   }
 
   @Mutation(returns => Tweet)
-  async createTweet(@Context() ctx: any, @Args('text', { type: () => String }) text: string) {
+  async createTweet(
+    @Context() ctx: any,
+    @Args('text', { type: () => String }) text: string,
+    @Args('type', { type: () => TweetType }) type: TweetType
+  ) {
     const { userId } = ctx.req.session
-    const tweet = await this.tweetsService.createOne({ userId, text })
+    const tweet = await this.tweetsService.createOne({ userId, text, type })
 
     return tweet
   }

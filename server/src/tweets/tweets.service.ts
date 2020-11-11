@@ -4,7 +4,7 @@ import { User } from 'src/users/user.entity'
 import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
 import { Like } from './like.entity'
-import { Tweet } from './tweet.entity'
+import { Tweet, TweetType } from './tweet.entity'
 
 @Injectable()
 export class TweetsService {
@@ -20,7 +20,7 @@ export class TweetsService {
     try {
       const tweet = await this.tweetsRepository.findOne({
         where: { id: tweetId },
-        relations: ['likes'],
+        relations: ['likes', 'children'],
       })
       return tweet
     } catch (e) {
@@ -33,7 +33,7 @@ export class TweetsService {
     try {
       const tweets = await this.tweetsRepository.find({
         where: { user: userId },
-        relations: ['likes'],
+        relations: ['likes', 'children'],
       })
       return tweets.reverse()
     } catch (e) {
@@ -42,7 +42,7 @@ export class TweetsService {
     }
   }
 
-  async createOne(data: { userId: string; text: string }): Promise<Tweet> {
+  async createOne(data: { userId: string; text: string; type: TweetType }): Promise<Tweet> {
     try {
       const user = await this.usersService.findOneByUserId(data.userId)
       const createdTweet = await this.tweet({ ...data, user })
@@ -71,13 +71,14 @@ export class TweetsService {
     }
   }
 
-  private async tweet(data: { user: User; text: string }): Promise<Tweet> {
+  private async tweet(data: { user: User; text: string; type: TweetType }): Promise<Tweet> {
     try {
-      const { user, text } = data
+      const { user, text, type } = data
 
       const tweet = new Tweet()
       tweet.text = text
       tweet.user = user
+      tweet.type = type
 
       await this.tweetsRepository.save(tweet)
       return tweet

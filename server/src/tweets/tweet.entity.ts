@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { GraphQLID } from 'graphql'
 import { User } from 'src/users/user.entity'
 import {
@@ -18,6 +18,10 @@ export enum TweetType {
   REPLY = 'reply',
   RETWEET = 'retweet',
 }
+
+registerEnumType(TweetType, {
+  name: 'TweetType',
+})
 
 @ObjectType()
 @Entity('tweets')
