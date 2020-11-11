@@ -10,7 +10,7 @@ export class AuthResolver {
   private readonly logger = new Logger(AuthResolver.name)
 
   constructor(
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     private readonly authService: AuthService
   ) {}
 
@@ -20,7 +20,7 @@ export class AuthResolver {
     @Args('username', { type: () => String }) username: string,
     @Args('password', { type: () => String }) password: string
   ): Promise<StrippedUser> {
-    const user = await this.userService.createOne(username, password)
+    const user = await this.usersService.createOne(username, password)
     if (!user) throw new BadRequestException('Username already in use.')
 
     const session = ctx.req.session
@@ -53,7 +53,7 @@ export class AuthResolver {
   async me(@Context() ctx: any): Promise<StrippedUser | null> {
     const session = ctx.req.session
     console.log(session)
-    const user = await this.userService.findOneByUserId(session.userId)
+    const user = await this.usersService.findOneByUserId(session.userId)
     console.log(user)
 
     const { password, ...result } = user
