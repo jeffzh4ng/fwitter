@@ -6,7 +6,7 @@ import { Like } from './like.entity'
 import { Tweet, TweetType } from './tweet.entity'
 import { TweetsService } from './tweets.service'
 
-@UseGuards(GraphqlAuthGuard)
+// @UseGuards(GraphqlAuthGuard)
 @Resolver(of => Tweet)
 export class TweetsResolver {
   constructor(private tweetsService: TweetsService) {}
@@ -23,8 +23,10 @@ export class TweetsResolver {
     @Args('text', { type: () => String }) text: string,
     @Args('type', { type: () => TweetType }) type: TweetType
   ) {
+    console.log('creating tweet', text)
     const { userId } = ctx.req.session
     const tweet = await this.tweetsService.createOne({ userId, text, type })
+    console.log('created tweet', tweet)
 
     return tweet
   }

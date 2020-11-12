@@ -1,6 +1,6 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
 import * as React from 'react'
-import { ColorSchemeName, Text } from 'react-native'
+import { ColorSchemeName } from 'react-native'
 
 import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
@@ -19,6 +19,8 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer'
+import { createStackNavigator } from '@react-navigation/stack'
+import { ProfileScreen } from '../screens/app'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -41,7 +43,7 @@ function DrawerNavigator() {
   const currentUser = currentUserVar()
   console.log('current user', currentUser)
 
-  if (currentUser) {
+  if (true) {
     return (
       <Drawer.Navigator drawerContent={DrawerContent}>
         <Drawer.Screen name="Root" component={BottomTabNavigator} />
@@ -55,7 +57,6 @@ function DrawerNavigator() {
 const DrawerContent = (props: DrawerContentComponentProps) => {
   return (
     <>
-      <Text>Hello</Text>
       <DrawerContentScrollView>
         <DrawerItemList {...props} />
         <DrawerItem

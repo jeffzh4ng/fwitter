@@ -26,8 +26,6 @@ export class AuthResolver {
     const session = ctx.req.session
     session.userId = user.id
 
-    console.log('signed up: ', session)
-
     const { password: strippedPassword, ...strippedUser } = user
     return strippedUser
   }
@@ -39,7 +37,6 @@ export class AuthResolver {
     @Args('password', { type: () => String }) password: string
   ) {
     const user = await this.authService.validateUser(username, password)
-    console.log(username, password, user)
 
     if (!user) throw new UnauthorizedException()
 
@@ -52,9 +49,7 @@ export class AuthResolver {
   @Mutation(returns => User)
   async me(@Context() ctx: any): Promise<StrippedUser | null> {
     const session = ctx.req.session
-    console.log(session)
     const user = await this.usersService.findOneByUserId(session.userId)
-    console.log(user)
 
     const { password, ...result } = user
 

@@ -3,7 +3,6 @@ module.exports = {
     service: {
       name: 'fwitter',
       url: 'http://localhost:3001/graphql',
-      skipSSLValidation: true,
     },
   },
 }

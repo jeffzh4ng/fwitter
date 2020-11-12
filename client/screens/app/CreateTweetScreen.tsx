@@ -6,6 +6,7 @@ import { Text, Button, Image, TextInput, View, TouchableOpacity } from 'react-na
 import { DrawerParamList, HomeStackParamList } from '../../types'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { GET_PROFILE_FEED_QUERY } from './ProfileScreen/Tweets'
+import { TweetType } from '../../__generated__/globalTypes'
 
 type TweetScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<DrawerParamList>,
@@ -24,19 +25,20 @@ interface Props {
 }
 
 const CREATE_TWEET_MUTATION = gql`
-  mutation CreateTweet($text: String!) {
-    createTweet(text: $text) {
+  mutation CreatedTweetData($text: String!, $type: TweetType!) {
+    createTweet(text: $text, type: $type) {
       ID
       text
+      type
     }
   }
 `
 
 export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [tweetText, setTweet] = React.useState('')
-  const [createTweet, { data }] = useMutation(CREATE_TWEET_MUTATION)
+  const [createTweet, { data, error }] = useMutation(CREATE_TWEET_MUTATION)
 
-  console.log('created tweet', data)
+  console.log('created tweet', data, error)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -54,8 +56,9 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
         <Button
           color="#1fa1f1"
           onPress={() => {
+            console.log('sending create tweet mutation')
             createTweet({
-              variables: { text: tweetText },
+              variables: { text: tweetText, type: TweetType.REGULAR },
               refetchQueries: [
                 {
                   query: GET_PROFILE_FEED_QUERY,

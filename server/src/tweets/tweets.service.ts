@@ -35,6 +35,7 @@ export class TweetsService {
         where: { user: userId },
         relations: ['likes', 'children'],
       })
+      console.log(tweets)
       return tweets.reverse()
     } catch (e) {
       this.logger.error(e)

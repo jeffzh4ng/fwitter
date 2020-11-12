@@ -22,7 +22,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { AntDesign } from '@expo/vector-icons'
 
 const GET_MANY_BY_USERNAME_QUERY = gql`
-  query UserSearchListResult($query: String!) {
+  query UserSearchData($query: String!) {
     getManyByUsername(query: $query) {
       ID
       username
@@ -47,8 +47,8 @@ export const SearchScreen = ({ navigation }: Props) => {
   const recentSearches = null
   const users = data?.getManyByUsername
 
-  const handleUserPress = (username: string) => {
-    navigation.navigate('Profile')
+  const handleUserPress = (userId: string) => {
+    navigation.navigate('Profile', { userId })
   }
 
   const renderUser = ({ item }: ListRenderItemInfo<UserSearchListResult_getManyByUsername>) => {
@@ -107,10 +107,10 @@ const UserSearchResult = ({
   handleUserPress,
 }: {
   user: UserSearchListResult_getManyByUsername
-  handleUserPress: (username: string) => void
+  handleUserPress: (userId: string) => void
 }) => (
   <Pressable
-    onPress={() => handleUserPress(user.username)}
+    onPress={() => handleUserPress(user.ID)}
     style={{
       flexDirection: 'row',
       marginLeft: 15,

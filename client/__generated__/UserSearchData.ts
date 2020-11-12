@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: Login
+// GraphQL query operation: UserSearchData
 // ====================================================
 
-export interface Login_login {
+export interface UserSearchData_getManyByUsername {
   __typename: "User";
   /**
    * The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -16,11 +16,10 @@ export interface Login_login {
   username: string;
 }
 
-export interface Login {
-  login: Login_login;
+export interface UserSearchData {
+  getManyByUsername: UserSearchData_getManyByUsername[];
 }
 
-export interface LoginVariables {
-  username: string;
-  password: string;
+export interface UserSearchDataVariables {
+  query: string;
 }

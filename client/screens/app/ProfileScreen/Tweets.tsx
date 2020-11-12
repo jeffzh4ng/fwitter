@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export const GET_PROFILE_FEED_QUERY = gql`
-  query GetProfileFeed($userId: String!) {
+  query ProfileFeedData($userId: String!) {
     getProfileFeed(userId: $userId) {
       ID
       text
@@ -38,6 +38,8 @@ export const Tweets = ({ route, navigation }: Props) => {
   const { loading, error, data } = useQuery(GET_PROFILE_FEED_QUERY, {
     variables: { userId: route.params.userId },
   })
+
+  console.log(route.params.userId)
 
   const massagedData =
     data && data.getProfileFeed

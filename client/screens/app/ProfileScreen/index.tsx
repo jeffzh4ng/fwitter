@@ -1,32 +1,31 @@
 import * as React from 'react'
 import { SafeAreaView, Image, Text, View, Pressable } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { DrawerParamList } from '../../../types'
-import { useMutation } from '@apollo/client'
+import { DrawerParamList, HomeStackParamList } from '../../../types'
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { Tweets } from './Tweets'
 import { TweetsAndReplies } from './TweetsAndReplies'
 import { Media } from './Media'
 import { Likes } from './Likes'
-import { ME_MUTATION } from '../../../mutations'
+import { RouteProp } from '@react-navigation/native'
 
 type ProfileScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Profile'>
+type ProfileScreenRouteProp = RouteProp<HomeStackParamList, 'Profile'>
+
+export interface ProfileScreenProps {
+  userId: string
+}
 
 interface Props {
   navigation: ProfileScreenNavigationProp
+  route: ProfileScreenRouteProp
 }
 
 const Tab = createMaterialTopTabNavigator()
 
-export const ProfileScreen = ({ navigation }: Props) => {
-  const [me, { data }] = useMutation(ME_MUTATION)
-  if (data) console.log('data', data)
-
-  React.useEffect(() => {
-    me()
-  }, [])
-
+export const ProfileScreen = ({ navigation, route }: Props) => {
+  console.log(route.params.userId)
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <>
@@ -58,7 +57,7 @@ export const ProfileScreen = ({ navigation }: Props) => {
         <Tab.Screen
           name="Tweets"
           component={Tweets}
-          initialParams={{ userId: 'e2a85941-ef87-442f-be1c-7a0d3c18cfb1' }}
+          initialParams={{ userId: route.params.userId }}
         />
         <Tab.Screen name="Tweets and replies" component={TweetsAndReplies} />
         <Tab.Screen name="Media" component={Media} />

@@ -7,7 +7,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "apollo:generate": "apollo client:codegen --target typescript --excludes=node_modules/* --includes=**/*.tsx --outputFlat --passthroughCustomScalars --customScalarsPrefix=Fwitter"
+    "apollo:generate": "apollo client:codegen --target typescript --excludes=node_modules/* --includes=**/*.tsx --outputFlat --passthroughCustomScalars --customScalarsPrefix Fwitter"
   },
   "jest": {
     "preset": "jest-expo"
