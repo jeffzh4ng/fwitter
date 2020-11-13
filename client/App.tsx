@@ -6,8 +6,7 @@ import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import Navigation from './navigation'
 
-import { ApolloClient, ApolloProvider } from '@apollo/client'
-import { cache } from './cache'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
 const API_URI = 'http://localhost:3001/graphql'
 
@@ -20,7 +19,7 @@ export default function App() {
   } else {
     const client = new ApolloClient({
       uri: API_URI, // TODO: put in env variable
-      cache,
+      cache: new InMemoryCache(),
     })
 
     return (

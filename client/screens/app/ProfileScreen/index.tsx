@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { SafeAreaView, Image, Text, View, Pressable } from 'react-native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { DrawerParamList, HomeStackParamList } from '../../../types'
+import { HomeStackParamList } from '../../../types'
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { Tweets } from './Tweets'
@@ -10,7 +9,6 @@ import { Media } from './Media'
 import { Likes } from './Likes'
 import { RouteProp } from '@react-navigation/native'
 
-type ProfileScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Profile'>
 type ProfileScreenRouteProp = RouteProp<HomeStackParamList, 'Profile'>
 
 export interface ProfileScreenProps {
@@ -18,14 +16,12 @@ export interface ProfileScreenProps {
 }
 
 interface Props {
-  navigation: ProfileScreenNavigationProp
   route: ProfileScreenRouteProp
 }
 
 const Tab = createMaterialTopTabNavigator()
 
-export const ProfileScreen = ({ navigation, route }: Props) => {
-  console.log(route.params.userId)
+export const ProfileScreen = ({ route }: Props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <>

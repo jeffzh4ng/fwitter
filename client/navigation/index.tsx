@@ -4,7 +4,6 @@ import { ColorSchemeName } from 'react-native'
 
 import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
-import { currentUserVar } from '../cache'
 import {
   ForgotPasswordScreen,
   LandingScreen,
@@ -12,72 +11,40 @@ import {
   SignUpScreen,
   VerifyScreen,
 } from '../screens/onboarding'
-import {
-  createDrawerNavigator,
-  DrawerContentComponentProps,
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerItemList,
-} from '@react-navigation/drawer'
+import { useMutation } from '@apollo/client'
+import { ME_MUTATION } from '../mutations'
+import { Text } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { ProfileScreen } from '../screens/app'
+
+const Root = createStackNavigator()
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+  const [me, { loading, data }] = useMutation(ME_MUTATION)
+
+  React.useEffect(() => {
+    me()
+  }, [])
+
+  if (loading) return <Text>Loading</Text>
+
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      <DrawerNavigator />
+      {data ? <BottomTabNavigator /> : <UnauthenticatedStack />}
     </NavigationContainer>
-  )
-}
-
-// A root stack navigator is often used for displaying modals on top of all other content
-// Read more here: https://reactnavigation.org/docs/modal
-// const Stack = createStackNavigator<RootStackParamList>()
-
-const Drawer = createDrawerNavigator()
-
-function DrawerNavigator() {
-  const currentUser = currentUserVar()
-  console.log('current user', currentUser)
-
-  if (true) {
-    return (
-      <Drawer.Navigator drawerContent={DrawerContent}>
-        <Drawer.Screen name="Root" component={BottomTabNavigator} />
-      </Drawer.Navigator>
-    )
-  } else {
-    return <UnauthenticatedStack />
-  }
-}
-
-const DrawerContent = (props: DrawerContentComponentProps) => {
-  return (
-    <>
-      <DrawerContentScrollView>
-        <DrawerItemList {...props} />
-        <DrawerItem
-          label="Profile"
-          onPress={() => {
-            props.navigation.navigate('Profile')
-          }}
-        />
-      </DrawerContentScrollView>
-    </>
   )
 }
 
 const UnauthenticatedStack = () => {
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Landing" component={LandingScreen} />
-      <Drawer.Screen name="SignUp" component={SignUpScreen} />
-      <Drawer.Screen name="Login" component={LoginScreen} />
-      <Drawer.Screen name="Verify" component={VerifyScreen} />
-      <Drawer.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-    </Drawer.Navigator>
+    <Root.Navigator>
+      <Root.Screen name="Landing" component={LandingScreen} />
+      <Root.Screen name="SignUp" component={SignUpScreen} />
+      <Root.Screen name="Login" component={LoginScreen} />
+      <Root.Screen name="Verify" component={VerifyScreen} />
+      <Root.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+    </Root.Navigator>
   )
 }

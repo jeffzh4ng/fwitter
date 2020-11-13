@@ -10,16 +10,16 @@ import {
   View,
 } from 'react-native'
 import { Text } from 'react-native'
-import {
-  UserSearchListResult,
-  UserSearchListResult_getManyByUsername,
-} from '../../__generated__/UserSearchListResult'
 import colors from '../../constants/Colors'
 import { BottomTabParamList, HomeStackParamList } from '../../types'
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
-import { CompositeNavigationProp } from '@react-navigation/native'
+import { CommonActions, CompositeNavigationProp, StackActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AntDesign } from '@expo/vector-icons'
+import {
+  UserSearchData,
+  UserSearchData_getManyByUsername,
+} from '../../__generated__/UserSearchData'
 
 const GET_MANY_BY_USERNAME_QUERY = gql`
   query UserSearchData($query: String!) {
@@ -40,18 +40,21 @@ interface Props {
 
 export const SearchScreen = ({ navigation }: Props) => {
   const [searchText, setSearchText] = React.useState('')
-  const [getManyByUsername, { data }] = useLazyQuery<UserSearchListResult>(
-    GET_MANY_BY_USERNAME_QUERY
-  )
+  const [getManyByUsername, { data }] = useLazyQuery<UserSearchData>(GET_MANY_BY_USERNAME_QUERY)
 
   const recentSearches = null
   const users = data?.getManyByUsername
 
   const handleUserPress = (userId: string) => {
-    navigation.navigate('Profile', { userId })
+    navigation.dispatch(
+      StackActions.replace('Profile', {
+        userId,
+      })
+    )
+    navigation.navigate('Profile')
   }
 
-  const renderUser = ({ item }: ListRenderItemInfo<UserSearchListResult_getManyByUsername>) => {
+  const renderUser = ({ item }: ListRenderItemInfo<UserSearchData_getManyByUsername>) => {
     return <UserSearchResult user={item} handleUserPress={handleUserPress} />
   }
 
@@ -106,7 +109,7 @@ const UserSearchResult = ({
   user,
   handleUserPress,
 }: {
-  user: UserSearchListResult_getManyByUsername
+  user: UserSearchData_getManyByUsername
   handleUserPress: (userId: string) => void
 }) => (
   <Pressable

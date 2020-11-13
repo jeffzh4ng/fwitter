@@ -25,6 +25,7 @@ export class TweetsResolver {
   ) {
     console.log('creating tweet', text)
     const { userId } = ctx.req.session
+    console.log(userId)
     const tweet = await this.tweetsService.createOne({ userId, text, type })
     console.log('created tweet', tweet)
 

@@ -77,7 +77,8 @@ function HomeNavigator() {
       <HomeStack.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ headerTitle: 'Profile', headerLeft: () => null }}
+        options={{ headerTitle: 'Profile', headerLeft: () => null, animationEnabled: false }}
+        // initial params should be your own user Id
         initialParams={{ userId: 'e2a85941-ef87-442f-be1c-7a0d3c18cfb1' }}
       />
       <HomeStack.Screen name="Tweet" component={CreateTweetScreen} />

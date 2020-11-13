@@ -23,7 +23,6 @@ export const TypeOrm: DynamicModule = TypeOrmModule.forRootAsync({
         password: 'fwitter',
         database: 'fwitter',
         entities: ['dist/**/*.entity{.ts,.js}'],
-        synchronize: true,
       }
     }
   },

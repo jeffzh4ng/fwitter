@@ -51,6 +51,8 @@ export class AuthResolver {
     const session = ctx.req.session
     const user = await this.usersService.findOneByUserId(session.userId)
 
+    if (!user) return user
+
     const { password, ...result } = user
 
     return result

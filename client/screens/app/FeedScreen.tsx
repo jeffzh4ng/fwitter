@@ -5,6 +5,7 @@ import { DrawerParamList } from '../../types'
 import { useMutation } from '@apollo/client'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { ME_MUTATION } from '../../mutations'
+import { LoginData } from '../../__generated__/LoginData'
 
 type FeedScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Root'>
 
@@ -88,13 +89,6 @@ const tweets: Array<Tweet> = [
 ]
 
 export const FeedScreen = ({ navigation }: Props) => {
-  const [me, { data }] = useMutation(ME_MUTATION)
-  if (data) console.log('signed in: ', data)
-
-  React.useEffect(() => {
-    me()
-  }, [])
-
   const renderTweet = ({ item }: { item: Tweet }) => {
     return <Tweet tweet={item} />
   }

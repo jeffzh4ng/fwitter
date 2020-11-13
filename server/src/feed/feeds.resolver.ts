@@ -16,6 +16,7 @@ export class FeedsResolver {
   @Query(returns => [Tweet])
   async getProfileFeed(@Args('userId', { type: () => String }) userId: string) {
     const tweets = await this.feedService.getProfileFeed(userId)
+    console.log('returning to client', tweets)
     return tweets
   }
 }

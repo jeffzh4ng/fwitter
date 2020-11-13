@@ -12,7 +12,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { currentUserVar } from '../../cache'
 import { DrawerParamList } from '../../types'
 
 type LoginScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Login'>
@@ -36,7 +35,6 @@ export const LoginScreen = ({ navigation }: Props) => {
 
   const [login, { data }] = useMutation(LOGIN_MUTATION)
   if (data) {
-    currentUserVar(data)
     // TODO: somehow reload navigation/index.tsx to reload entire app with authenticated drawer 'stack'
   }
 

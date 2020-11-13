@@ -9,7 +9,6 @@ import {
   JoinColumn,
   CreateDateColumn,
   OneToMany,
-  OneToOne,
 } from 'typeorm'
 import { Like } from './like.entity'
 
@@ -62,7 +61,7 @@ export class Tweet {
   likes: Like[]
 
   @Field()
-  @Column({ nullable: true, length: 180 })
+  @Column({ length: 180 })
   text: string
 
   @Field()

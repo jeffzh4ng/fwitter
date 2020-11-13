@@ -35,17 +35,18 @@ export const GET_PROFILE_FEED_QUERY = gql`
 `
 
 export const Tweets = ({ route, navigation }: Props) => {
+  console.log('userid', route.params.userId)
+
   const { loading, error, data } = useQuery(GET_PROFILE_FEED_QUERY, {
     variables: { userId: route.params.userId },
   })
-
-  console.log(route.params.userId)
 
   const massagedData =
     data && data.getProfileFeed
       ? data.getProfileFeed.map((tweet: any) => ({ ...tweet, username: tweet.user.username }))
       : []
 
+  console.log(route.params.userId, data, error)
   const handleOnTweet = () =>
     navigation.replace('Tweet', {
       previousScreen: 'Profile',
