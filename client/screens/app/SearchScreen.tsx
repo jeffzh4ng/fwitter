@@ -46,12 +46,21 @@ export const SearchScreen = ({ navigation }: Props) => {
   const users = data?.getManyByUsername
 
   const handleUserPress = (userId: string) => {
-    navigation.dispatch(
-      StackActions.replace('Profile', {
-        userId,
-      })
-    )
-    navigation.navigate('Profile')
+    navigation.navigate('Feed', {
+      screen: 'Profile',
+      params: {
+        screen: 'Tweets',
+        params: {
+          userId,
+        },
+      },
+    })
+    // navigation.dispatch(
+    //   StackActions.push('Profile', {
+    //     userId,
+    //   })
+    // )
+    // navigation.navigate('Profile')
   }
 
   const renderUser = ({ item }: ListRenderItemInfo<UserSearchData_getManyByUsername>) => {
