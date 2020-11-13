@@ -13,7 +13,7 @@ import { Text } from 'react-native'
 import colors from '../../constants/Colors'
 import { BottomTabParamList, HomeStackParamList } from '../../types'
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
-import { CommonActions, CompositeNavigationProp, StackActions } from '@react-navigation/native'
+import { CompositeNavigationProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AntDesign } from '@expo/vector-icons'
 import {

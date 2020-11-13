@@ -1,6 +1,6 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
 import * as React from 'react'
-import { ColorSchemeName } from 'react-native'
+import { ColorSchemeName, Pressable, NativeModules } from 'react-native'
 
 import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
@@ -15,11 +15,19 @@ import { useMutation } from '@apollo/client'
 import { ME_MUTATION } from '../mutations'
 import { Text } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
+import {
+  createDrawerNavigator,
+  DrawerContentComponentProps,
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from '@react-navigation/drawer'
+import { meData } from '../__generated__/meData'
 
 const Root = createStackNavigator()
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-  const [me, { loading, data }] = useMutation(ME_MUTATION)
+  const [me, { loading, data }] = useMutation<meData>(ME_MUTATION)
 
   React.useEffect(() => {
     me()
@@ -32,8 +40,41 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      {data ? <BottomTabNavigator /> : <UnauthenticatedStack />}
+      {data ? <DrawerNavigator /> : <UnauthenticatedStack />}
     </NavigationContainer>
+  )
+}
+
+const Drawer = createDrawerNavigator()
+
+const DrawerNavigator = () => {
+  return (
+    <Drawer.Navigator drawerContent={DrawerContent}>
+      <Drawer.Screen name="Home" component={BottomTabNavigator} />
+    </Drawer.Navigator>
+  )
+}
+
+const DrawerContent = (props: DrawerContentComponentProps) => {
+  return (
+    <>
+      <DrawerContentScrollView>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label="Profile"
+          onPress={() => {
+            props.navigation.navigate('Profile', { userId: '499a10af-f642-487e-97dc-b8875b032fc5' })
+          }}
+        />
+        <Pressable
+          onPress={() => {
+            console.log(NativeModules.Networking)
+          }}
+        >
+          <Text>Logout</Text>
+        </Pressable>
+      </DrawerContentScrollView>
+    </>
   )
 }
 

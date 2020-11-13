@@ -1,4 +1,4 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
