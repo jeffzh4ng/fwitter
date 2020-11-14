@@ -38,7 +38,7 @@ export class TweetsResolver {
     @Args('tweetId', { type: () => GraphQLID }) tweetId: string
   ): Promise<Like> {
     const { userId } = ctx.req.session
-    const tweet = await this.tweetsService.likeOne({ userId, tweetId })
+    const tweet = await this.tweetsService.toggleLike({ userId, tweetId })
     return tweet
   }
 }

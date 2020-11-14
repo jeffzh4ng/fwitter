@@ -38,8 +38,6 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [tweetText, setTweet] = React.useState('')
   const [createTweet, { data, error }] = useMutation(CREATE_TWEET_MUTATION)
 
-  console.log('created tweet', data, error)
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: '',
@@ -56,7 +54,6 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
         <Button
           color="#1fa1f1"
           onPress={() => {
-            console.log('sending create tweet mutation')
             createTweet({
               variables: { text: tweetText, type: TweetType.REGULAR },
               refetchQueries: [

@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -45,16 +45,23 @@ export const GET_PROFILE_FEED_QUERY = gql`
   }
 `
 
-export const Tweets = ({ route, navigation }: Props) => {
-  React.useEffect(() => console.log(route.params.userId), [route])
+const LIKE_TWEET_MUTATION = gql`
+  mutation LikedTweetData($tweetId: ID!) {
+    likeTweet(tweetId: $tweetId) {
+      ID
+    }
+  }
+`
 
-  const { loading, error, data } = useQuery<ProfileFeedData>(GET_PROFILE_FEED_QUERY, {
+export const Tweets = ({ route, navigation }: Props) => {
+  const { data: profileData } = useQuery<ProfileFeedData>(GET_PROFILE_FEED_QUERY, {
     variables: { userId: route.params.userId },
   })
+  const [likeTweet, { data: likedTweetData }] = useMutation(LIKE_TWEET_MUTATION)
 
   const massagedData =
-    data && data.getProfileFeed
-      ? data.getProfileFeed.map((tweet: ProfileFeedData_getProfileFeed) => ({
+    profileData && profileData.getProfileFeed
+      ? profileData.getProfileFeed.map((tweet: ProfileFeedData_getProfileFeed) => ({
           ...tweet,
           username: tweet.user.username,
         }))
@@ -66,5 +73,20 @@ export const Tweets = ({ route, navigation }: Props) => {
       userId: route.params.userId,
     })
 
-  return <ListOfTweets tweets={massagedData} onTweet={handleOnTweet} />
+  const handleOnLike = (tweetId: string) =>
+    likeTweet({
+      variables: { tweetId },
+      refetchQueries: [
+        {
+          query: GET_PROFILE_FEED_QUERY,
+          variables: {
+            userId: route.params.userId,
+          },
+        },
+      ],
+    })
+
+  return (
+    <ListOfTweets tweets={massagedData} handleOnTweet={handleOnTweet} handleOnLike={handleOnLike} />
+  )
 }

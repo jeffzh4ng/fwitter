@@ -4,25 +4,16 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import moment from 'moment'
 import { ProfileFeedData_getProfileFeed } from '../__generated__/ProfileFeedData'
 import { AntDesign } from '@expo/vector-icons'
-import { gql, useMutation } from '@apollo/client'
-import { GET_PROFILE_FEED_QUERY } from '../screens/app/ProfileScreen/Tweets'
 
 interface Props {
-  onTweet: () => void
+  handleOnTweet: () => void
+  handleOnLike: (tweetId: string) => void
   tweets: Array<ProfileFeedData_getProfileFeed>
 }
 
-const LIKE_TWEET_MUTATION = gql`
-  mutation LikedTweetData($tweetId: ID!) {
-    likeTweet(tweetId: $tweetId) {
-      ID
-    }
-  }
-`
-
-export const ListOfTweets = ({ tweets, onTweet }: Props) => {
+export const ListOfTweets = ({ tweets, handleOnTweet, handleOnLike }: Props) => {
   const renderTweet = ({ item }: { item: ProfileFeedData_getProfileFeed }) => {
-    return <Tweet tweet={item} />
+    return <Tweet tweet={item} handleOnLike={handleOnLike} />
   }
 
   return (
@@ -31,7 +22,7 @@ export const ListOfTweets = ({ tweets, onTweet }: Props) => {
       <View style={{ backgroundColor: 'transparent', bottom: 15, position: 'absolute', right: 15 }}>
         <Pressable
           style={{ backgroundColor: '#1fa1fa', borderRadius: 100, padding: 15 }}
-          onPress={onTweet}
+          onPress={handleOnTweet}
         >
           <MaterialCommunityIcons name="feather" size={24} color="white" />
         </Pressable>
@@ -40,10 +31,11 @@ export const ListOfTweets = ({ tweets, onTweet }: Props) => {
   )
 }
 
-const Tweet = (props: { tweet: ProfileFeedData_getProfileFeed }) => {
+const Tweet = (props: {
+  tweet: ProfileFeedData_getProfileFeed
+  handleOnLike: (tweetId: string) => void
+}) => {
   const { tweet } = props
-  const [likeTweet, { error, data }] = useMutation(LIKE_TWEET_MUTATION)
-  console.log(data)
 
   return (
     <View
@@ -73,21 +65,7 @@ const Tweet = (props: { tweet: ProfileFeedData_getProfileFeed }) => {
         <Text style={{ flexShrink: 1, fontSize: 16 }}>{tweet.text}</Text>
 
         <View style={{ flexDirection: 'row' }}>
-          <Pressable
-            onPress={() => {
-              likeTweet({
-                variables: { tweetId: tweet.ID },
-                refetchQueries: [
-                  {
-                    query: GET_PROFILE_FEED_QUERY,
-                    variables: {
-                      userId: 'e2a85941-ef87-442f-be1c-7a0d3c18cfb1',
-                    },
-                  },
-                ],
-              })
-            }}
-          >
+          <Pressable onPress={() => props.handleOnLike(tweet.ID)}>
             <AntDesign name="hearto" size={17} color="#6A7A89" />
           </Pressable>
           <Text style={{ marginLeft: 3 }}>{tweet.likes.length}</Text>

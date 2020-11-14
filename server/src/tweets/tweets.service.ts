@@ -53,7 +53,7 @@ export class TweetsService {
     }
   }
 
-  async likeOne(data: { userId: string; tweetId: string }): Promise<Like> {
+  async toggleLike(data: { userId: string; tweetId: string }): Promise<Like> {
     try {
       const user = await this.usersService.findOneByUserId(data.userId)
       const tweet = await this.findOne(data.tweetId)

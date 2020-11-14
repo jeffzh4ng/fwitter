@@ -7,6 +7,12 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Follow {
+  followee: User!
+  follower: User!
+  id: Float!
+}
+
 type Like {
   createdAt: DateTime!
 
@@ -19,6 +25,7 @@ type Like {
 
 type Mutation {
   createTweet(text: String!, type: TweetType!): Tweet!
+  follow(followeeId: String!, followerId: String!): Follow!
   likeTweet(tweetId: ID!): Tweet!
   login(password: String!, username: String!): User!
   me: User!
@@ -27,12 +34,10 @@ type Mutation {
 
 type Query {
   feed(userId: String!): [Tweet!]!
-  follow(followeeId: String!, followerId: String!): Boolean!
   getManyByUsername(query: String!): [User!]!
   getOneByUsername(username: String!): User!
   getProfileFeed(userId: String!): [Tweet!]!
   getTweetById(tweetId: String!): [Tweet!]!
-  unfollow(followeeId: String!, followerId: String!): Boolean!
 }
 
 type Tweet {
