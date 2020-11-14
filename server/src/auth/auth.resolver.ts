@@ -36,6 +36,7 @@ export class AuthResolver {
     @Args('username', { type: () => String }) username: string,
     @Args('password', { type: () => String }) password: string
   ) {
+    console.log('logging in')
     const user = await this.authService.validateUser(username, password)
 
     if (!user) throw new UnauthorizedException()

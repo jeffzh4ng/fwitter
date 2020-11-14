@@ -42,7 +42,7 @@ export const Tweets = ({ route, navigation }: Props) => {
       : []
 
   const handleOnTweet = () =>
-    navigation.replace('Tweet', {
+    navigation.replace('CreateTweet', {
       previousScreen: 'Profile',
     })
 

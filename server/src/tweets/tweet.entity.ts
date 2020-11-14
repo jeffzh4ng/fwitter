@@ -43,6 +43,7 @@ export class Tweet {
   )
   parent: Tweet
 
+  @Field(type => [Tweet])
   @OneToMany(
     type => Tweet,
     tweet => tweet.parent

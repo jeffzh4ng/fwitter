@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { Text } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { DrawerParamList } from '../../types'
+import { HomeStackParamList } from '../../types'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { LIKE_TWEET_MUTATION } from '../../mutations'
 import { FeedData } from '../../__generated__/FeedData'
 import { ListOfTweets } from '../../components/ListOfTweets'
-import { GET_PROFILE_FEED_QUERY } from '../../queries'
 
-type FeedScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Root'>
+type FeedScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'Feed'>
 
 interface Props {
   navigation: FeedScreenNavigationProp
@@ -30,6 +29,11 @@ const GET_FEED_QUERY = gql`
           username
         }
       }
+      children {
+        ID
+        text
+        createdAt
+      }
     }
   }
 `
@@ -40,8 +44,10 @@ export const FeedScreen = ({ navigation }: Props) => {
 
   if (!data) return <Text>Loading</Text>
 
+  console.log(data)
+
   const handleOnTweet = () =>
-    navigation.replace('Tweet', {
+    navigation.replace('CreateTweet', {
       previousScreen: 'Profile',
     })
 
@@ -55,7 +61,24 @@ export const FeedScreen = ({ navigation }: Props) => {
       ],
     })
 
+  const handleOnReply = (tweetId: string) =>
+    navigation.replace('CreateTweet', {
+      parentId: tweetId,
+      previousScreen: 'Feed',
+    })
+
+  const handleOnNavigateToTweet = (tweetId: string) =>
+    navigation.push('FocusedTweet', {
+      tweetId,
+    })
+
   return (
-    <ListOfTweets tweets={data.getFeed} handleOnTweet={handleOnTweet} handleOnLike={handleOnLike} />
+    <ListOfTweets
+      tweets={data.getFeed}
+      handleOnTweet={handleOnTweet}
+      handleOnLike={handleOnLike}
+      handleOnReply={handleOnReply}
+      handleOnNavigateToTweet={handleOnNavigateToTweet}
+    />
   )
 }

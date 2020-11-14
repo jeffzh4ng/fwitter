@@ -5,19 +5,20 @@ import * as React from 'react'
 import { Text, Button, Image, TextInput, View, TouchableOpacity } from 'react-native'
 import { DrawerParamList, HomeStackParamList } from '../../types'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
-import { GET_PROFILE_FEED_QUERY } from './ProfileScreen/Tweets'
 import { TweetType } from '../../__generated__/globalTypes'
 import { ME_MUTATION } from '../../mutations'
 import { meData } from '../../__generated__/meData'
+import { GET_PROFILE_FEED_QUERY } from '../../queries'
 
 type TweetScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<DrawerParamList>,
-  StackNavigationProp<HomeStackParamList, 'Tweet'>
+  StackNavigationProp<HomeStackParamList, 'CreateTweet'>
 >
-type TweetScreenRouteProp = RouteProp<HomeStackParamList, 'Tweet'>
+type TweetScreenRouteProp = RouteProp<HomeStackParamList, 'CreateTweet'>
 
 export interface TweetScreenProps {
   previousScreen: 'Feed' | 'Profile'
+  parentId?: string
 }
 
 interface Props {
@@ -39,7 +40,7 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [tweetText, setTweet] = React.useState('')
   const [createTweet] = useMutation(CREATE_TWEET_MUTATION)
 
-  const [me, { loading, data }] = useMutation<meData>(ME_MUTATION)
+  const [me, { data }] = useMutation<meData>(ME_MUTATION)
 
   React.useEffect(() => {
     me()
@@ -62,8 +63,10 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
         <Button
           color="#1fa1f1"
           onPress={() => {
+            const type = route.params.parentId ? TweetType.REPLY : TweetType.REGULAR
+
             createTweet({
-              variables: { text: tweetText, type: TweetType.REGULAR },
+              variables: { text: tweetText, type },
               refetchQueries: [
                 {
                   query: GET_PROFILE_FEED_QUERY,

@@ -11,7 +11,7 @@ import { TweetsService } from './tweets.service'
 export class TweetsResolver {
   constructor(private tweetsService: TweetsService) {}
 
-  @Query(returns => [Tweet])
+  @Query(returns => Tweet)
   async getTweetById(@Args('tweetId', { type: () => GraphQLID }) tweetId: string) {
     const tweets = await this.tweetsService.findOne(tweetId)
     return tweets
@@ -23,11 +23,8 @@ export class TweetsResolver {
     @Args('text', { type: () => String }) text: string,
     @Args('type', { type: () => TweetType }) type: TweetType
   ) {
-    console.log('creating tweet', text)
     const { userId } = ctx.req.session
-    console.log(userId)
     const tweet = await this.tweetsService.createOne({ userId, text, type })
-    console.log('created tweet', tweet)
 
     return tweet
   }
@@ -38,7 +35,6 @@ export class TweetsResolver {
     @Args('tweetId', { type: () => GraphQLID }) tweetId: string
   ): Promise<Like> {
     const { userId } = ctx.req.session
-    console.log('liking', userId)
     const tweet = await this.tweetsService.toggleLike({ userId, tweetId })
     return tweet
   }

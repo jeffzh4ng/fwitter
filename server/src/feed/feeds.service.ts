@@ -13,6 +13,7 @@ export class FeedsService {
     try {
       // get list of followees ids
       const unsortedFeed = await this.buildUnsortedFeed(userId)
+      console.log(unsortedFeed)
       return this.sortFeed(unsortedFeed).slice(0, 100) // TODO: paginate
     } catch (e) {
       this.logger.error(e)

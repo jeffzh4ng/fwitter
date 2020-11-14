@@ -37,10 +37,11 @@ type Query {
   getManyByUsername(query: String!): [User!]!
   getOneByUsername(username: String!): User!
   getProfileFeed(userId: ID!): [Tweet!]!
-  getTweetById(tweetId: ID!): [Tweet!]!
+  getTweetById(tweetId: ID!): Tweet!
 }
 
 type Tweet {
+  children: [Tweet!]!
   createdAt: DateTime!
 
   """
