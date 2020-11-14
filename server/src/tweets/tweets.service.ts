@@ -20,7 +20,7 @@ export class TweetsService {
     try {
       const tweet = await this.tweetsRepository.findOne({
         where: { id: tweetId },
-        relations: ['likes', 'children'],
+        relations: ['likes', 'children', 'children.likes'],
       })
       return tweet
     } catch (e) {
@@ -42,10 +42,16 @@ export class TweetsService {
     }
   }
 
-  async createOne(data: { userId: string; text: string; type: TweetType }): Promise<Tweet> {
+  async createOne(data: {
+    userId: string
+    text: string
+    type: TweetType
+    parentId?: string
+  }): Promise<Tweet> {
     try {
       const user = await this.usersService.findOneByUserId(data.userId)
-      const createdTweet = await this.tweet({ ...data, user })
+      const createdTweet = await this.tweet({ ...data, user, parentId: data.parentId })
+      console.log(createdTweet)
       return createdTweet
     } catch (e) {
       this.logger.error(e)
@@ -86,16 +92,25 @@ export class TweetsService {
     }
   }
 
-  private async tweet(data: { user: User; text: string; type: TweetType }): Promise<Tweet> {
+  private async tweet(data: {
+    user: User
+    text: string
+    type: TweetType
+    parentId?: string
+  }): Promise<Tweet> {
     try {
-      const { user, text, type } = data
+      const { user, text, type, parentId } = data
+
+      const parent = await this.tweetsRepository.findOne({ where: { id: parentId } })
 
       const tweet = new Tweet()
       tweet.text = text
       tweet.user = user
       tweet.type = type
+      tweet.parent = parent
 
       await this.tweetsRepository.save(tweet)
+
       return tweet
     } catch (e) {
       this.logger.error(e)

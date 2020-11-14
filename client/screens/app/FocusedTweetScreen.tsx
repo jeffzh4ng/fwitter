@@ -4,11 +4,9 @@ import { RouteProp } from '@react-navigation/native'
 import moment from 'moment'
 import * as React from 'react'
 import { Image, Pressable, SafeAreaView, Text, View } from 'react-native'
+import { ListOfTweets } from '../../components/ListOfTweets'
 import { HomeStackParamList } from '../../types'
-import {
-  FocusedTweetData,
-  FocusedTweetData_getTweetById,
-} from '../../__generated__/FocusedTweetData'
+import { FocusedTweetData } from '../../__generated__/FocusedTweetData'
 
 export interface FocusedTweetScreenProps {
   tweetId: string
@@ -35,6 +33,22 @@ const GET_TWEET_BY_ID_QUERY = gql`
         user {
           ID
           username
+        }
+      }
+      children {
+        ID
+        text
+        createdAt
+        user {
+          ID
+          username
+        }
+        likes {
+          ID
+          user {
+            ID
+            username
+          }
         }
       }
     }
@@ -98,6 +112,14 @@ export const FocusedTweetScreen = ({ route }: Props) => {
           </View>
         </View>
       </View>
+
+      <ListOfTweets
+        tweets={data.getTweetById.children}
+        handleOnTweet={() => {}}
+        handleOnLike={() => {}}
+        handleOnReply={() => {}}
+        handleOnNavigateToTweet={() => {}}
+      />
     </SafeAreaView>
   )
 }

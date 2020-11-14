@@ -24,7 +24,7 @@ type Like {
 }
 
 type Mutation {
-  createTweet(text: String!, type: TweetType!): Tweet!
+  createTweet(parentId: ID, text: String!, type: TweetType!): Tweet!
   follow(targetId: ID!): Follow!
   likeTweet(tweetId: ID!): Tweet!
   login(password: String!, username: String!): User!

@@ -27,8 +27,8 @@ interface Props {
 }
 
 const CREATE_TWEET_MUTATION = gql`
-  mutation CreatedTweetData($text: String!, $type: TweetType!) {
-    createTweet(text: $text, type: $type) {
+  mutation CreatedTweetData($text: String!, $type: TweetType!, $parentId: ID!) {
+    createTweet(text: $text, type: $type, parentId: $parentId) {
       ID
       text
       type
@@ -41,6 +41,32 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [createTweet] = useMutation(CREATE_TWEET_MUTATION)
 
   const [me, { data }] = useMutation<meData>(ME_MUTATION)
+
+  const handleOnTweet = React.useCallback(() => {
+    if (!data) return
+
+    const type = route.params.parentId ? TweetType.REPLY : TweetType.REGULAR
+    const variables: { text: string; type: TweetType; parentId?: string } = {
+      text: tweetText,
+      type,
+    }
+
+    if (route.params.parentId) variables.parentId = route.params.parentId
+    console.log(variables)
+
+    createTweet({
+      variables,
+      refetchQueries: [
+        {
+          query: GET_PROFILE_FEED_QUERY,
+          variables: {
+            userId: data.me.ID,
+          },
+        },
+      ],
+    })
+    navigation.replace(route.params.previousScreen)
+  }, [data, route, tweetText])
 
   React.useEffect(() => {
     me()
@@ -59,28 +85,7 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
           <Text style={{ color: '#1FA1F1', fontSize: 16, marginLeft: 10 }}>Cancel</Text>
         </TouchableOpacity>
       ),
-      headerRight: () => (
-        <Button
-          color="#1fa1f1"
-          onPress={() => {
-            const type = route.params.parentId ? TweetType.REPLY : TweetType.REGULAR
-
-            createTweet({
-              variables: { text: tweetText, type },
-              refetchQueries: [
-                {
-                  query: GET_PROFILE_FEED_QUERY,
-                  variables: {
-                    userId: data.me.ID,
-                  },
-                },
-              ],
-            })
-            navigation.replace(route.params.previousScreen)
-          }}
-          title="Tweet"
-        />
-      ),
+      headerRight: () => <Button color="#1fa1f1" onPress={handleOnTweet} title="Tweet" />,
     })
   }, [navigation, createTweet, tweetText, data])
 

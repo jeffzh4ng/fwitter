@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { FollowsService } from 'src/follows/follows.service'
 import { TweetsService } from 'src/tweets/tweets.service'
-import { Tweet } from '../tweets/tweet.entity'
+import { Tweet, TweetType } from '../tweets/tweet.entity'
 
 @Injectable()
 export class FeedsService {
@@ -13,8 +13,9 @@ export class FeedsService {
     try {
       // get list of followees ids
       const unsortedFeed = await this.buildUnsortedFeed(userId)
-      console.log(unsortedFeed)
-      return this.sortFeed(unsortedFeed).slice(0, 100) // TODO: paginate
+      const filteredFeed = unsortedFeed.filter(tweet => tweet.type === TweetType.REGULAR)
+
+      return this.sortFeed(filteredFeed).slice(0, 100) // TODO: paginate
     } catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException()

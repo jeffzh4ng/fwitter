@@ -18,8 +18,6 @@ export class FeedsResolver {
 
   @Query(returns => [Tweet])
   async getProfileFeed(@Args('userId', { type: () => GraphQLID }) userId: string) {
-    console.log('getting feed for', userId)
-
     const tweets = await this.feedService.getProfileFeed(userId)
     return tweets
   }

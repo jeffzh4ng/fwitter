@@ -6,25 +6,27 @@ import { Like } from './like.entity'
 import { Tweet, TweetType } from './tweet.entity'
 import { TweetsService } from './tweets.service'
 
-@UseGuards(GraphqlAuthGuard)
+// @UseGuards(GraphqlAuthGuard)
 @Resolver(of => Tweet)
 export class TweetsResolver {
   constructor(private tweetsService: TweetsService) {}
 
   @Query(returns => Tweet)
   async getTweetById(@Args('tweetId', { type: () => GraphQLID }) tweetId: string) {
-    const tweets = await this.tweetsService.findOne(tweetId)
-    return tweets
+    const tweet = await this.tweetsService.findOne(tweetId)
+    console.log(tweet)
+    return tweet
   }
 
   @Mutation(returns => Tweet)
   async createTweet(
     @Context() ctx: any,
     @Args('text', { type: () => String }) text: string,
-    @Args('type', { type: () => TweetType }) type: TweetType
+    @Args('type', { type: () => TweetType }) type: TweetType,
+    @Args('parentId', { type: () => GraphQLID, nullable: true }) parentId: string
   ) {
     const { userId } = ctx.req.session
-    const tweet = await this.tweetsService.createOne({ userId, text, type })
+    const tweet = await this.tweetsService.createOne({ userId, text, type, parentId })
 
     return tweet
   }

@@ -44,8 +44,6 @@ export const FeedScreen = ({ navigation }: Props) => {
 
   if (!data) return <Text>Loading</Text>
 
-  console.log(data)
-
   const handleOnTweet = () =>
     navigation.replace('CreateTweet', {
       previousScreen: 'Profile',

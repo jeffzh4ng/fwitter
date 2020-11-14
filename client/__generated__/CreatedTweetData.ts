@@ -26,4 +26,5 @@ export interface CreatedTweetData {
 export interface CreatedTweetDataVariables {
   text: string;
   type: TweetType;
+  parentId: string;
 }
