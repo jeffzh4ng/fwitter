@@ -20,7 +20,6 @@ export class UsersResolver {
     @Args('username', { type: () => String }) username: string
   ): Promise<StrippedUser | null> {
     const user = await this.usersService.findOneByUsername(username)
-    console.log(user)
 
     const { password, ...result } = user
 

@@ -5,6 +5,10 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import { ListOfTweets } from '../../../components/ListOfTweets'
 import { DrawerParamList, HomeStackParamList, ProfileTabParamList } from '../../../types'
+import {
+  ProfileFeedData,
+  ProfileFeedData_getProfileFeed,
+} from '../../../__generated__/ProfileFeedData'
 
 type ProfileTweetNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<DrawerParamList>,
@@ -30,6 +34,13 @@ export const GET_PROFILE_FEED_QUERY = gql`
       user {
         username
       }
+      likes {
+        ID
+        user {
+          ID
+          username
+        }
+      }
     }
   }
 `
@@ -37,13 +48,16 @@ export const GET_PROFILE_FEED_QUERY = gql`
 export const Tweets = ({ route, navigation }: Props) => {
   React.useEffect(() => console.log(route.params.userId), [route])
 
-  const { loading, error, data } = useQuery(GET_PROFILE_FEED_QUERY, {
+  const { loading, error, data } = useQuery<ProfileFeedData>(GET_PROFILE_FEED_QUERY, {
     variables: { userId: route.params.userId },
   })
 
   const massagedData =
     data && data.getProfileFeed
-      ? data.getProfileFeed.map((tweet: any) => ({ ...tweet, username: tweet.user.username }))
+      ? data.getProfileFeed.map((tweet: ProfileFeedData_getProfileFeed) => ({
+          ...tweet,
+          username: tweet.user.username,
+        }))
       : []
 
   const handleOnTweet = () =>

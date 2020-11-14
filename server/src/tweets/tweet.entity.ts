@@ -54,6 +54,7 @@ export class Tweet {
   @JoinColumn() // generates a FK ref to users.id
   user: User
 
+  @Field(type => [Like])
   @OneToMany(
     () => Like,
     like => like.tweet

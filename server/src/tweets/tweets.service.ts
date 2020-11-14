@@ -57,7 +57,24 @@ export class TweetsService {
     try {
       const user = await this.usersService.findOneByUserId(data.userId)
       const tweet = await this.findOne(data.tweetId)
+      const existingLike = await this.likesRepository.findOne({ where: { user, tweet } })
 
+      if (existingLike) {
+        console.log('removed like')
+        await this.likesRepository.delete(existingLike.id)
+        return existingLike
+      } else {
+        const newLike = await this.createNewLike(user, tweet)
+        return newLike
+      }
+    } catch (e) {
+      this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
+  private async createNewLike(user: User, tweet: Tweet): Promise<Like> {
+    try {
       const like = new Like()
       like.user = user
       like.tweet = tweet
@@ -66,8 +83,7 @@ export class TweetsService {
 
       return like
     } catch (e) {
-      this.logger.error(e)
-      throw new InternalServerErrorException()
+      throw e
     }
   }
 

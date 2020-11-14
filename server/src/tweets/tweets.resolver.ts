@@ -6,7 +6,7 @@ import { Like } from './like.entity'
 import { Tweet, TweetType } from './tweet.entity'
 import { TweetsService } from './tweets.service'
 
-// @UseGuards(GraphqlAuthGuard)
+@UseGuards(GraphqlAuthGuard)
 @Resolver(of => Tweet)
 export class TweetsResolver {
   constructor(private tweetsService: TweetsService) {}

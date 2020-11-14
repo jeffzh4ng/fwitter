@@ -44,7 +44,6 @@ export class UsersService {
         .where('user.username ilike :username', { username: `%${username}%` })
         .getMany()
 
-      console.log('found many users by username', users)
       return users
     } catch (e) {
       this.logger.error(e)
