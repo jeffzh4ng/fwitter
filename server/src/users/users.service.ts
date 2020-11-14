@@ -75,7 +75,7 @@ export class UsersService {
       })
 
       const follows = user.following
-      return follows.map(follow => follow.follower)
+      return follows.map(follow => follow.user)
     } catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException()

@@ -12,7 +12,7 @@ export class TweetsResolver {
   constructor(private tweetsService: TweetsService) {}
 
   @Query(returns => [Tweet])
-  async getTweetById(@Args('tweetId', { type: () => String }) tweetId: string) {
+  async getTweetById(@Args('tweetId', { type: () => GraphQLID }) tweetId: string) {
     const tweets = await this.tweetsService.findOne(tweetId)
     return tweets
   }

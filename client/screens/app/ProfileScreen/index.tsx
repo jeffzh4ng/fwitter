@@ -9,8 +9,6 @@ import { Media } from './Media'
 import { Likes } from './Likes'
 import { RouteProp } from '@react-navigation/native'
 import { gql, useMutation } from '@apollo/client'
-import { ME_MUTATION } from '../../../mutations'
-import { meData } from '../../../__generated__/meData'
 
 type ProfileScreenRouteProp = RouteProp<HomeStackParamList, 'Profile'>
 
@@ -23,8 +21,8 @@ interface Props {
 }
 
 const FOLLOW_MUTATION = gql`
-  mutation FollowData($followerId: String!, $followeeId: String!) {
-    follow(followerId: $followerId, followeeId: $followeeId) {
+  mutation FollowData($targetId: ID!) {
+    follow(targetId: $targetId) {
       id
     }
   }
@@ -34,13 +32,14 @@ const Tab = createMaterialTopTabNavigator()
 
 export const ProfileScreen = ({ route }: Props) => {
   const [follow, { data }] = useMutation(FOLLOW_MUTATION)
-  const [me, { data: meDataResult }] = useMutation<meData>(ME_MUTATION)
 
-  React.useEffect(() => {
-    me()
-  }, [])
-
-  if (!meDataResult) return <Text>Loading</Text>
+  const followCallback = React.useCallback(() => {
+    follow({
+      variables: {
+        targetId: route.params.userId,
+      },
+    })
+  }, [route.params.userId])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -54,16 +53,7 @@ export const ProfileScreen = ({ route }: Props) => {
         <Pressable>
           <Text>Edit Profile</Text>
         </Pressable>
-        <Pressable
-          onPress={() => {
-            follow({
-              variables: {
-                followerId: '123',
-                followeeId: route.params.userId,
-              },
-            })
-          }}
-        >
+        <Pressable onPress={followCallback}>
           <Text>Follow</Text>
         </Pressable>
         <Text>Jeff</Text>

@@ -49,7 +49,6 @@ export class AuthResolver {
   @Mutation(returns => User)
   async me(@Context() ctx: any): Promise<StrippedUser | null> {
     const session = ctx.req.session
-    console.log(session)
     const user = await this.usersService.findOneByUserId(session.userId)
 
     if (!user) return user

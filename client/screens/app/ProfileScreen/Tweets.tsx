@@ -26,7 +26,7 @@ interface Props {
 }
 
 export const GET_PROFILE_FEED_QUERY = gql`
-  query ProfileFeedData($userId: String!) {
+  query ProfileFeedData($userId: ID!) {
     getProfileFeed(userId: $userId) {
       ID
       text
@@ -57,7 +57,7 @@ export const Tweets = ({ route, navigation }: Props) => {
   const { data: profileData } = useQuery<ProfileFeedData>(GET_PROFILE_FEED_QUERY, {
     variables: { userId: route.params.userId },
   })
-  const [likeTweet, { data: likedTweetData }] = useMutation(LIKE_TWEET_MUTATION)
+  const [likeTweet] = useMutation(LIKE_TWEET_MUTATION)
 
   const massagedData =
     profileData && profileData.getProfileFeed

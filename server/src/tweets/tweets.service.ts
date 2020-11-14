@@ -60,7 +60,6 @@ export class TweetsService {
       const existingLike = await this.likesRepository.findOne({ where: { user, tweet } })
 
       if (existingLike) {
-        console.log('removed like')
         await this.likesRepository.delete(existingLike.id)
         return existingLike
       } else {

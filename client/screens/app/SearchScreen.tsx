@@ -49,18 +49,13 @@ export const SearchScreen = ({ navigation }: Props) => {
     navigation.navigate('Feed', {
       screen: 'Profile',
       params: {
+        userId,
         screen: 'Tweets',
         params: {
           userId,
         },
       },
     })
-    // navigation.dispatch(
-    //   StackActions.push('Profile', {
-    //     userId,
-    //   })
-    // )
-    // navigation.navigate('Profile')
   }
 
   const renderUser = ({ item }: ListRenderItemInfo<UserSearchData_getManyByUsername>) => {

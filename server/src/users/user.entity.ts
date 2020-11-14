@@ -30,13 +30,13 @@ export class User {
 
   @OneToMany(
     type => Follow,
-    follow => follow.follower
+    follow => follow.user
   )
   following: Follow[]
 
   @OneToMany(
     type => Follow,
-    follow => follow.followee
+    follow => follow.target
   )
   followers: Follow[]
 }

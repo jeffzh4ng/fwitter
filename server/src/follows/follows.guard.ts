@@ -6,8 +6,12 @@ import { Observable } from 'rxjs'
 export class FollowsGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const gqlCtx = GqlExecutionContext.create(context)
-    const args: { followeeId: string; followerId: string } = gqlCtx.getArgs()
+    const args: { targetId: string } = gqlCtx.getArgs()
 
-    return args.followerId === args.followeeId ? false : true
+    const userId = gqlCtx.getContext().req.session.userId
+
+    console.log(userId, args.targetId)
+
+    return userId === args.targetId ? false : true
   }
 }

@@ -1,4 +1,5 @@
 import { Resolver, Query, Args } from '@nestjs/graphql'
+import { GraphQLID } from 'graphql'
 import { Tweet } from 'src/tweets/tweet.entity'
 import { Feed } from './feed.entity'
 import { FeedsService } from './feeds.service'
@@ -14,7 +15,7 @@ export class FeedsResolver {
   }
 
   @Query(returns => [Tweet])
-  async getProfileFeed(@Args('userId', { type: () => String }) userId: string) {
+  async getProfileFeed(@Args('userId', { type: () => GraphQLID }) userId: string) {
     const tweets = await this.feedService.getProfileFeed(userId)
     return tweets
   }

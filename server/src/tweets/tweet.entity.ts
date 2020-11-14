@@ -62,7 +62,7 @@ export class Tweet {
   likes: Like[]
 
   @Field()
-  @Column({ length: 180 })
+  @Column({ nullable: true, length: 180 }) // TODO: fix issue with synchronize: true
   text: string
 
   @Field()

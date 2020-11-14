@@ -13,22 +13,24 @@ export class FollowsService {
     private usersService: UsersService
   ) {}
 
-  async toggleFollow(followerId: string, followeeId: string): Promise<boolean> {
+  async toggleFollow({ userId, targetId }: { userId: string; targetId: string }): Promise<Follow> {
     try {
-      const follower = await this.usersService.findOneByUserId(followerId)
-      const followee = await this.usersService.findOneByUserId(followeeId)
-      console.log(follower, followee)
+      const user = await this.usersService.findOneByUserId(userId)
+      const target = await this.usersService.findOneByUserId(targetId)
 
-      // left off: figure out if we're addressing users by id or username in backend system
-      // also figure out, in this method specifically, how to find existing follow records to return false - do we need user objects? or user ids. look into how typeorm does N:N relationships
+      const existingFollow = await this.followsRepository.findOne({ where: { user, target } })
+      if (existingFollow) {
+        await this.followsRepository.delete(existingFollow.id)
+        return existingFollow
+      } else {
+        const follow = new Follow()
 
-      const follow = new Follow()
+        follow.user = user
+        follow.target = target
 
-      follow.follower = follower
-      follow.followee = followee
-
-      await this.followsRepository.save(follow)
-      return true
+        await this.followsRepository.save(follow)
+        return follow
+      }
     } catch (e) {}
   }
 }
