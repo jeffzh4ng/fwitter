@@ -2,10 +2,12 @@ import * as React from 'react'
 import { FlatList, SafeAreaView, StyleSheet, Image, Text, View, Pressable } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { DrawerParamList } from '../../types'
-import { useMutation } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { ME_MUTATION } from '../../mutations'
 import { LoginData } from '../../__generated__/LoginData'
+import { FeedData, FeedData_getFeed } from '../../__generated__/FeedData'
+import { ListOfTweets } from '../../components/ListOfTweets'
 
 type FeedScreenNavigationProp = StackNavigationProp<DrawerParamList, 'Root'>
 
@@ -88,61 +90,40 @@ const tweets: Array<Tweet> = [
   },
 ]
 
+const GET_FEED_QUERY = gql`
+  query FeedData {
+    getFeed {
+      ID
+      text
+      createdAt
+      user {
+        username
+      }
+      likes {
+        ID
+        user {
+          ID
+          username
+        }
+      }
+    }
+  }
+`
+
 export const FeedScreen = ({ navigation }: Props) => {
-  const renderTweet = ({ item }: { item: Tweet }) => {
+  const { error, data } = useQuery<FeedData>(GET_FEED_QUERY)
+
+  const renderTweet = ({ item }: { item: FeedData_getFeed }) => {
     return <Tweet tweet={item} />
   }
 
-  return (
-    <SafeAreaView style={styles.home}>
-      <FlatList data={tweets} renderItem={renderTweet} keyExtractor={(item) => item.id} />
-      <View style={{ backgroundColor: 'transparent', bottom: 15, position: 'absolute', right: 15 }}>
-        <Pressable
-          style={{ backgroundColor: '#1fa1fa', borderRadius: 100, padding: 15 }}
-          onPress={() =>
-            navigation.replace('Tweet', {
-              previousScreen: 'Feed',
-            })
-          }
-        >
-          <MaterialCommunityIcons name="feather" size={24} color="white" />
-        </Pressable>
-      </View>
-    </SafeAreaView>
-  )
-}
+  if (!data) return <Text>Loading</Text>
 
-const Tweet = (props: { tweet: Tweet }) => {
-  const { tweet } = props
+  const handleOnTweet = () => {}
+  const handleOnLike = () => {}
 
   return (
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        borderBottomColor: '#eee',
-        borderBottomWidth: 1,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-      }}
-    >
-      <View style={{}}>
-        <Image
-          style={{ borderRadius: 100, height: 50, width: 50 }}
-          source={{
-            uri: tweet.avatarUrl,
-          }}
-        />
-      </View>
-      <View style={{ flexShrink: 1, marginLeft: 10 }}>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <Text style={{ fontSize: 16, fontWeight: '700' }}>{tweet.name}</Text>
-          <Text style={{ fontSize: 16, marginLeft: 3 }}>@{tweet.userName}</Text>
-          <Text style={{ fontSize: 16, marginLeft: 3 }}>• {tweet.time}</Text>
-        </View>
-        <Text style={{ flexShrink: 1, fontSize: 16 }}>{tweet.text}</Text>
-      </View>
-    </View>
+    <ListOfTweets tweets={data.getFeed} handleOnTweet={handleOnTweet} handleOnLike={handleOnLike} />
   )
 }
 

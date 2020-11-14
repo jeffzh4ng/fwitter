@@ -8,6 +8,6 @@ import { FollowsService } from './follows.service'
 @Module({
   imports: [TypeOrmModule.forFeature([Follow]), UsersModule],
   providers: [FollowsResolver, FollowsService],
-  exports: [],
+  exports: [FollowsService],
 })
 export class FollowsModule {}

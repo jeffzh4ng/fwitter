@@ -1,13 +1,13 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
+import { FollowsService } from 'src/follows/follows.service'
 import { TweetsService } from 'src/tweets/tweets.service'
-import { UsersService } from 'src/users/users.service'
 import { Tweet } from '../tweets/tweet.entity'
 
 @Injectable()
 export class FeedsService {
   private readonly logger = new Logger(FeedsService.name)
 
-  constructor(private usersService: UsersService, private tweetsService: TweetsService) {}
+  constructor(private followsService: FollowsService, private tweetsService: TweetsService) {}
 
   async getFeed(userId: string): Promise<Array<Tweet>> {
     try {
@@ -31,9 +31,9 @@ export class FeedsService {
   }
 
   private async buildUnsortedFeed(userId: string) {
-    const followees = await this.usersService.getFollowingList(userId)
+    const followees = await this.followsService.getFollowingList(userId)
     const followeesTweetsPromises: Array<Promise<Array<Tweet>>> = followees.map(followee =>
-      this.tweetsService.findAllTweetsFromUser(followee.id)
+      this.tweetsService.findAllTweetsFromUser(followee.target.id)
     )
 
     const unsortedFeed = (await Promise.all(followeesTweetsPromises)).flat(1)

@@ -7,6 +7,8 @@ import { DrawerParamList, HomeStackParamList } from '../../types'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { GET_PROFILE_FEED_QUERY } from './ProfileScreen/Tweets'
 import { TweetType } from '../../__generated__/globalTypes'
+import { ME_MUTATION } from '../../mutations'
+import { meData } from '../../__generated__/meData'
 
 type TweetScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<DrawerParamList>,
@@ -16,7 +18,6 @@ type TweetScreenRouteProp = RouteProp<HomeStackParamList, 'Tweet'>
 
 export interface TweetScreenProps {
   previousScreen: 'Feed' | 'Profile'
-  userId: string
 }
 
 interface Props {
@@ -36,9 +37,16 @@ const CREATE_TWEET_MUTATION = gql`
 
 export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [tweetText, setTweet] = React.useState('')
-  const [createTweet, { data, error }] = useMutation(CREATE_TWEET_MUTATION)
+  const [createTweet] = useMutation(CREATE_TWEET_MUTATION)
+
+  const [me, { loading, data }] = useMutation<meData>(ME_MUTATION)
+
+  React.useEffect(() => {
+    me()
+  }, [])
 
   React.useLayoutEffect(() => {
+    if (!data) return
     navigation.setOptions({
       headerTitle: '',
       headerLeft: () => (
@@ -60,7 +68,7 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
                 {
                   query: GET_PROFILE_FEED_QUERY,
                   variables: {
-                    userId: route.params.userId,
+                    userId: data.me.ID,
                   },
                 },
               ],
@@ -71,7 +79,7 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
         />
       ),
     })
-  }, [navigation, createTweet, tweetText])
+  }, [navigation, createTweet, tweetText, data])
 
   return (
     <>

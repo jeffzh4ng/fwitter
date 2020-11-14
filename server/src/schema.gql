@@ -33,7 +33,7 @@ type Mutation {
 }
 
 type Query {
-  feed(userId: String!): [Tweet!]!
+  getFeed: [Tweet!]!
   getManyByUsername(query: String!): [User!]!
   getOneByUsername(username: String!): User!
   getProfileFeed(userId: ID!): [Tweet!]!

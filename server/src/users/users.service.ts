@@ -65,20 +65,4 @@ export class UsersService {
       throw new InternalServerErrorException()
     }
   }
-
-  async getFollowingList(userId: string): Promise<Array<User>> {
-    try {
-      const user = await this.usersRepository.findOne({
-        where: {
-          userId,
-        },
-      })
-
-      const follows = user.following
-      return follows.map(follow => follow.user)
-    } catch (e) {
-      this.logger.error(e)
-      throw new InternalServerErrorException()
-    }
-  }
 }

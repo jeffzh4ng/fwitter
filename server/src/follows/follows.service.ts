@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
@@ -31,6 +31,25 @@ export class FollowsService {
         await this.followsRepository.save(follow)
         return follow
       }
-    } catch (e) {}
+    } catch (e) {
+      this.logger.log(e)
+      throw new InternalServerErrorException(e)
+    }
+  }
+
+  async getFollowingList(userId: string): Promise<Array<Follow>> {
+    try {
+      const followingList = await this.followsRepository.find({
+        where: {
+          user: userId,
+        },
+        relations: ['target'],
+      })
+
+      return followingList
+    } catch (e) {
+      this.logger.log(e)
+      throw new InternalServerErrorException(e)
+    }
   }
 }
