@@ -8,3 +8,11 @@ export const ME_MUTATION = gql`
     }
   }
 `
+
+export const LIKE_TWEET_MUTATION = gql`
+  mutation LikedTweetData($tweetId: ID!) {
+    likeTweet(tweetId: $tweetId) {
+      ID
+    }
+  }
+`

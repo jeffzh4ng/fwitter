@@ -4,6 +4,8 @@ import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import { ListOfTweets } from '../../../components/ListOfTweets'
+import { LIKE_TWEET_MUTATION } from '../../../mutations'
+import { GET_PROFILE_FEED_QUERY } from '../../../queries'
 import { DrawerParamList, HomeStackParamList, ProfileTabParamList } from '../../../types'
 import {
   ProfileFeedData,
@@ -25,34 +27,6 @@ interface Props {
   route: ProfileTweetsRouteProp
 }
 
-export const GET_PROFILE_FEED_QUERY = gql`
-  query ProfileFeedData($userId: ID!) {
-    getProfileFeed(userId: $userId) {
-      ID
-      text
-      createdAt
-      user {
-        username
-      }
-      likes {
-        ID
-        user {
-          ID
-          username
-        }
-      }
-    }
-  }
-`
-
-const LIKE_TWEET_MUTATION = gql`
-  mutation LikedTweetData($tweetId: ID!) {
-    likeTweet(tweetId: $tweetId) {
-      ID
-    }
-  }
-`
-
 export const Tweets = ({ route, navigation }: Props) => {
   const { data: profileData } = useQuery<ProfileFeedData>(GET_PROFILE_FEED_QUERY, {
     variables: { userId: route.params.userId },
@@ -70,7 +44,6 @@ export const Tweets = ({ route, navigation }: Props) => {
   const handleOnTweet = () =>
     navigation.replace('Tweet', {
       previousScreen: 'Profile',
-      userId: route.params.userId,
     })
 
   const handleOnLike = (tweetId: string) =>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { FlatList, SafeAreaView, StyleSheet, Image, Text, View, Pressable } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import moment from 'moment'
-import { ProfileFeedData_getProfileFeed } from '../__generated__/ProfileFeedData'
+import { ProfileFeedData_getProfileFeed } from '../../__generated__/ProfileFeedData'
 import { AntDesign } from '@expo/vector-icons'
 
 interface Props {
