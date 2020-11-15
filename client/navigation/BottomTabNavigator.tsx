@@ -72,7 +72,7 @@ function HomeNavigator() {
       <HomeStack.Screen
         name="Feed"
         component={FeedScreen}
-        options={{ headerTitle: 'Feed', headerLeft: () => null }}
+        options={{ headerTitle: 'Feed', headerLeft: () => null, animationEnabled: false }}
       />
       <HomeStack.Screen
         name="Profile"
