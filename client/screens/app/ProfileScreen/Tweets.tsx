@@ -35,10 +35,20 @@ export const Tweets = ({ route, navigation }: Props) => {
 
   const massagedData =
     profileData && profileData.getProfileFeed
-      ? profileData.getProfileFeed.map((tweet: ProfileFeedData_getProfileFeed) => ({
-          ...tweet,
-          username: tweet.user.username,
-        }))
+      ? profileData.getProfileFeed
+          .filter((tweet) => tweet.type === 'regular')
+          .map((tweet: ProfileFeedData_getProfileFeed) => {
+            const userId = route.params.userId
+
+            let liked = false
+            if (tweet.likes.some((like) => like.user.ID === userId)) liked = true
+
+            return {
+              ...tweet,
+              liked,
+              username: tweet.user.username,
+            }
+          })
       : []
 
   const handleOnTweet = () =>
@@ -59,7 +69,17 @@ export const Tweets = ({ route, navigation }: Props) => {
       ],
     })
 
+  const handleOnNavigateToTweet = (tweetId: string) =>
+    navigation.push('FocusedTweet', {
+      tweetId,
+    })
+
   return (
-    <ListOfTweets tweets={massagedData} handleOnTweet={handleOnTweet} handleOnLike={handleOnLike} />
+    <ListOfTweets
+      tweets={massagedData}
+      handleOnTweet={handleOnTweet}
+      handleOnLike={handleOnLike}
+      handleOnNavigateToTweet={handleOnNavigateToTweet}
+    />
   )
 }

@@ -6,6 +6,7 @@ export const GET_PROFILE_FEED_QUERY = gql`
       ID
       text
       createdAt
+      type
       user {
         username
       }

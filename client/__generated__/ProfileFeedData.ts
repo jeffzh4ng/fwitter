@@ -38,6 +38,7 @@ export interface ProfileFeedData_getProfileFeed {
   ID: string;
   text: string;
   createdAt: FwitterDateTime;
+  type: string;
   user: ProfileFeedData_getProfileFeed_user;
   likes: ProfileFeedData_getProfileFeed_likes[];
 }

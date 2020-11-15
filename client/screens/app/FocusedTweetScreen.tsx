@@ -114,12 +114,12 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
           display: 'flex',
           flexDirection: 'row',
           borderBottomColor: '#eee',
-          borderBottomWidth: 1,
+          borderBottomWidth: 5,
           paddingVertical: 10,
           paddingHorizontal: 15,
         }}
       >
-        <View style={{}}>
+        <View>
           <Image
             style={{ borderRadius: 100, height: 50, width: 50 }}
             source={{
