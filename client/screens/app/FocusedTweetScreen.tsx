@@ -6,9 +6,10 @@ import moment from 'moment'
 import * as React from 'react'
 import { Image, Pressable, SafeAreaView, Text, View } from 'react-native'
 import { ListOfTweets } from '../../components/ListOfTweets'
-import { LIKE_TWEET_MUTATION } from '../../mutations'
+import { LIKE_TWEET_MUTATION, ME_MUTATION } from '../../mutations'
 import { HomeStackParamList } from '../../types'
 import { FocusedTweetData } from '../../__generated__/FocusedTweetData'
+import { meData } from '../../__generated__/meData'
 
 export interface FocusedTweetScreenProps {
   tweetId: string
@@ -65,9 +66,13 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
   })
   const [likeTweet] = useMutation(LIKE_TWEET_MUTATION)
 
-  if (!data) return <Text>Loading</Text>
+  const [me, { data: meDataResult }] = useMutation<meData>(ME_MUTATION)
 
-  const tweet = data.getTweetById
+  React.useEffect(() => {
+    me()
+  }, [])
+
+  if (!data || !meDataResult) return <Text>Loading</Text>
 
   const handleOnTweet = () =>
     navigation.replace('CreateTweet', {
@@ -80,6 +85,9 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
       refetchQueries: [
         {
           query: GET_TWEET_BY_ID_QUERY,
+          variables: {
+            tweetId: route.params.tweetId,
+          },
         },
       ],
     })
@@ -94,6 +102,10 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
     navigation.push('FocusedTweet', {
       tweetId,
     })
+
+  const tweet = data.getTweetById.likes.some((like) => like.user.ID === meDataResult.me.ID)
+    ? { ...data.getTweetById, liked: true }
+    : { ...data.getTweetById, liked: false }
 
   return (
     <SafeAreaView>
@@ -128,15 +140,19 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Pressable
               onPress={() => {
-                // handleOnReply(tweet.ID)
+                handleOnReply(tweet.ID)
               }}
             >
               <FontAwesome name="comment-o" size={17} color="#6A7A89" />
             </Pressable>
 
             <View style={{ flexDirection: 'row' }}>
-              <Pressable onPress={() => 1 /* handle on like */}>
-                <AntDesign name="hearto" size={17} color="#6A7A89" />
+              <Pressable onPress={() => handleOnLike(tweet.ID)}>
+                {tweet.liked ? (
+                  <AntDesign name="heart" size={17} color="red" />
+                ) : (
+                  <AntDesign name="hearto" size={17} color={'#6A7A89'} />
+                )}
               </Pressable>
               <Text style={{ marginLeft: 3 }}>{tweet.likes.length}</Text>
             </View>
@@ -145,7 +161,7 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
       </View>
 
       <ListOfTweets
-        tweets={data.getTweetById.children}
+        tweets={tweet.children}
         handleOnTweet={handleOnTweet}
         handleOnLike={handleOnLike}
         handleOnReply={handleOnReply}

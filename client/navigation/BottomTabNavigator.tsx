@@ -82,7 +82,11 @@ function HomeNavigator() {
         initialParams={{ userId: 'e2a85941-ef87-442f-be1c-7a0d3c18cfb1' }}
       />
       <HomeStack.Screen name="CreateTweet" component={CreateTweetScreen} />
-      <HomeStack.Screen name="FocusedTweet" component={FocusedTweetScreen} />
+      <HomeStack.Screen
+        name="FocusedTweet"
+        component={FocusedTweetScreen}
+        options={{ headerBackTitle: ' ' }}
+      />
     </HomeStack.Navigator>
   )
 }

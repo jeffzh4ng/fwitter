@@ -10,7 +10,7 @@ interface Props {
   handleOnLike: (tweetId: string) => void
   handleOnReply: (tweetId: string) => void
   handleOnNavigateToTweet: (tweetId: string) => void
-  tweets: Array<ProfileFeedData_getProfileFeed>
+  tweets: Array<ProfileFeedData_getProfileFeed & { liked: boolean }>
 }
 
 export const ListOfTweets = ({
@@ -47,7 +47,7 @@ export const ListOfTweets = ({
 }
 
 const Tweet = (props: {
-  tweet: ProfileFeedData_getProfileFeed
+  tweet: ProfileFeedData_getProfileFeed & { liked: boolean }
   handleOnLike: (tweetId: string) => void
   handleOnReply: (tweetId: string) => void
   handleOnNavigateToTweet: (tweetId: string) => void
@@ -99,7 +99,11 @@ const Tweet = (props: {
 
             <View style={{ flexDirection: 'row' }}>
               <Pressable onPress={() => handleOnLike(tweet.ID)}>
-                <AntDesign name="hearto" size={17} color="#6A7A89" />
+                {tweet.liked ? (
+                  <AntDesign name="heart" size={17} color="red" />
+                ) : (
+                  <AntDesign name="hearto" size={17} color={'#6A7A89'} />
+                )}
               </Pressable>
               <Text style={{ marginLeft: 3 }}>{tweet.likes.length}</Text>
             </View>
