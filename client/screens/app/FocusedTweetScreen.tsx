@@ -1,10 +1,12 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { AntDesign, FontAwesome } from '@expo/vector-icons'
 import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import moment from 'moment'
 import * as React from 'react'
 import { Image, Pressable, SafeAreaView, Text, View } from 'react-native'
 import { ListOfTweets } from '../../components/ListOfTweets'
+import { LIKE_TWEET_MUTATION } from '../../mutations'
 import { HomeStackParamList } from '../../types'
 import { FocusedTweetData } from '../../__generated__/FocusedTweetData'
 
@@ -12,13 +14,15 @@ export interface FocusedTweetScreenProps {
   tweetId: string
 }
 
+type FocusedTweetNavigationProp = StackNavigationProp<HomeStackParamList, 'Feed'>
 type FocusedTweetScreenRouteProp = RouteProp<HomeStackParamList, 'FocusedTweet'>
 
 interface Props {
+  navigation: FocusedTweetNavigationProp
   route: FocusedTweetScreenRouteProp
 }
 
-const GET_TWEET_BY_ID_QUERY = gql`
+export const GET_TWEET_BY_ID_QUERY = gql`
   query FocusedTweetData($tweetId: ID!) {
     getTweetById(tweetId: $tweetId) {
       ID
@@ -55,14 +59,41 @@ const GET_TWEET_BY_ID_QUERY = gql`
   }
 `
 
-export const FocusedTweetScreen = ({ route }: Props) => {
+export const FocusedTweetScreen = ({ navigation, route }: Props) => {
   const { data } = useQuery<FocusedTweetData>(GET_TWEET_BY_ID_QUERY, {
     variables: { tweetId: route.params.tweetId },
   })
+  const [likeTweet] = useMutation(LIKE_TWEET_MUTATION)
 
   if (!data) return <Text>Loading</Text>
 
   const tweet = data.getTweetById
+
+  const handleOnTweet = () =>
+    navigation.replace('CreateTweet', {
+      previousScreen: 'Profile',
+    })
+
+  const handleOnLike = (tweetId: string) =>
+    likeTweet({
+      variables: { tweetId },
+      refetchQueries: [
+        {
+          query: GET_TWEET_BY_ID_QUERY,
+        },
+      ],
+    })
+
+  const handleOnReply = (tweetId: string) =>
+    navigation.replace('CreateTweet', {
+      parentId: tweetId,
+      previousScreen: 'Feed',
+    })
+
+  const handleOnNavigateToTweet = (tweetId: string) =>
+    navigation.push('FocusedTweet', {
+      tweetId,
+    })
 
   return (
     <SafeAreaView>
@@ -115,10 +146,10 @@ export const FocusedTweetScreen = ({ route }: Props) => {
 
       <ListOfTweets
         tweets={data.getTweetById.children}
-        handleOnTweet={() => {}}
-        handleOnLike={() => {}}
-        handleOnReply={() => {}}
-        handleOnNavigateToTweet={() => {}}
+        handleOnTweet={handleOnTweet}
+        handleOnLike={handleOnLike}
+        handleOnReply={handleOnReply}
+        handleOnNavigateToTweet={handleOnNavigateToTweet}
       />
     </SafeAreaView>
   )

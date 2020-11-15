@@ -9,6 +9,7 @@ import { TweetType } from '../../__generated__/globalTypes'
 import { ME_MUTATION } from '../../mutations'
 import { meData } from '../../__generated__/meData'
 import { GET_PROFILE_FEED_QUERY } from '../../queries'
+import { GET_TWEET_BY_ID_QUERY } from './FocusedTweetScreen'
 
 type TweetScreenNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<DrawerParamList>,
@@ -52,7 +53,6 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
     }
 
     if (route.params.parentId) variables.parentId = route.params.parentId
-    console.log(variables)
 
     createTweet({
       variables,
@@ -63,6 +63,14 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
             userId: data.me.ID,
           },
         },
+        route.params.parentId
+          ? {
+              query: GET_TWEET_BY_ID_QUERY,
+              variables: {
+                tweetId: route.params.parentId,
+              },
+            }
+          : '',
       ],
     })
     navigation.replace(route.params.previousScreen)
