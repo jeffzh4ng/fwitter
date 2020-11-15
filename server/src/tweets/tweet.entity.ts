@@ -37,6 +37,7 @@ export class Tweet {
   })
   type: TweetType
 
+  @Field({ nullable: true })
   @ManyToOne(
     type => Tweet,
     tweet => tweet.children
@@ -63,7 +64,7 @@ export class Tweet {
   likes: Like[]
 
   @Field()
-  @Column({ length: 180 }) // TODO: fix issue with synchronize: true
+  @Column({ nullable: true, length: 180 }) // TODO: fix issue with synchronize: true
   text: string
 
   @Field()

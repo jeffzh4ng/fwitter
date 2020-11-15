@@ -128,6 +128,7 @@ export const SearchResultScreen = ({ navigation, route }: Props) => {
       handleOnLike={handleOnLike}
       handleOnNavigateToTweet={handleOnNavigateToTweet}
       handleOnReply={handleOnReply}
+      handleOnNavigationToProfile={handleOnNavigationToProfile}
     />
   )
 }

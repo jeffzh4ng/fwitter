@@ -47,7 +47,7 @@ export class TweetsService {
     try {
       const tweets = await this.tweetsRepository.find({
         where: { user: userId },
-        relations: ['likes', 'children'],
+        relations: ['likes', 'children', 'parent'],
       })
       return tweets.reverse()
     } catch (e) {

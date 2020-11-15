@@ -13,7 +13,7 @@ export class FeedsService {
     try {
       // get list of followees ids
       const unsortedFeed = await this.buildUnsortedFeed(userId)
-      const filteredFeed = unsortedFeed.filter(tweet => tweet.type === TweetType.REGULAR)
+      const filteredFeed = unsortedFeed.filter(tweet => tweet.type !== TweetType.REPLY)
 
       return this.sortFeed(filteredFeed).slice(0, 100) // TODO: paginate
     } catch (e) {
@@ -25,7 +25,7 @@ export class FeedsService {
   async getProfileFeed(userId: string): Promise<Array<Tweet>> {
     try {
       const tweets = await this.tweetsService.findAllTweetsFromUser(userId)
-      return tweets
+      return this.sortFeed(tweets)
     } catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException()

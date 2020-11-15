@@ -1,16 +1,13 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import { ListOfTweets } from '../../../components/ListOfTweets'
-import { LIKE_TWEET_MUTATION } from '../../../mutations'
 import { GET_PROFILE_FEED_QUERY } from '../../../queries'
 import { DrawerParamList, HomeStackParamList, ProfileTabParamList } from '../../../types'
-import {
-  ProfileFeedData,
-  ProfileFeedData_getProfileFeed,
-} from '../../../__generated__/ProfileFeedData'
+import { ProfileFeedData } from '../../../__generated__/ProfileFeedData'
+import { Text } from 'react-native'
 
 type ProfileTweetNavigationProp = CompositeNavigationProp<
   DrawerNavigationProp<DrawerParamList>,
@@ -28,58 +25,21 @@ interface Props {
 }
 
 export const Tweets = ({ route, navigation }: Props) => {
-  const { data: profileData } = useQuery<ProfileFeedData>(GET_PROFILE_FEED_QUERY, {
+  const { data } = useQuery<ProfileFeedData>(GET_PROFILE_FEED_QUERY, {
     variables: { userId: route.params.userId },
   })
-  const [likeTweet] = useMutation(LIKE_TWEET_MUTATION)
 
-  const massagedData =
-    profileData && profileData.getProfileFeed
-      ? profileData.getProfileFeed
-          .filter((tweet) => tweet.type === 'regular')
-          .map((tweet: ProfileFeedData_getProfileFeed) => {
-            const userId = route.params.userId
-
-            let liked = false
-            if (tweet.likes.some((like) => like.user.ID === userId)) liked = true
-
-            return {
-              ...tweet,
-              liked,
-              username: tweet.user.username,
-            }
-          })
-      : []
-
-  const handleOnTweet = () =>
-    navigation.replace('CreateTweet', {
-      previousScreen: 'Profile',
-    })
-
-  const handleOnLike = (tweetId: string) =>
-    likeTweet({
-      variables: { tweetId },
-      refetchQueries: [
-        {
-          query: GET_PROFILE_FEED_QUERY,
-          variables: {
-            userId: route.params.userId,
-          },
-        },
-      ],
-    })
-
-  const handleOnNavigateToTweet = (tweetId: string) =>
-    navigation.push('FocusedTweet', {
-      tweetId,
-    })
+  if (!data) return <Text>Loading</Text>
 
   return (
     <ListOfTweets
-      tweets={massagedData}
-      handleOnTweet={handleOnTweet}
-      handleOnLike={handleOnLike}
-      handleOnNavigateToTweet={handleOnNavigateToTweet}
+      navigation={navigation}
+      tweets={data.getProfileFeed}
+      previousScreen="Feed"
+      refetchQueryInfo={{
+        query: GET_PROFILE_FEED_QUERY,
+        variables: { userId: route.params.userId },
+      }}
     />
   )
 }

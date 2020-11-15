@@ -8,6 +8,7 @@ export const GET_PROFILE_FEED_QUERY = gql`
       createdAt
       type
       user {
+        ID
         username
       }
       likes {

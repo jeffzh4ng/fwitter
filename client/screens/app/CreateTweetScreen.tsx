@@ -6,7 +6,7 @@ import { Text, Button, Image, TextInput, View, TouchableOpacity } from 'react-na
 import { DrawerParamList, HomeStackParamList } from '../../types'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { TweetType } from '../../__generated__/globalTypes'
-import { ME_MUTATION } from '../../mutations'
+import { CREATE_TWEET_MUTATION, ME_MUTATION } from '../../mutations'
 import { meData } from '../../__generated__/meData'
 import { GET_PROFILE_FEED_QUERY } from '../../queries'
 import { GET_TWEET_BY_ID_QUERY } from './FocusedTweetScreen'
@@ -26,16 +26,6 @@ interface Props {
   navigation: TweetScreenNavigationProp
   route: TweetScreenRouteProp
 }
-
-const CREATE_TWEET_MUTATION = gql`
-  mutation CreatedTweetData($text: String!, $type: TweetType!, $parentId: ID!) {
-    createTweet(text: $text, type: $type, parentId: $parentId) {
-      ID
-      text
-      type
-    }
-  }
-`
 
 export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [tweetText, setTweet] = React.useState('')

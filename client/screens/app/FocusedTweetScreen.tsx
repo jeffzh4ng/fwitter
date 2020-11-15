@@ -6,13 +6,16 @@ import moment from 'moment'
 import * as React from 'react'
 import { Image, Pressable, SafeAreaView, Text, View } from 'react-native'
 import { ListOfTweets } from '../../components/ListOfTweets'
-import { LIKE_TWEET_MUTATION, ME_MUTATION } from '../../mutations'
+import { ME_MUTATION } from '../../mutations'
 import { HomeStackParamList } from '../../types'
 import { FocusedTweetData } from '../../__generated__/FocusedTweetData'
 import { meData } from '../../__generated__/meData'
 
 export interface FocusedTweetScreenProps {
   tweetId: string
+  handleOnReply: (tweetId: string) => void
+  handleOnRetweet: (tweetId: string) => void
+  handleOnLike: (tweetId: string) => void
 }
 
 type FocusedTweetNavigationProp = StackNavigationProp<HomeStackParamList, 'Feed'>
@@ -64,8 +67,6 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
   const { data } = useQuery<FocusedTweetData>(GET_TWEET_BY_ID_QUERY, {
     variables: { tweetId: route.params.tweetId },
   })
-  const [likeTweet] = useMutation(LIKE_TWEET_MUTATION)
-
   const [me, { data: meDataResult }] = useMutation<meData>(ME_MUTATION)
 
   React.useEffect(() => {
@@ -73,35 +74,6 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
   }, [])
 
   if (!data || !meDataResult) return <Text>Loading</Text>
-
-  const handleOnTweet = () =>
-    navigation.replace('CreateTweet', {
-      previousScreen: 'Profile',
-    })
-
-  const handleOnLike = (tweetId: string) =>
-    likeTweet({
-      variables: { tweetId },
-      refetchQueries: [
-        {
-          query: GET_TWEET_BY_ID_QUERY,
-          variables: {
-            tweetId: route.params.tweetId,
-          },
-        },
-      ],
-    })
-
-  const handleOnReply = (tweetId: string) =>
-    navigation.replace('CreateTweet', {
-      parentId: tweetId,
-      previousScreen: 'Feed',
-    })
-
-  const handleOnNavigateToTweet = (tweetId: string) =>
-    navigation.push('FocusedTweet', {
-      tweetId,
-    })
 
   const tweet = data.getTweetById.likes.some((like) => like.user.ID === meDataResult.me.ID)
     ? { ...data.getTweetById, liked: true }
@@ -140,14 +112,22 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Pressable
               onPress={() => {
-                handleOnReply(tweet.ID)
+                route.params.handleOnReply(tweet.ID)
               }}
             >
               <FontAwesome name="comment-o" size={17} color="#6A7A89" />
             </Pressable>
 
+            <Pressable
+              onPress={() => {
+                route.params.handleOnRetweet(tweet.ID)
+              }}
+            >
+              <AntDesign name="retweet" size={18} color="#6A7A89" />
+            </Pressable>
+
             <View style={{ flexDirection: 'row' }}>
-              <Pressable onPress={() => handleOnLike(tweet.ID)}>
+              <Pressable onPress={() => route.params.handleOnLike(tweet.ID)}>
                 {tweet.liked ? (
                   <AntDesign name="heart" size={17} color="red" />
                 ) : (
@@ -162,10 +142,12 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
 
       <ListOfTweets
         tweets={tweet.children}
-        handleOnTweet={handleOnTweet}
-        handleOnLike={handleOnLike}
-        handleOnReply={handleOnReply}
-        handleOnNavigateToTweet={handleOnNavigateToTweet}
+        navigation={navigation}
+        previousScreen="FocusedTweet"
+        refetchQueryInfo={{
+          query: GET_TWEET_BY_ID_QUERY,
+          variables: { tweetId: route.params.tweetId },
+        }}
       />
     </SafeAreaView>
   )

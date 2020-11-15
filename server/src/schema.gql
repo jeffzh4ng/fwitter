@@ -50,6 +50,7 @@ type Tweet {
   """
   ID: String!
   likes: [Like!]!
+  parent: Tweet
   text: String!
   type: String!
   user: User!
