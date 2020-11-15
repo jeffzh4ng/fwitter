@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/users/user.entity'
 import { UsersService } from 'src/users/users.service'
-import { Repository } from 'typeorm'
+import { Like as TypeOrmLike, Repository } from 'typeorm'
 import { Like } from './like.entity'
 import { Tweet, TweetType } from './tweet.entity'
 
@@ -25,6 +25,20 @@ export class TweetsService {
       return tweet
     } catch (e) {
       this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
+  async findMany(query: string): Promise<Array<Tweet>> {
+    try {
+      const tweets = await this.tweetsRepository.find({
+        where: { text: TypeOrmLike(`%${query}%`), type: TweetType.REGULAR },
+        relations: ['likes'],
+      })
+
+      return tweets
+    } catch (e) {
+      this.logger.log(e)
       throw new InternalServerErrorException()
     }
   }

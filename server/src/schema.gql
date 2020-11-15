@@ -38,6 +38,7 @@ type Query {
   getOneByUsername(username: String!): User!
   getProfileFeed(userId: ID!): [Tweet!]!
   getTweetById(tweetId: ID!): Tweet!
+  searchTweets(query: String!): [Tweet!]!
 }
 
 type Tweet {

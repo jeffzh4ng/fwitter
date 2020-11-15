@@ -40,4 +40,12 @@ export class TweetsResolver {
     const tweet = await this.tweetsService.toggleLike({ userId, tweetId })
     return tweet
   }
+
+  @Query(returns => [Tweet])
+  async searchTweets(@Args('query', { type: () => String }) query: string): Promise<Array<Tweet>> {
+    console.log(query)
+
+    const tweets = await this.tweetsService.findMany(query)
+    return tweets
+  }
 }

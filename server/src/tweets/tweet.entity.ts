@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
-import { GraphQLID } from 'graphql'
+import { GraphQLBoolean, GraphQLID } from 'graphql'
 import { User } from 'src/users/user.entity'
 import {
   Entity,

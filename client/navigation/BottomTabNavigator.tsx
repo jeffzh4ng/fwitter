@@ -13,7 +13,9 @@ import {
   FeedScreen,
   ProfileScreen,
   FocusedTweetScreen,
+  SearchResultScreen,
 } from '../screens/app'
+import { Text } from 'react-native'
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>()
 
@@ -34,7 +36,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Search"
-        component={SearchScreen}
+        component={SearchNavigator}
         options={{
           tabBarIcon: ({ color }) => <AntDesign name="search1" size={24} color={color} />,
         }}
@@ -72,7 +74,11 @@ function HomeNavigator() {
       <HomeStack.Screen
         name="Feed"
         component={FeedScreen}
-        options={{ headerTitle: 'Feed', headerLeft: () => null, animationEnabled: false }}
+        options={{
+          headerTitle: () => <AntDesign name="twitter" size={24} color="#1fa1fa" />,
+          headerLeft: () => null,
+          animationEnabled: false,
+        }}
       />
       <HomeStack.Screen
         name="Profile"
@@ -88,5 +94,21 @@ function HomeNavigator() {
         options={{ headerBackTitle: ' ', headerTitle: 'Tweet' }}
       />
     </HomeStack.Navigator>
+  )
+}
+
+const SearchStack = createStackNavigator()
+const SearchNavigator = () => {
+  return (
+    <SearchStack.Navigator>
+      <SearchStack.Screen name="Search" component={SearchScreen} />
+      <SearchStack.Screen
+        name="SearchResult"
+        component={SearchResultScreen}
+        options={{
+          headerBackTitle: ' ',
+        }}
+      />
+    </SearchStack.Navigator>
   )
 }

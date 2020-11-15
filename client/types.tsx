@@ -2,6 +2,7 @@ import { ProfileTweetsTabProps } from './screens/app/ProfileScreen/Tweets'
 import { TweetScreenProps } from './screens/app/CreateTweetScreen'
 import { ProfileScreenProps } from './screens/app/ProfileScreen'
 import { FocusedTweetScreenProps } from './screens/app/FocusedTweetScreen'
+import { SearchResultScreenProps } from './screens/app/SearchResultScreen'
 
 export type DrawerParamList = {
   Root: undefined
@@ -28,6 +29,11 @@ export type HomeStackParamList = {
   Profile: ProfileScreenProps
   CreateTweet: TweetScreenProps
   FocusedTweet: FocusedTweetScreenProps
+}
+
+export type SearchStackParamList = {
+  Search: undefined
+  SearchResult: SearchResultScreenProps
 }
 
 export type ProfileTabParamList = {

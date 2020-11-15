@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { ProfileFeedData_getProfileFeed } from '../__generated__/ProfileFeedData'
 
 interface Props {
-  handleOnTweet: () => void
+  handleOnTweet: (() => void) | null
   handleOnLike: (tweetId: string) => void
   handleOnReply: (tweetId: string) => void
   handleOnNavigateToTweet: (tweetId: string) => void
@@ -20,7 +20,7 @@ export const ListOfTweets = ({
   handleOnReply,
   handleOnNavigateToTweet,
 }: Props) => {
-  const renderTweet = ({ item }: { item: ProfileFeedData_getProfileFeed }) => {
+  const renderTweet = ({ item }: { item: ProfileFeedData_getProfileFeed & { liked: boolean } }) => {
     return (
       <Tweet
         tweet={item}
@@ -34,14 +34,18 @@ export const ListOfTweets = ({
   return (
     <SafeAreaView style={styles.home}>
       <FlatList data={tweets} renderItem={renderTweet} keyExtractor={(item) => item.ID} />
-      <View style={{ backgroundColor: 'transparent', bottom: 15, position: 'absolute', right: 15 }}>
-        <Pressable
-          style={{ backgroundColor: '#1fa1fa', borderRadius: 100, padding: 15 }}
-          onPress={handleOnTweet}
+      {handleOnTweet ? (
+        <View
+          style={{ backgroundColor: 'transparent', bottom: 15, position: 'absolute', right: 15 }}
         >
-          <MaterialCommunityIcons name="feather" size={24} color="white" />
-        </Pressable>
-      </View>
+          <Pressable
+            style={{ backgroundColor: '#1fa1fa', borderRadius: 100, padding: 15 }}
+            onPress={handleOnTweet}
+          >
+            <MaterialCommunityIcons name="feather" size={24} color="white" />
+          </Pressable>
+        </View>
+      ) : null}
     </SafeAreaView>
   )
 }

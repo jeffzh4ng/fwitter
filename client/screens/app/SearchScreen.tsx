@@ -80,7 +80,11 @@ export const SearchScreen = ({ navigation }: Props) => {
         <AntDesign style={{ marginLeft: 10 }} name="search1" size={20} color="darkslategrey" />
         <TextInput
           autoFocus
+          autoCapitalize="none"
           onChangeText={(text) => setSearchText(text)}
+          onSubmitEditing={() => {
+            navigation.navigate('SearchResult', { query: searchText })
+          }}
           placeholder="Search Twitter"
           placeholderTextColor="#5c6a75"
           style={{
@@ -90,6 +94,7 @@ export const SearchScreen = ({ navigation }: Props) => {
             fontSize: 16,
             padding: 5,
           }}
+          returnKeyType="search"
           value={searchText}
         />
       </View>
