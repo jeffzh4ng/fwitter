@@ -57,7 +57,6 @@ export const ListOfTweets = ({ navigation, tweets, previousScreen, refetchQueryI
   }
 
   const handleOnNavigationToProfile = (userId: string) => {
-    console.log('navigating away', userId)
     navigation.navigate('Profile', {
       userId,
     })
@@ -126,7 +125,6 @@ const Tweet = (props: {
   handleOnNavigationToProfile: (userId: string) => void
 }) => {
   const {
-    tweet,
     handleOnLike,
     handleOnReply,
     handleOnNavigateToTweet,
@@ -134,7 +132,8 @@ const Tweet = (props: {
     handleOnRetweet,
   } = props
 
-  if (tweet.type === 'retweet') return <Text>Retweet</Text>
+  const isRetweet = props.tweet.type === 'retweet'
+  const tweet = isRetweet && props.tweet.parent ? props.tweet.parent : props.tweet
 
   return (
     <Pressable
@@ -166,6 +165,10 @@ const Tweet = (props: {
         </Pressable>
 
         <View style={{ flexShrink: 1, marginLeft: 10 }}>
+          {isRetweet ? (
+            <Text style={{ color: '#1fa1fa' }}>{tweet.user.username} retweeted</Text>
+          ) : null}
+
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             {/* <Text style={{ fontSize: 16, fontWeight: '700' }}>John Doe</Text> */}
             <Text style={{ fontSize: 16, marginLeft: 3 }}>@{tweet.user.username}</Text>
@@ -173,6 +176,7 @@ const Tweet = (props: {
               • {moment(tweet.createdAt).fromNow()}
             </Text>
           </View>
+
           <Text style={{ flexShrink: 1, fontSize: 16 }}>{tweet.text}</Text>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>

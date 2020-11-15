@@ -31,7 +31,7 @@ const FOLLOW_MUTATION = gql`
 const Tab = createMaterialTopTabNavigator()
 
 export const ProfileScreen = ({ route }: Props) => {
-  const [follow, { data }] = useMutation(FOLLOW_MUTATION)
+  const [follow] = useMutation(FOLLOW_MUTATION)
 
   const followCallback = React.useCallback(() => {
     follow({

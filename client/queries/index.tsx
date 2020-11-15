@@ -7,6 +7,22 @@ export const GET_PROFILE_FEED_QUERY = gql`
       text
       createdAt
       type
+      parent {
+        ID
+        text
+        createdAt
+        likes {
+          ID
+          user {
+            ID
+            username
+          }
+        }
+        user {
+          ID
+          username
+        }
+      }
       user {
         ID
         username
