@@ -241,25 +241,21 @@ const TweetText = ({
   text,
   handleOnHashtagClick,
 }: {
-  handleOnHashtagClick: string
+  handleOnHashtagClick: (hashtag: string) => void
   text: string
 }) => {
-  for (const c of text.split('')) {
-    console.log(c)
-  }
-
   return (
     <View>
       <Text>
-        {text.split(' ').map((word) => {
+        {text.split(' ').map((word, i) => {
           const isHashtag = word.startsWith('#')
 
           return isHashtag ? (
-            <Pressable onPress={() => handleOnHashtagClick(word)}>
+            <Pressable key={i} onPress={() => handleOnHashtagClick(word)}>
               <Text style={{ color: '#1fa1fa' }}>{word + ' '}</Text>
             </Pressable>
           ) : (
-            <Text>{word + ' '}</Text>
+            <Text key={i}>{word + ' '}</Text>
           )
         })}
       </Text>

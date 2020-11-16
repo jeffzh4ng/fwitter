@@ -1,5 +1,7 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { NotificationType } from 'src/notifications/notifications.entity'
+import { NotificationsService } from 'src/notifications/notifications.service'
 import { UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
 import { Follow } from './follow.entity'
@@ -10,7 +12,8 @@ export class FollowsService {
 
   constructor(
     @InjectRepository(Follow) private followsRepository: Repository<Follow>,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private notificationsService: NotificationsService
   ) {}
 
   async toggleFollow({ userId, targetId }: { userId: string; targetId: string }): Promise<Follow> {
@@ -29,6 +32,12 @@ export class FollowsService {
         follow.target = target
 
         await this.followsRepository.save(follow)
+
+        await this.notificationsService.createNotification({
+          targetId: follow.id,
+          targetUserId: targetId,
+          type: NotificationType.FOLLOW,
+        })
         return follow
       }
     } catch (e) {

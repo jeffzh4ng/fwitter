@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Hash } from 'crypto'
+import { NotificationType } from 'src/notifications/notifications.entity'
+import { NotificationsService } from 'src/notifications/notifications.service'
 import { User } from 'src/users/user.entity'
 import { UsersService } from 'src/users/users.service'
 import { Like as TypeOrmLike, Repository } from 'typeorm'
@@ -16,6 +17,7 @@ export class TweetsService {
     @InjectRepository(Tweet) private tweetsRepository: Repository<Tweet>,
     @InjectRepository(Like) private likesRepository: Repository<Like>,
     @InjectRepository(Hashtag) private hashtagsRepository: Repository<Hashtag>,
+    private notificationsService: NotificationsService,
     private usersService: UsersService
   ) {}
 
@@ -88,6 +90,11 @@ export class TweetsService {
         return existingLike
       } else {
         const newLike = await this.createNewLike(user, tweet)
+        await this.notificationsService.createNotification({
+          targetId: newLike.id,
+          targetUserId: tweet.user.id,
+          type: NotificationType.LIKE,
+        })
         return newLike
       }
     } catch (e) {
@@ -119,7 +126,10 @@ export class TweetsService {
     try {
       const { user, text, type, parentId } = data
 
-      const parent = await this.tweetsRepository.findOne({ where: { id: parentId } })
+      const parent = await this.tweetsRepository.findOne({
+        where: { id: parentId },
+        relations: ['parent', 'parent.user'],
+      })
 
       const tweet = new Tweet()
       tweet.text = text
@@ -128,6 +138,17 @@ export class TweetsService {
       tweet.parent = parent
 
       await this.tweetsRepository.save(tweet)
+
+      const tweetIsReplyOrRetweet =
+        tweet.type === TweetType.REPLY || tweet.type === TweetType.RETWEET
+
+      if (tweetIsReplyOrRetweet) {
+        await this.notificationsService.createNotification({
+          targetId: tweet.parent.id,
+          targetUserId: tweet.parent.user.id,
+          type: NotificationType.LIKE,
+        })
+      }
 
       return tweet
     } catch (e) {
