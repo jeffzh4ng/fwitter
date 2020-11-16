@@ -18,7 +18,7 @@ export const LIKE_TWEET_MUTATION = gql`
 `
 
 export const CREATE_TWEET_MUTATION = gql`
-  mutation CreatedTweetData($text: String!, $type: TweetType!, $parentId: ID!) {
+  mutation CreatedTweetData($text: String!, $type: TweetType!, $parentId: ID = null) {
     createTweet(text: $text, type: $type, parentId: $parentId) {
       ID
       text

@@ -4,13 +4,9 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
 import { TextInput, Text } from 'react-native'
 import { ListOfTweets } from '../../components/ListOfTweets'
-import { LIKE_TWEET_MUTATION, ME_MUTATION } from '../../mutations'
+import { GET_PROFILE_FEED_QUERY } from '../../queries'
 import { SearchStackParamList } from '../../types'
-import { meData } from '../../__generated__/meData'
-import {
-  SearchTweetsData,
-  SearchTweetsData_searchTweets,
-} from '../../__generated__/SearchTweetsData'
+import { SearchTweetsData } from '../../__generated__/SearchTweetsData'
 
 type SearchResultScreenNavigationProp = StackNavigationProp<SearchStackParamList, 'SearchResult'>
 type SearchScreenRouteProp = RouteProp<SearchStackParamList, 'SearchResult'>
@@ -50,12 +46,6 @@ export const SearchResultScreen = ({ navigation, route }: Props) => {
   const { data } = useQuery<SearchTweetsData>(SEARCH_TWEETS_QUERY, {
     variables: { query: route.params.query },
   })
-  const [me, { data: meDataResult }] = useMutation<meData>(ME_MUTATION)
-  const [likeTweet] = useMutation(LIKE_TWEET_MUTATION)
-
-  React.useEffect(() => {
-    me()
-  }, [])
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -77,58 +67,14 @@ export const SearchResultScreen = ({ navigation, route }: Props) => {
     })
   }, [navigation])
 
-  if (!data || !meDataResult) return <Text>Loading</Text>
-
-  const handleOnLike = (tweetId: string) =>
-    likeTweet({
-      variables: { tweetId },
-      refetchQueries: [
-        {
-          query: SEARCH_TWEETS_QUERY,
-          variables: { query: route.params.query },
-        },
-      ],
-    })
-
-  const handleOnReply = (tweetId: string) =>
-    navigation.navigate('Feed', {
-      screen: 'CreateTweet',
-      params: {
-        parentId: tweetId,
-        previousScreen: 'Feed',
-      },
-    })
-
-  const handleOnNavigateToTweet = (tweetId: string) =>
-    navigation.navigate('Feed', {
-      screen: 'FocusedTweet',
-      params: {
-        tweetId,
-      },
-    })
-
-  const massagedTweets: Array<
-    SearchTweetsData_searchTweets & { liked: boolean }
-  > = data.searchTweets.map((tweet) => {
-    const userId = meDataResult.me.ID
-
-    let liked = false
-    if (tweet.likes.some((like) => like.user.ID === userId)) liked = true
-
-    return {
-      ...tweet,
-      liked,
-    }
-  })
+  if (!data) return <Text>Loading</Text>
 
   return (
     <ListOfTweets
-      tweets={massagedTweets}
-      handleOnTweet={null}
-      handleOnLike={handleOnLike}
-      handleOnNavigateToTweet={handleOnNavigateToTweet}
-      handleOnReply={handleOnReply}
-      handleOnNavigationToProfile={handleOnNavigationToProfile}
+      navigation={navigation}
+      tweets={data.searchTweets}
+      previousScreen="Search"
+      refetchQueryInfo={{ query: GET_PROFILE_FEED_QUERY }}
     />
   )
 }

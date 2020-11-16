@@ -12,7 +12,6 @@ export class FeedsResolver {
   async getFeed(@Context() ctx: any) {
     const { userId } = ctx.req.session
     const tweets = await this.feedService.getFeed(userId)
-    console.log(tweets)
     return tweets
   }
 

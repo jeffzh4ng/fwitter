@@ -14,7 +14,6 @@ export class TweetsResolver {
   @Query(returns => Tweet)
   async getTweetById(@Args('tweetId', { type: () => GraphQLID }) tweetId: string) {
     const tweet = await this.tweetsService.findOne(tweetId)
-    console.log(tweet)
     return tweet
   }
 

@@ -17,7 +17,7 @@ interface Props {
   navigation: ListOfTweetsNavigationProp
   tweets: Array<ProfileFeedData_getProfileFeed & { liked: boolean }>
   previousScreen: string
-  refetchQueryInfo: {
+  refetchQueryInfo?: {
     query: import('graphql').DocumentNode
     variables?: { [variable: string]: string }
   }
@@ -42,7 +42,7 @@ export const ListOfTweets = ({ navigation, tweets, previousScreen, refetchQueryI
   const handleOnLike = (tweetId: string) =>
     likeTweet({
       variables: { tweetId },
-      refetchQueries: [refetchQueryInfo],
+      ...(refetchQueryInfo && { refetchQueries: [refetchQueryInfo] }),
     })
 
   const handleOnReply = (tweetId: string) =>
@@ -62,13 +62,28 @@ export const ListOfTweets = ({ navigation, tweets, previousScreen, refetchQueryI
     })
   }
 
-  const handleOnNavigateToTweet = (tweetId: string) =>
-    navigation.push('FocusedTweet', {
-      tweetId,
-      handleOnLike,
-      handleOnReply,
-      handleOnRetweet,
-    })
+  const handleOnNavigateToTweet = (tweetId: string) => {
+    console.log('previous screen', previousScreen)
+
+    if (previousScreen === 'Search') {
+      navigation.navigate('Feed', {
+        screen: 'FocusedTweet',
+        params: {
+          tweetId,
+          handleOnLike,
+          handleOnReply,
+          handleOnRetweet,
+        },
+      })
+    } else {
+      navigation.push('FocusedTweet', {
+        tweetId,
+        handleOnLike,
+        handleOnReply,
+        handleOnRetweet,
+      })
+    }
+  }
 
   const renderTweet = ({ item }: { item: ProfileFeedData_getProfileFeed & { liked: boolean } }) => {
     return (
