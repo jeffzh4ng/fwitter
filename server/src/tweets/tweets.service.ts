@@ -1,8 +1,10 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Hash } from 'crypto'
 import { User } from 'src/users/user.entity'
 import { UsersService } from 'src/users/users.service'
 import { Like as TypeOrmLike, Repository } from 'typeorm'
+import { Hashtag } from './hashtag.entity'
 import { Like } from './like.entity'
 import { Tweet, TweetType } from './tweet.entity'
 
@@ -13,6 +15,7 @@ export class TweetsService {
   constructor(
     @InjectRepository(Tweet) private tweetsRepository: Repository<Tweet>,
     @InjectRepository(Like) private likesRepository: Repository<Like>,
+    @InjectRepository(Hashtag) private hashtagsRepository: Repository<Hashtag>,
     private usersService: UsersService
   ) {}
 
@@ -66,6 +69,7 @@ export class TweetsService {
       const user = await this.usersService.findOneByUserId(data.userId)
       const createdTweet = await this.tweet({ ...data, user, parentId: data.parentId })
       console.log(createdTweet)
+      await this.createHashes(createdTweet)
       return createdTweet
     } catch (e) {
       this.logger.error(e)
@@ -126,6 +130,24 @@ export class TweetsService {
       await this.tweetsRepository.save(tweet)
 
       return tweet
+    } catch (e) {
+      this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
+  private async createHashes(createdTweet: Tweet): Promise<void> {
+    try {
+      console.log('creating hashes')
+      const tags = createdTweet.text.split(' ').filter(word => word.startsWith('#'))
+      const createdHashtagPromises: Array<Promise<Hashtag>> = tags.map(tag => {
+        const createdHashtag = new Hashtag()
+        createdHashtag.tag = tag
+        createdHashtag.tweet = createdTweet
+        return this.hashtagsRepository.save(createdHashtag)
+      })
+
+      await Promise.all(createdHashtagPromises)
     } catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException()

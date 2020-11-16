@@ -29,7 +29,7 @@ interface Props {
 
 export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [tweetText, setTweet] = React.useState('')
-  const [createTweet] = useMutation(CREATE_TWEET_MUTATION)
+  const [createTweet, { error }] = useMutation(CREATE_TWEET_MUTATION)
 
   const [me, { data }] = useMutation<meData>(ME_MUTATION)
 
