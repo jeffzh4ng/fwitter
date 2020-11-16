@@ -85,6 +85,12 @@ export const ListOfTweets = ({ navigation, tweets, previousScreen, refetchQueryI
     }
   }
 
+  const handleOnHashtagClick = (tag: string) => {
+    navigation.navigate('SearchResult', {
+      query: tag,
+    })
+  }
+
   const renderTweet = ({ item }: { item: ProfileFeedData_getProfileFeed & { liked: boolean } }) => {
     return (
       <Tweet
@@ -94,6 +100,7 @@ export const ListOfTweets = ({ navigation, tweets, previousScreen, refetchQueryI
         handleOnNavigateToTweet={handleOnNavigateToTweet}
         handleOnNavigationToProfile={handleOnNavigationToProfile}
         handleOnRetweet={handleOnRetweet}
+        handleOnHashtagClick={handleOnHashtagClick}
       />
     )
   }
@@ -138,6 +145,7 @@ const Tweet = (props: {
   handleOnRetweet: (tweetId: string) => void
   handleOnNavigateToTweet: (tweetId: string) => void
   handleOnNavigationToProfile: (userId: string) => void
+  handleOnHashtagClick: (tag: string) => void
 }) => {
   const {
     handleOnLike,
@@ -145,6 +153,7 @@ const Tweet = (props: {
     handleOnNavigateToTweet,
     handleOnNavigationToProfile,
     handleOnRetweet,
+    handleOnHashtagClick,
   } = props
 
   const isRetweet = props.tweet.type === 'retweet'
@@ -192,7 +201,7 @@ const Tweet = (props: {
             </Text>
           </View>
 
-          <Text style={{ flexShrink: 1, fontSize: 16 }}>{tweet.text}</Text>
+          <TweetText text={tweet.text} handleOnHashtagClick={handleOnHashtagClick} />
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
             <Pressable
@@ -225,6 +234,36 @@ const Tweet = (props: {
         </View>
       </View>
     </Pressable>
+  )
+}
+
+const TweetText = ({
+  text,
+  handleOnHashtagClick,
+}: {
+  handleOnHashtagClick: string
+  text: string
+}) => {
+  for (const c of text.split('')) {
+    console.log(c)
+  }
+
+  return (
+    <View>
+      <Text>
+        {text.split(' ').map((word) => {
+          const isHashtag = word.startsWith('#')
+
+          return isHashtag ? (
+            <Pressable onPress={() => handleOnHashtagClick(word)}>
+              <Text style={{ color: '#1fa1fa' }}>{word + ' '}</Text>
+            </Pressable>
+          ) : (
+            <Text>{word + ' '}</Text>
+          )
+        })}
+      </Text>
+    </View>
   )
 }
 
