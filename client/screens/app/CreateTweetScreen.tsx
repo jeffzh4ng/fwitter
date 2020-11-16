@@ -19,6 +19,7 @@ type TweetScreenRouteProp = RouteProp<HomeStackParamList, 'CreateTweet'>
 
 export interface TweetScreenProps {
   previousScreen: 'Feed' | 'Profile'
+  previousScreenParams?: { [variable: string]: string }
   parentId?: string
 }
 
@@ -29,7 +30,7 @@ interface Props {
 
 export const CreateTweetScreen = ({ navigation, route }: Props) => {
   const [tweetText, setTweet] = React.useState('')
-  const [createTweet, { error }] = useMutation(CREATE_TWEET_MUTATION)
+  const [createTweet] = useMutation(CREATE_TWEET_MUTATION)
 
   const [me, { data }] = useMutation<meData>(ME_MUTATION)
 
@@ -63,7 +64,9 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
           : '',
       ],
     })
-    navigation.replace(route.params.previousScreen)
+    navigation.replace(route.params.previousScreen, {
+      ...route.params.previousScreenParams,
+    })
   }, [data, route, tweetText])
 
   React.useEffect(() => {
@@ -77,7 +80,9 @@ export const CreateTweetScreen = ({ navigation, route }: Props) => {
       headerLeft: () => (
         <TouchableOpacity
           onPress={() => {
-            navigation.replace(route.params.previousScreen)
+            navigation.replace(route.params.previousScreen, {
+              ...route.params.previousScreenParams,
+            })
           }}
         >
           <Text style={{ color: '#1FA1F1', fontSize: 16, marginLeft: 10 }}>Cancel</Text>

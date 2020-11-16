@@ -10,6 +10,8 @@ export class NotificationsResolver {
   async getNotifications(@Context() ctx: any) {
     const { userId } = ctx.req.session
 
-    return this.notificationsService.getNotifications(userId)
+    const foo = await this.notificationsService.getNotifications(userId)
+    console.log(foo)
+    return foo
   }
 }

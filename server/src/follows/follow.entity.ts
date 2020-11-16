@@ -6,7 +6,7 @@ import { Entity, ManyToOne, CreateDateColumn, PrimaryGeneratedColumn } from 'typ
 @ObjectType()
 @Entity('follows')
 export class Follow {
-  @Field()
+  @Field(GraphQLID)
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -24,6 +24,7 @@ export class Follow {
   )
   target: User
 
+  @Field()
   @CreateDateColumn()
-  date: Date
+  createdAt: Date
 }

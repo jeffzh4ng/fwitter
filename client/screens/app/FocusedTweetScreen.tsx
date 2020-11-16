@@ -144,6 +144,7 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
         tweets={tweet.children}
         navigation={navigation}
         previousScreen="FocusedTweet"
+        previousScreenParams={{ tweetId: route.params.tweetId }}
         refetchQueryInfo={{
           query: GET_TWEET_BY_ID_QUERY,
           variables: { tweetId: route.params.tweetId },

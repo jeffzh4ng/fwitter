@@ -17,13 +17,20 @@ interface Props {
   navigation: ListOfTweetsNavigationProp
   tweets: Array<ProfileFeedData_getProfileFeed & { liked: boolean }>
   previousScreen: string
+  previousScreenParams?: { [variable: string]: string }
   refetchQueryInfo?: {
     query: import('graphql').DocumentNode
     variables?: { [variable: string]: string }
   }
 }
 
-export const ListOfTweets = ({ navigation, tweets, previousScreen, refetchQueryInfo }: Props) => {
+export const ListOfTweets = ({
+  navigation,
+  tweets,
+  previousScreen,
+  refetchQueryInfo,
+  previousScreenParams,
+}: Props) => {
   const [likeTweet] = useMutation(LIKE_TWEET_MUTATION)
   const [retweet] = useMutation(CREATE_TWEET_MUTATION)
   const [me, { data: meDataResult }] = useMutation<meData>(ME_MUTATION)
@@ -50,6 +57,7 @@ export const ListOfTweets = ({ navigation, tweets, previousScreen, refetchQueryI
       parentId: tweetId,
       // @ts-ignore
       previousScreen,
+      previousScreenParams,
     })
 
   const handleOnRetweet = (tweetId: string) => {
@@ -63,8 +71,6 @@ export const ListOfTweets = ({ navigation, tweets, previousScreen, refetchQueryI
   }
 
   const handleOnNavigateToTweet = (tweetId: string) => {
-    console.log('previous screen', previousScreen)
-
     if (previousScreen === 'Search') {
       navigation.navigate('Feed', {
         screen: 'FocusedTweet',

@@ -17,9 +17,11 @@ export class NotificationsService {
     userId: string
   ): Promise<Array<Omit<Notification, 'target'> & { target: unknown }>> {
     try {
-      const notifs = await this.notificationsRepository.find({ where: { targetUser: userId } })
+      const notifs = await this.notificationsRepository.find({
+        where: { targetUser: '499a10af-f642-487e-97dc-b8875b032fc5' },
+      })
       const populatedNotifsPromise = notifs.map(async n => {
-        const tableName = `${n.target}s`
+        const tableName = `${n.type}s`
         const dbConnection = getConnection()
         const targetRepo = dbConnection.getRepository(tableName)
         const targetObject = await targetRepo.findOne({ where: { id: n.target } })

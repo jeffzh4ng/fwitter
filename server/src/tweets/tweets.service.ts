@@ -146,7 +146,7 @@ export class TweetsService {
         await this.notificationsService.createNotification({
           targetId: tweet.parent.id,
           targetUserId: tweet.parent.user.id,
-          type: NotificationType.LIKE,
+          type: NotificationType.TWEET,
         })
       }
 
