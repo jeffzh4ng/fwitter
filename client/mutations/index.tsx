@@ -5,6 +5,9 @@ export const ME_MUTATION = gql`
     me {
       ID
       username
+      name
+      bio
+      website
     }
   }
 `

@@ -21,15 +21,15 @@ export class User {
   @Column()
   name: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   bio: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   website: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   avatarUrl: string
 

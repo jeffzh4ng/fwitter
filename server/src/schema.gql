@@ -35,6 +35,7 @@ type Mutation {
   login(password: String!, username: String!): User!
   me: User!
   signup(password: String!, username: String!): User!
+  updateUser(bio: String!, name: String!, website: String!): User!
 }
 
 type Notification {
@@ -55,6 +56,7 @@ type Query {
   getFeed: [Tweet!]!
   getManyByUsername(query: String!): [User!]!
   getNotifications: [Notification!]!
+  getOneByUserId(userId: ID!): User!
   getOneByUsername(username: String!): User!
   getProfileFeed(userId: ID!): [Tweet!]!
   getTweetById(tweetId: ID!): Tweet!
@@ -83,8 +85,8 @@ enum TweetType {
 }
 
 type User {
-  avatarUrl: String!
-  bio: String!
+  avatarUrl: String
+  bio: String
   createdAt: DateTime!
 
   """
@@ -93,5 +95,5 @@ type User {
   ID: String!
   name: String!
   username: String!
-  website: String!
+  website: String
 }

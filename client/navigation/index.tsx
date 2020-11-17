@@ -41,22 +41,22 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      {data ? <DrawerNavigator /> : <UnauthenticatedStack />}
+      {data ? <DrawerNavigator userId={data.me.ID} /> : <UnauthenticatedStack />}
     </NavigationContainer>
   )
 }
 
 const Drawer = createDrawerNavigator()
 
-const DrawerNavigator = () => {
+const DrawerNavigator = ({ userId }: { userId: string }) => {
   return (
-    <Drawer.Navigator drawerContent={DrawerContent}>
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} userId={userId} />}>
       <Drawer.Screen name="Home" component={BottomTabNavigator} />
     </Drawer.Navigator>
   )
 }
 
-const DrawerContent = (props: DrawerContentComponentProps) => {
+const DrawerContent = (props: DrawerContentComponentProps & { userId: string }) => {
   return (
     <>
       <DrawerContentScrollView>
@@ -64,7 +64,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
         <DrawerItem
           label="Profile"
           onPress={() => {
-            props.navigation.navigate('Profile', { userId: '499a10af-f642-487e-97dc-b8875b032fc5' })
+            props.navigation.navigate('Profile', { userId: props.userId })
           }}
         />
         <Pressable

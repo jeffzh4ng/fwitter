@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository } from 'typeorm'
+import { In, Like, Repository } from 'typeorm'
 import { User } from './user.entity'
 
 @Injectable()
@@ -60,6 +60,31 @@ export class UsersService {
       user.username = username
       user.password = password // TODO: hash passwords instead of storing raw
       return await this.usersRepository.save(user)
+    } catch (e) {
+      this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
+  async updateOne({
+    userId,
+    name,
+    bio,
+    website,
+  }: {
+    userId: string
+    name: string
+    bio: string
+    website: string
+  }): Promise<User> {
+    try {
+      const user = await this.usersRepository.findOne(userId)
+      user.name = name
+      user.bio = bio
+      user.website = website
+      await this.usersRepository.save(user)
+
+      return user
     } catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException()
