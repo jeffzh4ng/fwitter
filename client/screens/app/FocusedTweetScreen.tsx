@@ -16,6 +16,7 @@ export interface FocusedTweetScreenProps {
   handleOnReply: (tweetId: string) => void
   handleOnRetweet: (tweetId: string) => void
   handleOnLike: (tweetId: string) => void
+  handleOnNavigationToProfile: (userId: string) => void
 }
 
 type FocusedTweetNavigationProp = StackNavigationProp<HomeStackParamList, 'Feed'>
@@ -34,6 +35,7 @@ export const GET_TWEET_BY_ID_QUERY = gql`
       type
       createdAt
       user {
+        ID
         username
       }
       likes {
@@ -92,12 +94,18 @@ export const FocusedTweetScreen = ({ navigation, route }: Props) => {
         }}
       >
         <View>
-          <Image
-            style={{ borderRadius: 100, height: 50, width: 50 }}
-            source={{
-              uri: 'https://image.flaticon.com/icons/png/512/194/194938.png',
+          <Pressable
+            onPress={() => {
+              route.params.handleOnNavigationToProfile(tweet.user.ID)
             }}
-          />
+          >
+            <Image
+              style={{ borderRadius: 100, height: 50, width: 50 }}
+              source={{
+                uri: 'https://image.flaticon.com/icons/png/512/194/194938.png',
+              }}
+            />
+          </Pressable>
         </View>
         <View style={{ flexShrink: 1, marginLeft: 10 }}>
           <View style={{ display: 'flex', flexDirection: 'row' }}>

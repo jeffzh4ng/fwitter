@@ -87,6 +87,7 @@ export const ListOfTweets = ({
         handleOnLike,
         handleOnReply,
         handleOnRetweet,
+        handleOnNavigationToProfile,
       })
     }
   }

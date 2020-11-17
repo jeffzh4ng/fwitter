@@ -27,6 +27,7 @@ export type BottomTabParamList = {
 export type HomeStackParamList = {
   Feed: undefined
   Profile: ProfileScreenProps
+  EditProfile: undefined
   CreateTweet: TweetScreenProps
   FocusedTweet: FocusedTweetScreenProps
 }

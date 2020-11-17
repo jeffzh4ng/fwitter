@@ -14,8 +14,7 @@ export const LandingScreen = ({ navigation }: Props) => {
   return (
     <SafeAreaView>
       <View style={{ height: '100%', justifyContent: 'space-between', paddingHorizontal: 40 }}>
-        <AntDesign name="twitter" size={24} color="#1fa1fa" />
-
+        <Text></Text>
         <View>
           <Text style={{ fontSize: 25, fontWeight: '700', width: 200 }}>
             See what's happening in the world right now.
@@ -39,7 +38,7 @@ export const LandingScreen = ({ navigation }: Props) => {
           </Pressable>
         </View>
 
-        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row' }}>
           <Text>Have an account already? </Text>
           <Pressable
             onPress={() => {

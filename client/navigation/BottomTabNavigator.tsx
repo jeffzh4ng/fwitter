@@ -14,8 +14,8 @@ import {
   ProfileScreen,
   FocusedTweetScreen,
   SearchResultScreen,
+  EditProfileScreen,
 } from '../screens/app'
-import { Text } from 'react-native'
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>()
 
@@ -87,6 +87,7 @@ function HomeNavigator() {
         // TODO: initial params should be your own user Id
         initialParams={{ userId: 'e2a85941-ef87-442f-be1c-7a0d3c18cfb1' }}
       />
+      <HomeStack.Screen name="EditProfile" component={EditProfileScreen} />
       <HomeStack.Screen name="CreateTweet" component={CreateTweetScreen} />
       <HomeStack.Screen
         name="FocusedTweet"

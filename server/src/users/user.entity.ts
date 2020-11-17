@@ -18,12 +18,20 @@ export class User {
   password: string
 
   @Field()
+  @Column()
+  name: string
+
+  @Field()
   @Column({ nullable: true })
   bio: string
 
   @Field()
   @Column({ nullable: true })
   website: string
+
+  @Field()
+  @Column({ nullable: true })
+  avatarUrl: string
 
   @CreateDateColumn()
   date: Date
@@ -39,6 +47,10 @@ export class User {
     follow => follow.target
   )
   followers: Follow[]
+
+  @Field()
+  @CreateDateColumn()
+  createdAt: Date
 }
 
 export type StrippedUser = Omit<User, 'password'>

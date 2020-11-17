@@ -23,6 +23,7 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer'
 import { meData } from '../__generated__/meData'
+import { AntDesign } from '@expo/vector-icons'
 
 const Root = createStackNavigator()
 
@@ -81,11 +82,31 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 const UnauthenticatedStack = () => {
   return (
     <Root.Navigator>
-      <Root.Screen name="Landing" component={LandingScreen} />
-      <Root.Screen name="SignUp" component={SignUpScreen} />
-      <Root.Screen name="Login" component={LoginScreen} />
-      <Root.Screen name="Verify" component={VerifyScreen} />
-      <Root.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <Root.Screen
+        name="Landing"
+        component={LandingScreen}
+        options={{ headerTitle: () => <AntDesign name="twitter" size={24} color="#1fa1fa" /> }}
+      />
+      <Root.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{ headerTitle: () => <AntDesign name="twitter" size={24} color="#1fa1fa" /> }}
+      />
+      <Root.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerTitle: () => <AntDesign name="twitter" size={24} color="#1fa1fa" /> }}
+      />
+      <Root.Screen
+        name="Verify"
+        component={VerifyScreen}
+        options={{ headerTitle: () => <AntDesign name="twitter" size={24} color="#1fa1fa" /> }}
+      />
+      <Root.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+        options={{ headerTitle: () => <AntDesign name="twitter" size={24} color="#1fa1fa" /> }}
+      />
     </Root.Navigator>
   )
 }

@@ -32,6 +32,7 @@ const LOGIN_MUTATION = gql`
 export const LoginScreen = ({ navigation }: Props) => {
   const [emailOrUsername, onChangeEmailOrUsername] = React.useState('')
   const [password, onChangePassword] = React.useState('')
+  const [passwordTextSecure, togglePassword] = React.useState(true)
 
   const [login, { data }] = useMutation(LOGIN_MUTATION)
   if (data) {
@@ -46,45 +47,52 @@ export const LoginScreen = ({ navigation }: Props) => {
           behavior="padding"
         >
           <View style={{ paddingHorizontal: 20 }}>
-            <AntDesign name="twitter" size={24} color="#1fa1fa" />
-
             <Text style={{ fontSize: 23, fontWeight: '700', marginTop: 50, textAlign: 'center' }}>
               Log in to Twitter
             </Text>
 
-            <TextInput
-              autoFocus
-              style={{
-                borderBottomWidth: 0.5,
-                borderBottomColor: 'lightgrey',
-                color: '#1fa1fa',
-                fontSize: 16,
-                height: 30,
-                marginTop: 50,
-                paddingBottom: 15,
-              }}
-              autoCapitalize="none"
-              onChangeText={(text) => onChangeEmailOrUsername(text)}
-              placeholder="Email or username"
-              placeholderTextColor="lightslategrey"
-              value={emailOrUsername}
-            />
-            <TextInput
-              style={{
-                borderBottomWidth: 0.5,
-                borderBottomColor: 'lightgrey',
-                color: '#1fa1fa',
-                fontSize: 16,
-                height: 30,
-                marginTop: 20,
-                paddingBottom: 15,
-              }}
-              autoCapitalize="none"
-              onChangeText={(text) => onChangePassword(text)}
-              placeholder="Password"
-              placeholderTextColor="lightslategrey"
-              value={password}
-            />
+            <View>
+              <TextInput
+                autoFocus
+                style={{
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: 'lightgrey',
+                  color: '#1fa1fa',
+                  fontSize: 16,
+                  height: 30,
+                  marginTop: 50,
+                  paddingBottom: 15,
+                }}
+                autoCapitalize="none"
+                onChangeText={(text) => onChangeEmailOrUsername(text)}
+                placeholder="Email or username"
+                placeholderTextColor="lightslategrey"
+                value={emailOrUsername}
+              />
+              <TextInput
+                style={{
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: 'lightgrey',
+                  color: '#1fa1fa',
+                  fontSize: 16,
+                  height: 30,
+                  marginTop: 20,
+                  paddingBottom: 15,
+                }}
+                secureTextEntry={passwordTextSecure}
+                autoCapitalize="none"
+                onChangeText={(text) => onChangePassword(text)}
+                placeholder="Password"
+                placeholderTextColor="lightslategrey"
+                value={password}
+              />
+            </View>
+            <View></View>
+            <Pressable onPress={() => togglePassword(!passwordTextSecure)}>
+              <Text style={{ color: '#1fa1fa' }}>
+                {passwordTextSecure ? 'Show password' : 'Hide password'}
+              </Text>
+            </Pressable>
           </View>
 
           <View
