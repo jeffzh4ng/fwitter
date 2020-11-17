@@ -80,7 +80,7 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
         </Pressable> */}
         <Text style={{ fontSize: 20, fontWeight: '700', marginTop: 5 }}>Jeff</Text>
         <Text
-          style={{ color: 'darkslategrey', marginTop: 5 }}
+          style={{ color: 'darkslategrey', marginTop: 2 }}
           onPress={() => Linking.openURL('jeffzh4ng.com')}
         >
           @jeffzh4ng

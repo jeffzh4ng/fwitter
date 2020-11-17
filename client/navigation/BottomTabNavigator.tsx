@@ -2,6 +2,7 @@ import { AntDesign, Feather } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack'
 import * as React from 'react'
+import { Text } from 'react-native'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import { BottomTabParamList, HomeStackParamList } from '../types'
@@ -87,7 +88,14 @@ function HomeNavigator() {
         // TODO: initial params should be your own user Id
         initialParams={{ userId: 'e2a85941-ef87-442f-be1c-7a0d3c18cfb1' }}
       />
-      <HomeStack.Screen name="EditProfile" component={EditProfileScreen} />
+      <HomeStack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{
+          headerBackTitle: 'Cancel',
+          headerTitle: () => <Text style={{ fontSize: 18, fontWeight: '700' }}>Edit profile</Text>,
+        }}
+      />
       <HomeStack.Screen name="CreateTweet" component={CreateTweetScreen} />
       <HomeStack.Screen
         name="FocusedTweet"
