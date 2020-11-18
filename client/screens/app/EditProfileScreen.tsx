@@ -5,6 +5,7 @@ import { SafeAreaView, Image, Text, TextInput, View, Pressable } from 'react-nat
 import { ME_MUTATION } from '../../mutations'
 import { HomeStackParamList } from '../../types'
 import { meData } from '../../__generated__/meData'
+import { FIND_ONE_USER } from './ProfileScreen'
 
 type EditProfileScreenNavigationPropl = StackNavigationProp<HomeStackParamList, 'Feed'>
 
@@ -32,8 +33,6 @@ export const EditProfileScreen = ({ navigation }: Props) => {
   const [bio, setBio] = React.useState('')
   const [website, setWebsite] = React.useState('')
 
-  console.log('updated user', data)
-
   React.useEffect(() => {
     me()
   }, [])
@@ -60,6 +59,14 @@ export const EditProfileScreen = ({ navigation }: Props) => {
                 bio,
                 website,
               },
+              refetchQueries: [
+                {
+                  query: FIND_ONE_USER,
+                  variables: {
+                    userId: meDataResult?.me.ID,
+                  },
+                },
+              ],
             })
             navigation.goBack()
           }}
@@ -70,7 +77,7 @@ export const EditProfileScreen = ({ navigation }: Props) => {
         </Pressable>
       ),
     })
-  }, [navigation, name, bio, website])
+  }, [navigation, name, bio, website, meDataResult])
 
   return (
     <SafeAreaView>

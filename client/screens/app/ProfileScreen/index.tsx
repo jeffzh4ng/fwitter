@@ -35,7 +35,7 @@ const FOLLOW_MUTATION = gql`
   }
 `
 
-const FIND_ONE_USER = gql`
+export const FIND_ONE_USER = gql`
   query ProfileData($userId: ID!) {
     getOneByUserId(userId: $userId) {
       ID
