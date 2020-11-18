@@ -8,6 +8,7 @@ export const ME_MUTATION = gql`
       name
       bio
       website
+      avatarUrl
       following {
         ID
       }

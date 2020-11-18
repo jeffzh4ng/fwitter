@@ -14,6 +14,7 @@ import { ME_MUTATION } from '../../../mutations'
 import { meData } from '../../../__generated__/meData'
 import { ProfileData } from '../../../__generated__/ProfileData'
 import moment from 'moment'
+import { DEFAULT_AVATAR_URL } from '../../../constants'
 
 type ProfileScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'Feed'>
 type ProfileScreenRouteProp = RouteProp<HomeStackParamList, 'Profile'>
@@ -44,6 +45,7 @@ export const FIND_ONE_USER = gql`
       bio
       website
       createdAt
+      avatarUrl
       followers {
         ID
       }
@@ -92,7 +94,7 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
           <Image
             style={{ borderRadius: 100, height: 50, width: 50 }}
             source={{
-              uri: 'https://pbs.twimg.com/profile_images/1323674642205315072/YoTHCtRr_400x400.jpg',
+              uri: profile.avatarUrl ? profile.avatarUrl : DEFAULT_AVATAR_URL,
             }}
           />
 

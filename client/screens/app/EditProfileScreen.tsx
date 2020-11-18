@@ -1,11 +1,13 @@
 import { gql, useMutation } from '@apollo/client'
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as React from 'react'
-import { SafeAreaView, Image, Text, TextInput, View, Pressable } from 'react-native'
+import { SafeAreaView, Image, Text, View, Pressable, TextInput } from 'react-native'
 import { ME_MUTATION } from '../../mutations'
 import { HomeStackParamList } from '../../types'
 import { meData } from '../../__generated__/meData'
 import { FIND_ONE_USER } from './ProfileScreen'
+import * as ImagePicker from 'expo-image-picker'
+import { DEFAULT_AVATAR_URL } from '../../constants'
 
 type EditProfileScreenNavigationPropl = StackNavigationProp<HomeStackParamList, 'Feed'>
 
@@ -27,7 +29,7 @@ const UPDATE_USER_MUTATION = gql`
 
 export const EditProfileScreen = ({ navigation }: Props) => {
   const [me, { data: meDataResult }] = useMutation<meData>(ME_MUTATION)
-  const [updateUser, { data }] = useMutation(UPDATE_USER_MUTATION)
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION)
 
   const [name, setName] = React.useState('')
   const [bio, setBio] = React.useState('')
@@ -39,8 +41,6 @@ export const EditProfileScreen = ({ navigation }: Props) => {
 
   React.useEffect(() => {
     if (!meDataResult) return
-
-    console.log(meDataResult)
 
     setName(meDataResult.me.name)
     setBio(meDataResult.me.bio || '')
@@ -82,13 +82,9 @@ export const EditProfileScreen = ({ navigation }: Props) => {
   return (
     <SafeAreaView>
       <View>
-        <Image
-          style={{ borderRadius: 100, height: 50, marginLeft: 15, marginTop: 15, width: 50 }}
-          source={{
-            uri: 'https://pbs.twimg.com/profile_images/1323674642205315072/YoTHCtRr_400x400.jpg',
-          }}
-        />
-
+        <View style={{ marginLeft: 15, marginTop: 30 }}>
+          <ImagePickerComponent originalImageUrl="" />
+        </View>
         <View
           style={{
             flexDirection: 'row',
@@ -163,5 +159,64 @@ export const EditProfileScreen = ({ navigation }: Props) => {
         </View>
       </View>
     </SafeAreaView>
+  )
+}
+
+const ImagePickerComponent = ({ originalImageUrl }: { originalImageUrl: string }) => {
+  const [imageUrl, setImageUrl] = React.useState(
+    originalImageUrl.length > 0 ? originalImageUrl : DEFAULT_AVATAR_URL
+  )
+
+  const openImagePickerAsync = async () => {
+    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync()
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!')
+      return
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+    })
+    if (pickerResult.cancelled === true) return
+
+    cloudinairyUpload(pickerResult.base64)
+    setImageUrl(pickerResult.uri)
+  }
+
+  const cloudinairyUpload = async (base64Img: string | undefined) => {
+    if (!base64Img) console.log('undefined image')
+    const data = {
+      file: base64Img,
+      upload_preset: 'insert your upload preset here,within quotations',
+    }
+
+    try {
+      const res = await fetch('https://api.cloudinary.com/v1_1/jeffzh4ng/image/upload', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      console.log(res)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  return (
+    <View>
+      <Pressable onPress={openImagePickerAsync}>
+        <Image
+          source={{ uri: imageUrl }}
+          style={{
+            borderRadius: 100,
+            height: 50,
+            resizeMode: 'contain',
+            width: 50,
+          }}
+        />
+      </Pressable>
+    </View>
   )
 }

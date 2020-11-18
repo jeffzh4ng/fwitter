@@ -33,6 +33,7 @@ export interface meData_me {
   name: string;
   bio: string | null;
   website: string | null;
+  avatarUrl: string | null;
   following: meData_me_following[];
   followers: meData_me_followers[];
 }

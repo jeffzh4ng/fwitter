@@ -34,6 +34,7 @@ export interface ProfileData_getOneByUserId {
   bio: string | null;
   website: string | null;
   createdAt: FwitterDateTime;
+  avatarUrl: string | null;
   followers: ProfileData_getOneByUserId_followers[];
   following: ProfileData_getOneByUserId_following[];
 }
