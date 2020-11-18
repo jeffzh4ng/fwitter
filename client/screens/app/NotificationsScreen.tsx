@@ -38,8 +38,8 @@ const GET_NOTIFICATIONS_QUERY = gql`
 `
 
 export const NotificationsScreen = () => {
-  const { data } = useQuery(GET_NOTIFICATIONS_QUERY)
-  console.log(data)
+  const { error, data } = useQuery(GET_NOTIFICATIONS_QUERY)
+  console.log(data, error)
 
   return (
     <SafeAreaView>

@@ -17,6 +17,7 @@ export enum NotificationType {
   LIKE = 'like',
   TWEET = 'tweet',
   FOLLOW = 'follow',
+  MENTION = 'mention',
 }
 
 const TargetUnion = createUnionType({

@@ -7,6 +7,7 @@ import { UsersService } from 'src/users/users.service'
 import { Like as TypeOrmLike, Repository } from 'typeorm'
 import { Hashtag } from './hashtag.entity'
 import { Like } from './like.entity'
+import { Mention } from './mention.entity'
 import { Tweet, TweetType } from './tweet.entity'
 
 @Injectable()
@@ -17,6 +18,7 @@ export class TweetsService {
     @InjectRepository(Tweet) private tweetsRepository: Repository<Tweet>,
     @InjectRepository(Like) private likesRepository: Repository<Like>,
     @InjectRepository(Hashtag) private hashtagsRepository: Repository<Hashtag>,
+    @InjectRepository(Mention) private mentionsRepository: Repository<Mention>,
     private notificationsService: NotificationsService,
     private usersService: UsersService
   ) {}
@@ -70,8 +72,8 @@ export class TweetsService {
     try {
       const user = await this.usersService.findOneByUserId(data.userId)
       const createdTweet = await this.tweet({ ...data, user, parentId: data.parentId })
-      console.log(createdTweet)
       await this.createHashes(createdTweet)
+      await this.createMentions(createdTweet)
       return createdTweet
     } catch (e) {
       this.logger.error(e)
@@ -159,9 +161,9 @@ export class TweetsService {
 
   private async createHashes(createdTweet: Tweet): Promise<void> {
     try {
-      console.log('creating hashes')
       const tags = createdTweet.text.split(' ').filter(word => word.startsWith('#'))
       const createdHashtagPromises: Array<Promise<Hashtag>> = tags.map(tag => {
+        console.log('this is a tag', tag)
         const createdHashtag = new Hashtag()
         createdHashtag.tag = tag
         createdHashtag.tweet = createdTweet
@@ -169,6 +171,32 @@ export class TweetsService {
       })
 
       await Promise.all(createdHashtagPromises)
+    } catch (e) {
+      this.logger.error(e)
+      throw new InternalServerErrorException()
+    }
+  }
+
+  private async createMentions(createdTweet: Tweet): Promise<void> {
+    try {
+      const mentions = createdTweet.text.split(' ').filter(word => word.startsWith('@'))
+      const createdMentionsPromises: Array<Promise<Mention>> = mentions.map(async mention => {
+        const user = await this.usersService.findOneByUsername(mention.substring(1))
+        const createdMention = new Mention()
+        createdMention.tweet = createdTweet
+        createdMention.user = user
+        await this.mentionsRepository.save(createdMention)
+
+        await this.notificationsService.createNotification({
+          targetId: createdMention.id,
+          targetUserId: mention.substring(1),
+          type: NotificationType.MENTION,
+        })
+
+        return createdMention
+      })
+
+      await Promise.all(createdMentionsPromises)
     } catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException()
