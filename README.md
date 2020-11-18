@@ -15,11 +15,13 @@
 - [x] tweets, replies, retweets, and likes
 - [x] hashtags
 - [x] search (profiles, tweets, hashtags)
-- [x] notifications: blocked by apollo server layer not resolving union types correctly
-- [ ] mentions: blocked by weird db layer bug re nullable columns on mentions table
-- [ ] images: blocked by react native fetch bug - can't access cloudinairy
 - [ ] messages
 - [ ] signup flow: send code to email
+
+## Blocked
+- [] notifications: blocked by apollo server layer not resolving union types correctly
+  - [ ] mentions: blocked by weird db layer bug re nullable columns on mentions table
+- [ ] images: blocked by react native fetch bug - can't access cloudinairy
 
 ## Setup
 Prerequisites: Expo, Node, and Docker.
