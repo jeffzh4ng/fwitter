@@ -1,6 +1,4 @@
 # fwitter 🐦
-Fullstack Fake Twitter clone. Typescript and GraphQL across the stack. React, Apollo Client, Apollo Server, NestJS, TypeORM and Postgres.
-
 ![](https://i.imgur.com/wtdugOg.png)
 
 ## Stack
