@@ -3,10 +3,11 @@
 
 ## Stack
 - View layer: [React Native](https://reactnative.dev/)
-- State management: [Apollo Client](https://www.apollographql.com/docs/react/)
-- Routing: [React Navigation](https://reactnavigation.org/)
+  - State management: [Apollo Client](https://www.apollographql.com/docs/react/)
+  - Routing: [React Navigation](https://reactnavigation.org/)
 - Backend layer: [NestJS](https://nestjs.com/)
-- Data layer: [TypeORM](https://typeorm.io/#/)
+  - Authentication: [Passport](http://www.passportjs.org/)
+  - Data layer: [TypeORM](https://typeorm.io/#/)
 - DB layer: [Postgres](https://www.postgresql.org/)
 - Image hosting: [Cloudinairy](https://cloudinary.com/)
 
