@@ -44,6 +44,12 @@ export const FIND_ONE_USER = gql`
       bio
       website
       createdAt
+      followers {
+        ID
+      }
+      following {
+        ID
+      }
     }
   }
 `
@@ -58,8 +64,6 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
       userId: route.params.userId,
     },
   })
-
-  console.log(profileData, error, route.params.userId)
 
   React.useEffect(() => {
     me()
@@ -120,7 +124,7 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
         <Text style={{ fontSize: 20, fontWeight: '700', marginTop: 5 }}>{profile.name}</Text>
         <Text style={{ color: 'darkslategrey', marginTop: 2 }}>@{profile.username}</Text>
 
-        <Text style={{ marginTop: 10 }}>incoming @tesla, math @uwaterloo</Text>
+        <Text style={{ marginTop: 10 }}>{profile.bio} </Text>
 
         <View style={{ flexDirection: 'row', marginTop: 10 }}>
           <Text
@@ -141,10 +145,10 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
 
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
           <Text>
-            <Text style={{ fontWeight: '700' }}>141</Text> Following
+            <Text style={{ fontWeight: '700' }}>{profile.following.length} </Text> Following
           </Text>
           <Text style={{ marginLeft: 15 }}>
-            <Text style={{ fontWeight: '700' }}>140</Text> Followers
+            <Text style={{ fontWeight: '700' }}>{profile.followers.length}</Text> Followers
           </Text>
         </View>
       </View>

@@ -28,6 +28,7 @@ export class UsersService {
         where: {
           id: userId,
         },
+        relations: ['following', 'followers'],
       })
     } catch (e) {
       this.logger.error(e)

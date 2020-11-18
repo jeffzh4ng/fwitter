@@ -36,12 +36,14 @@ export class User {
   @CreateDateColumn()
   date: Date
 
+  @Field(type => [Follow])
   @OneToMany(
     type => Follow,
     follow => follow.user
   )
   following: Follow[]
 
+  @Field(type => [Follow])
   @OneToMany(
     type => Follow,
     follow => follow.target

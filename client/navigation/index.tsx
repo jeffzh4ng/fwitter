@@ -1,6 +1,6 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
 import * as React from 'react'
-import { ColorSchemeName, Pressable, NativeModules } from 'react-native'
+import { Image, ColorSchemeName, Pressable, NativeModules, View } from 'react-native'
 
 import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
@@ -20,9 +20,8 @@ import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItem,
-  DrawerItemList,
 } from '@react-navigation/drawer'
-import { meData } from '../__generated__/meData'
+import { meData, meData_me } from '../__generated__/meData'
 import { AntDesign } from '@expo/vector-icons'
 
 const Root = createStackNavigator()
@@ -41,39 +40,59 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      {data ? <DrawerNavigator userId={data.me.ID} /> : <UnauthenticatedStack />}
+      {data ? <DrawerNavigator user={data.me} /> : <UnauthenticatedStack />}
     </NavigationContainer>
   )
 }
 
 const Drawer = createDrawerNavigator()
 
-const DrawerNavigator = ({ userId }: { userId: string }) => {
+const DrawerNavigator = ({ user }: { user: meData_me }) => {
   return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} userId={userId} />}>
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} user={user} />}>
       <Drawer.Screen name="Home" component={BottomTabNavigator} />
     </Drawer.Navigator>
   )
 }
 
-const DrawerContent = (props: DrawerContentComponentProps & { userId: string }) => {
+const DrawerContent = (props: DrawerContentComponentProps & { user: meData_me }) => {
   return (
     <>
       <DrawerContentScrollView>
-        <DrawerItemList {...props} />
+        <View style={{ marginLeft: 15 }}>
+          <Image
+            style={{ borderRadius: 100, height: 50, marginTop: 10, width: 50 }}
+            source={{
+              uri: 'https://pbs.twimg.com/profile_images/1323674642205315072/YoTHCtRr_400x400.jpg',
+            }}
+          />
+
+          <Text style={{ fontSize: 20, fontWeight: '700' }}>{props.user.name}</Text>
+          <Text style={{ color: 'darkslategrey', marginTop: 2 }}>@{props.user.username}</Text>
+
+          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+            <Text>
+              <Text style={{ fontWeight: '700' }}>{props.user.following.length} </Text> Following
+            </Text>
+            <Text style={{ marginLeft: 15 }}>
+              <Text style={{ fontWeight: '700' }}>{props.user.followers.length}</Text> Followers
+            </Text>
+          </View>
+        </View>
+
         <DrawerItem
           label="Profile"
           onPress={() => {
-            props.navigation.navigate('Profile', { userId: props.userId })
+            props.navigation.navigate('Profile', { userId: props.user.ID })
           }}
         />
-        <Pressable
+        {/* <Pressable
           onPress={() => {
             console.log(NativeModules.Networking)
           }}
         >
           <Text>Logout</Text>
-        </Pressable>
+        </Pressable> */}
       </DrawerContentScrollView>
     </>
   )

@@ -8,6 +8,12 @@ export const ME_MUTATION = gql`
       name
       bio
       website
+      following {
+        ID
+      }
+      followers {
+        ID
+      }
     }
   }
 `
