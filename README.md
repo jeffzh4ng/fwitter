@@ -19,7 +19,7 @@
 - [ ] signup flow: send code to email
 
 ## Blocked
-- [] notifications: blocked by apollo server layer not resolving union types correctly
+- [ ] notifications: blocked by apollo server layer not resolving union types correctly
   - [ ] mentions: blocked by weird db layer bug re nullable columns on mentions table
 - [ ] images: blocked by react native fetch bug - can't access cloudinairy
 
