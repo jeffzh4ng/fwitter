@@ -28,6 +28,6 @@ Prerequisites: Expo, Node, and Docker.
 - `cd client`
 - `yarn start`
 
-## Server Setup
+### Server Setup
 - `cd server`
 - `docker-compose up`
