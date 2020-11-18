@@ -5,7 +5,7 @@
 - View layer: [React Native](https://reactnative.dev/)
 - State management: [Apollo Client](https://www.apollographql.com/docs/react/)
 - Routing: [React Navigation](https://reactnavigation.org/)
-- Backend layer [NestJS](https://nestjs.com/)
+- Backend layer: [NestJS](https://nestjs.com/)
 - Data layer: [TypeORM](https://typeorm.io/#/)
 - DB layer: [Postgres](https://www.postgresql.org/)
 - Image hosting: [Cloudinairy](https://cloudinary.com/)
