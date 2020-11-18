@@ -7,7 +7,7 @@
 - Routing: [React Navigation](https://reactnavigation.org/)
 - Backend layer [NestJS](https://nestjs.com/)
 - Data layer: [TypeORM](https://typeorm.io/#/)
-- Db layer: [Postgres](https://www.postgresql.org/)
+- DB layer: [Postgres](https://www.postgresql.org/)
 - Image hosting: [Cloudinairy](https://cloudinary.com/)
 
 ## Features
