@@ -79,6 +79,7 @@ export class UsersService {
   }): Promise<User> {
     try {
       const user = await this.usersRepository.findOne(userId)
+      console.log(userId, name, bio, website)
       user.name = name
       user.bio = bio
       user.website = website

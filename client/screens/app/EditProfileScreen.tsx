@@ -16,6 +16,10 @@ const UPDATE_USER_MUTATION = gql`
   mutation UpdatedUserData($name: String!, $bio: String!, $website: String!) {
     updateUser(name: $name, bio: $bio, website: $website) {
       ID
+      username
+      name
+      bio
+      website
     }
   }
 `
@@ -28,6 +32,8 @@ export const EditProfileScreen = ({ navigation }: Props) => {
   const [bio, setBio] = React.useState('')
   const [website, setWebsite] = React.useState('')
 
+  console.log('updated user', data)
+
   React.useEffect(() => {
     me()
   }, [])
@@ -35,9 +41,11 @@ export const EditProfileScreen = ({ navigation }: Props) => {
   React.useEffect(() => {
     if (!meDataResult) return
 
+    console.log(meDataResult)
+
     setName(meDataResult.me.name)
-    setBio(meDataResult.me.bio)
-    setWebsite(meDataResult.me.website)
+    setBio(meDataResult.me.bio || '')
+    setWebsite(meDataResult.me.website || '')
   }, [meDataResult])
 
   React.useLayoutEffect(() => {
@@ -62,7 +70,7 @@ export const EditProfileScreen = ({ navigation }: Props) => {
         </Pressable>
       ),
     })
-  }, [navigation])
+  }, [navigation, name, bio, website])
 
   return (
     <SafeAreaView>

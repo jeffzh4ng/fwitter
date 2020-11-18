@@ -46,6 +46,7 @@ export class UsersResolver {
     @Args('website', { type: () => String }) website: string
   ) {
     const { userId } = ctx.req.session
+    console.log('stuff:   ', name, bio, website)
     const user = await this.usersService.updateOne({ userId, name, bio, website })
     return user
   }
