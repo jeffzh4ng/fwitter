@@ -19,3 +19,14 @@
 - [ ] images: blocked by react native fetch bug - can't access cloudinairy
 - [ ] messages
 - [ ] signup flow: send code to email
+
+## Setup
+Prerequisites: Expo, Node, and Docker.
+
+### Client Setup
+- `cd client`
+- `yarn start`
+
+## Server Setup
+- `cd server`
+- `docker-compose up`
